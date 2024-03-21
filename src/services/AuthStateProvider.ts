@@ -7,7 +7,8 @@ export class AuthStateProvider
             name: 'Tomas Parra',
             email: 'tparra@unal.edu.co',
             token: 'testing_token_here',
-            username: 'Tomas1802'
+            username: 'Tomas1802',
+            HasAnsweredSurvey: false
         };
     }
 }
