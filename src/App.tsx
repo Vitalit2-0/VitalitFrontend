@@ -6,12 +6,14 @@ import Home from './pages/Home'
 import Register from './pages/Register'
 import RecoverPass from './pages/RecoverPass'
 import Survey from './pages/Survey'
+import Landing from './pages/Landing'
 
 function App() {
     return (
         <BrowserRouter>
             <Routes>
-                <Route path="/" element={<Login/>}/>
+                <Route path="/" element={<Landing/>}/>
+                <Route path="/login" element={<Login/>}/>
                 <Route path="/register" element={<Register/>}/>
                 <Route path="/recover" element={<RecoverPass/>}/>
                 <Route path="/" element={<ProtectedRoute/>}>

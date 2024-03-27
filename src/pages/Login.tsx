@@ -11,9 +11,9 @@ function Login() {
         registerUser(User);
     }
 
-    function handleLogin() {
+    async function handleLogin() {
         var auth = new AuthStateProvider();
-        var user: User = auth.getUserAuthState();
+        var user: User = await auth.getUserAuthState();
     
         if(user)
         {
