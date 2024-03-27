@@ -5,7 +5,7 @@
 :root {
   font-family: "Poppins", sans-serif;
   line-height: 1.5;
-  font-weight: 400;
+  font-weight: 300;
   color-scheme: light dark;
   color: rgba(0, 0, 0, 0.87);
   background: #f1f1f1;
@@ -39,6 +39,15 @@ h1 {
   line-height: 1.1;
 }
 
+textarea {
+  height: 100%;
+  background-color: #f1f1f1;
+  border: solid 1px #cb9af7;
+  padding: 10px;
+  border-radius: 12px;
+  height: 50%;
+}
+
 button {
   border-radius: 8px;
   border: 1px solid transparent;
@@ -60,16 +69,105 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
+.chakra-checkbox__control {
+  border: solid 1px black;
+  padding: 2px;
+  height: 24px;
+  width: 24px;
+  border-radius: 4px;
+}
+
 .btn.btn-main {
-  background: linear-gradient(to right, #9400d3, #b021c8, #ba55d3);
+  background: linear-gradient(to right, #fd789f, #c99bfa);
   color: #f1f1f1;
   transition: all 0.25s ease-in-out;
 }
 
 .btn.btn-main:hover {
-  background: linear-gradient(to right, #9400d3, #b021c8, #ba55d3);
+  background: linear-gradient(to right, #fd789f, #c99bfa);
   color: #f1f1f1;
   transform: scale(1.05);
+}
+
+.base-gradient {
+  background: linear-gradient(to right, #fd789f, #c99bfa);
+}
+
+.highlight-text {
+  color: #cb9af7 !important;
+  font-weight: bold;
+}
+
+.bg-text-card {
+  background: rgb(241, 241, 241);
+  background: linear-gradient(0deg, rgb(241, 241, 241) 80%, rgba(2, 0, 36, 0) 100%);
+}
+
+.shadow-card {
+  box-shadow: rgba(0, 0, 0, 0.4) 0px 30px 90px;
+  background-color: #f1f1f1;
+  color: #1a1a1a;
+  border-radius: 15px;
+  padding: 2rem;
+}
+
+/* Container holding the card to set perspective */
+.relative.container-card {
+  perspective: 1000px;
+}
+
+/* Flip container - the card itself */
+.card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.8s;
+  transform-style: preserve-3d;
+}
+
+/* When the container is flipped, rotate the .card-inner */
+.container-flipped .card-inner {
+  transform: rotateY(180deg);
+}
+
+/* Front and back card styling */
+.card-front, .card-back {
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+}
+
+/* Back face of the card */
+.card-back {
+  transform: rotateY(180deg);
+}
+
+.progress-bar {
+  overflow: hidden;
+  width: 100%;
+}
+.progress-bar span {
+  display: block;
+}
+
+.incomplete {
+  background-color: #f83e3e;
+}
+
+.complete {
+  background-color: #75b800;
+}
+
+.half-complete {
+  background-color: #f6bf41;
+}
+
+.progress {
+  border-radius: 60px;
+  color: #fff;
+  padding: 5px 0;
+  width: 0%;
+  transition: all ease 0.5s;
 }
 
 @media (prefers-color-scheme: light) {

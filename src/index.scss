@@ -3,17 +3,20 @@
 @tailwind components;
 @tailwind utilities;
 
-$base-dark-purpple: #9400d3;
-$base-deep-purpple: #b021c8;
-$base-mid-orchid: #ba55d3;
-$base-gradient: linear-gradient(to right, $base-dark-purpple, $base-deep-purpple, $base-mid-orchid);
+$base-pink: #fd789f;
+$base-deep-purpple: #cb9af7;
+$base-mid-orchid: #c99bfa;
+$base-gradient: linear-gradient(to right, $base-pink, $base-mid-orchid);
 $base-white: #f1f1f1;
 $base-black: #1a1a1a;
+$base-green: #75b800;
+$base-red: #f83e3e;
+$base-yellow: #f6bf41;
 
 :root {
     font-family: "Poppins", sans-serif;
     line-height: 1.5;
-    font-weight: 400;
+    font-weight: 300;
 
     color-scheme: light dark;
     color: rgba(0, 0, 0, 0.87);
@@ -49,6 +52,15 @@ h1 {
     line-height: 1.1;
 }
 
+textarea{
+    height: 100%;
+    background-color: $base-white;
+    border: solid 1px $base-deep-purpple;
+    padding: 10px;
+    border-radius: 12px;
+    height: 50%;
+}
+
 button {
     border-radius: 8px;
     border: 1px solid transparent;
@@ -68,6 +80,14 @@ button:hover {
     outline: 4px auto -webkit-focus-ring-color;
 }
 
+.chakra-checkbox__control{
+    border: solid 1px black;
+    padding: 2px;
+    height: 24px;
+    width: 24px;
+    border-radius: 4px;
+}
+
 .btn.btn-main {
     background: $base-gradient;
     color: $base-white;
@@ -78,6 +98,99 @@ button:hover {
     background: $base-gradient;
     color: $base-white;
     transform: scale(1.05);
+}
+
+.base-gradient {
+    background: $base-gradient;
+}
+
+.highlight-text {
+    color: $base-deep-purpple !important;
+    font-weight: bold;
+}
+
+//----------------------------------Survey card----------------------------------//
+
+.bg-text-card {
+    background: rgb(241,241,241);
+    background: linear-gradient(0deg, rgba(241,241,241,1) 80%, rgba(2,0,36,0) 100%);    
+}
+
+.shadow-card {
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 30px 90px;
+    background-color: $base-white;
+    color: $base-black;
+    border-radius: 15px;
+    padding: 2rem;
+}
+
+/* Container holding the card to set perspective */
+.relative.container-card {
+    perspective: 1000px;
+}
+
+/* Flip container - the card itself */
+.card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.8s;
+    transform-style: preserve-3d;
+}
+
+/* When the container is flipped, rotate the .card-inner */
+.container-flipped .card-inner {
+    transform: rotateY(180deg);
+}
+
+/* Front and back card styling */
+.card-front, .card-back {
+    // position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+}
+
+/* Back face of the card */
+.card-back {
+    transform: rotateY(180deg);
+}
+
+//----------------------------------Progress bar----------------------------------//
+
+// Bar Variables ========================================
+$bar-size: 5px;
+$bar-radius: 60px;
+
+// Bar ============================================
+.progress-bar {
+	overflow: hidden;
+    width: 100%;
+
+	span {
+		display: block;
+	}
+
+}
+
+.incomplete {
+    background-color: $base-red;
+}
+
+.complete {
+    background-color: $base-green;
+}
+
+.half-complete {
+    background-color: $base-yellow;
+}
+
+.progress {
+    border-radius: $bar-radius;
+    color: #fff;
+    padding: $bar-size 0;
+    width: 0%;
+    transition: all ease 0.5s;
 }
 
 @media (prefers-color-scheme: light) {

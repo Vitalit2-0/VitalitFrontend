@@ -1,7 +1,8 @@
 export class AuthStateProvider
 {
-    public getUserAuthState(): User 
+    public async getUserAuthState(): Promise<User> 
     {   
+        //TODO: Implement method to bring user from API
         return {
             id: '1',
             name: 'Tomas Parra',
