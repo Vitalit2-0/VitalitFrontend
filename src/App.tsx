@@ -1,10 +1,11 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import './App.css'
 import Login from './pages/Login'
-import ProtectedRoute from './utils/ProtectedRoute'
+import ProtectedRoute from './components/ProtectedRoute'
 import Home from './pages/Home'
 import Register from './pages/Register'
 import RecoverPass from './pages/RecoverPass'
+import Survey from './pages/Survey'
 
 function App() {
     return (
@@ -15,6 +16,7 @@ function App() {
                 <Route path="/recover" element={<RecoverPass/>}/>
                 <Route path="/" element={<ProtectedRoute/>}>
                     <Route path="/home" element={<Home/>}/>
+                    <Route path="/survey" element={<Survey/>}/>
                 </Route>
             </Routes>
         </BrowserRouter>

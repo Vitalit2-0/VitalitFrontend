@@ -1,16 +1,9 @@
 import {Navigate, Outlet} from 'react-router-dom'
+import useUserStore from '../stores/userStore'
 
 const isLoggedIn = () => {
-    const user = localStorage.getItem('user')
-
-    if(user)
-    {
-        return true
-    } 
-    else 
-    {
-        return false
-    }
+    const user = useUserStore(state => state)
+    return user !== null;
 }
 
 const ProtectedRoute = () => {
