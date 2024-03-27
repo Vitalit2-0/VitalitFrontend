@@ -1,8 +1,8 @@
 import { Button } from "@mui/material"
 
-function NavigationButton({ page, text } : { page: string, text : string}) {
+function NavigationButton({ page, text, className } : { page: string, text : string, className?: string}) {
     return (
-        <Button variant="contained" className="btn btn-main" onClick={() => navigateTo(page)}>{text}</Button>
+        <Button variant="contained" className={`btn btn-main ${className}`} onClick={() => navigateTo(page)}>{text}</Button>
     )
 }
 

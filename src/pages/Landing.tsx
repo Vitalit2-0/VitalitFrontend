@@ -1,10 +1,9 @@
-import NavigationButton from "../components/helpers/NavigationButton"
+import Header from "../components/Header"
 
 function Landing() {
     return (
         <div>
-            Landing
-            <NavigationButton page="/login" text="Iniciar Sesión"/>
+            <Header/>
         </div>
     )
 }
