@@ -1,7 +1,6 @@
-import React from 'react'
-import NavigationButton from './helpers/NavigationButton'
+import GradientButton from './helpers/GradientButton'
 
-function Menu() {
+function Menu({setTransition} : {setTransition: any}) {
     return (
         <div>
             <nav>
@@ -28,7 +27,7 @@ function Menu() {
                         </ul>
                     </li>
                     <li className='m-3 p-2'>
-                        <NavigationButton page="/login" text="Iniciar Sesión" />
+                        <GradientButton text="Iniciar Sesión" onClick={setTransition} className='base-gradient'/>
                     </li>
                 </ul>
             </nav>

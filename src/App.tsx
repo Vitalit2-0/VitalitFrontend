@@ -13,7 +13,6 @@ function App() {
         <BrowserRouter>
             <Routes>
                 <Route path="/" element={<Landing/>}/>
-                <Route path="/login" element={<Login/>}/>
                 <Route path="/register" element={<Register/>}/>
                 <Route path="/recover" element={<RecoverPass/>}/>
                 <Route path="/" element={<ProtectedRoute/>}>

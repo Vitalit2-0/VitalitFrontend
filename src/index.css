@@ -17,7 +17,7 @@
 
 a {
   font-weight: 500;
-  color: #f1f1f1;
+  color: #1a1a1a !important;
   text-decoration: none;
 }
 
@@ -82,7 +82,6 @@ li a {
 }
 
 .btn.btn-main {
-  background: linear-gradient(to right, #fd789f, #c99bfa);
   color: #f1f1f1;
   transition: all 0.25s ease-in-out;
 }
@@ -93,13 +92,101 @@ li a {
   transform: scale(1.05);
 }
 
+.highlight-text {
+  color: #cb9af7 !important;
+  font-weight: bold;
+}
+
+.color-purple {
+  color: #a364db;
+}
+
 .base-gradient {
   background: linear-gradient(to right, #fd789f, #c99bfa);
 }
 
-.highlight-text {
-  color: #cb9af7 !important;
-  font-weight: bold;
+.base-cian {
+  background: #4ECDF2 !important;
+  color: #1a1a1a !important;
+}
+
+.base-purple {
+  background: #a364db !important;
+}
+
+.base-white {
+  background: #f1f1f1 !important;
+}
+
+.base-pink {
+  background: #fd789f !important;
+}
+
+.expandable-element {
+  position: fixed; /* Use fixed to cover the entire page */
+  top: 0;
+  right: 0;
+  width: 0%;
+  height: 0%; /* Example background color */
+  -webkit-clip-path: circle(0 at calc(100% - 170px) calc(0% + 60px));
+          clip-path: circle(0 at calc(100% - 170px) calc(0% + 60px)); /* Start from top right */
+}
+
+.expandable-element.animate {
+  width: 100vw; /* Full viewport width */
+  height: 100vh;
+  animation: fillPage 1.5s forwards;
+}
+
+@keyframes fillPage {
+  to {
+    -webkit-clip-path: circle(150% at top right);
+            clip-path: circle(150% at top right);
+  }
+}
+@keyframes circle-in-bottom-left {
+  from {
+    -webkit-clip-path: circle(5% at top right);
+            clip-path: circle(5% at top right);
+  }
+  to {
+    -webkit-clip-path: circle(150% at top right);
+            clip-path: circle(150% at top right);
+  }
+}
+[transition-style="in:circle:bottom-left"] {
+  animation: 2.5s cubic-bezier(0.25, 1, 0.3, 1) circle-in-bottom-left both;
+}
+
+@keyframes moveDownAndUp {
+  0% {
+    transform: translateY(0); /* Start at the top */
+  }
+  50% {
+    transform: translateY(40%); /* Move to the bottom */
+  }
+  100% {
+    transform: translateY(0); /* Return to the top */
+  }
+}
+@keyframes moveXandRotate {
+  0% {
+    transform: translateX(0) rotate(0deg); /* Start at the top */
+  }
+  50% {
+    transform: translateX(40%) rotate(180deg); /* Move to the bottom */
+  }
+  100% {
+    transform: translateX(0) rotate(0deg); /* Return to the top */
+  }
+}
+/* Apply the animation to your element */
+.animate-top-bottom {
+  animation: moveDownAndUp 10s infinite linear;
+}
+
+.animate-rotate-x {
+  animation: moveXandRotate 30s infinite linear;
 }
 
 .bg-text-card {
