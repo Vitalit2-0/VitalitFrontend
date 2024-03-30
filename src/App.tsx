@@ -8,12 +8,17 @@ import RecoverPass from './pages/RecoverPass'
 import Survey from './pages/Survey'
 import Landing from './pages/Landing'
 
+import { ChakraProvider } from '@chakra-ui/react'
+
+
 function App() {
     return (
         <BrowserRouter>
             <Routes>
                 <Route path="/" element={<Landing/>}/>
-                <Route path="/login" element={<Login/>}/>
+                <Route path="/login" element={<ChakraProvider>
+                                                <Login />
+                                            </ChakraProvider>}/>
                 <Route path="/register" element={<Register/>}/>
                 <Route path="/recover" element={<RecoverPass/>}/>
                 <Route path="/" element={<ProtectedRoute/>}>
@@ -22,6 +27,7 @@ function App() {
                 </Route>
             </Routes>
         </BrowserRouter>
+        
     )
 }
 
