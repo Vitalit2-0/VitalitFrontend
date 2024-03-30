@@ -1,10 +1,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+$standard-font-size: 1em;
+
 $base-pink: #fd789f;
-$base-deep-purpple: #cb9af7;
+$base-purple: #cb9af7;
+$base-cian: #4ECDF2;
+$base-deep-purple: #a364db;
 $base-mid-orchid: #c99bfa;
 $base-gradient: linear-gradient(to right, $base-pink, $base-mid-orchid);
 $base-white: #f1f1f1;
@@ -13,8 +18,12 @@ $base-green: #75b800;
 $base-red: #f83e3e;
 $base-yellow: #f6bf41;
 
+body{
+    font-family: "Poppins", sans-serif !important;
+}
+
 :root {
-    font-family: "Poppins", sans-serif;
+    font-family: "Poppins", sans-serif !important;
     line-height: 1.5;
     font-weight: 300;
 
@@ -30,12 +39,12 @@ $base-yellow: #f6bf41;
 
 a {
     font-weight: 500;
-    color: $base-white;
+    color: $base-black !important;
     text-decoration: none;
 }
 
 a:hover {
-    color: $base-white;
+    color: $base-purple;
     cursor: pointer;
 }
 
@@ -55,7 +64,7 @@ h1 {
 textarea{
     height: 100%;
     background-color: $base-white;
-    border: solid 1px $base-deep-purpple;
+    border: solid 1px $base-purple;
     padding: 10px;
     border-radius: 12px;
     height: 50%;
@@ -66,8 +75,8 @@ button {
     border: 1px solid transparent;
     padding: 0.6em 1.2em;
     font-size: 1em;
-    font-weight: 500;
-    font-family: inherit;
+    font-weight: bold;
+    font-family: 'Poppins', sans-serif !important;
     background-color: #1a1a1a;
     cursor: pointer;
     transition: border-color 0.25s;
@@ -80,6 +89,16 @@ button:hover {
     outline: 4px auto -webkit-focus-ring-color;
 }
 
+input{
+    border: solid 1px lightgray !important;
+    padding: 10px;
+    border-radius: 12px;
+}
+
+li a{
+    color: $base-black;
+}
+
 .chakra-checkbox__control{
     border: solid 1px black;
     padding: 2px;
@@ -89,7 +108,6 @@ button:hover {
 }
 
 .btn.btn-main {
-    background: $base-gradient;
     color: $base-white;
     transition: all 0.25s ease-in-out;
 }
@@ -100,13 +118,108 @@ button:hover {
     transform: scale(1.05);
 }
 
-.base-gradient {
-    background: $base-gradient;
+.highlight-text {
+    color: $base-purple !important;
+    font-weight: bold;
 }
 
-.highlight-text {
-    color: $base-deep-purpple !important;
-    font-weight: bold;
+//-----------------------------------Modificators-----------------------------------//
+
+.color-white {
+    color: $base-white !important;
+}
+
+.color-purple {
+    color: $base-deep-purple;
+}	
+
+.base-gradient {
+    background: $base-gradient !important;
+}
+
+.base-cian{
+    background: $base-cian !important;
+    color: $base-black !important;
+}
+
+.base-purple {
+    background: $base-deep-purple !important;
+}
+
+.base-white {
+    background: $base-white !important;
+}
+
+.base-pink {
+    background: $base-pink !important;
+}
+
+.expandable-element {
+    position: fixed; /* Use fixed to cover the entire page */
+    top: 0;
+    right: 0;
+    width: 0%;
+    height: 0%; /* Example background color */
+    clip-path: circle(0 at calc(100% - 170px) calc(0% + 60px));  /* Start from top right */
+    //transition: clip-path 0.5s, width 0.5s, height 0.5s; /* Smooth transition */
+}
+
+.expandable-element.animate {
+    width: 100vw; /* Full viewport width */
+    height: 100vh;
+    animation: fillPage 1.5s forwards;
+}
+
+@keyframes fillPage {
+    to {
+        clip-path: circle(150% at top right);
+    }
+}
+
+@keyframes circle-in-bottom-left {
+    from {
+        clip-path: circle(5% at top right);
+    }
+    to {
+        clip-path: circle(150% at top right);
+    }
+}
+
+[transition-style="in:circle:bottom-left"] {
+    animation: 2.5s cubic-bezier(.25, 1, .30, 1) circle-in-bottom-left both;
+}
+
+@keyframes moveDownAndUp {
+    0% {
+        transform: translateY(0); /* Start at the top */
+    }
+    50% {
+        transform: translateY(40%); /* Move to the bottom */
+    }
+    100% {
+        transform: translateY(0); /* Return to the top */
+    }
+}
+
+@keyframes moveXandRotate {
+    0% {
+        transform: translateX(0) rotate(0deg); /* Start at the top */
+    }
+    50% {
+        transform: translateX(40%) rotate(180deg); /* Move to the bottom */
+    }
+    100% {
+        transform: translateX(0) rotate(0deg); /* Return to the top */
+    }
+}
+
+/* Apply the animation to your element */
+.animate-top-bottom {
+    animation: moveDownAndUp 10s infinite linear; 
+}
+
+.animate-rotate-x {
+    animation: moveXandRotate 30s infinite linear; 
 }
 
 //----------------------------------Survey card----------------------------------//
