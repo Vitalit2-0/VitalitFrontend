@@ -2,8 +2,12 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+body {
+  font-family: "Poppins", sans-serif !important;
+}
+
 :root {
-  font-family: "Poppins", sans-serif;
+  font-family: "Poppins", sans-serif !important;
   line-height: 1.5;
   font-weight: 300;
   color-scheme: light dark;
@@ -69,6 +73,12 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
+input {
+  border: solid 1px lightgray !important;
+  padding: 10px;
+  border-radius: 12px;
+}
+
 li a {
   color: #1a1a1a;
 }
@@ -97,12 +107,16 @@ li a {
   font-weight: bold;
 }
 
+.color-white {
+  color: #f1f1f1 !important;
+}
+
 .color-purple {
   color: #a364db;
 }
 
 .base-gradient {
-  background: linear-gradient(to right, #fd789f, #c99bfa);
+  background: linear-gradient(to right, #fd789f, #c99bfa) !important;
 }
 
 .base-cian {

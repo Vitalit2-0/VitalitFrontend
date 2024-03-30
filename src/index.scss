@@ -4,6 +4,8 @@
 @tailwind components;
 @tailwind utilities;
 
+$standard-font-size: 1em;
+
 $base-pink: #fd789f;
 $base-purple: #cb9af7;
 $base-cian: #4ECDF2;
@@ -16,8 +18,12 @@ $base-green: #75b800;
 $base-red: #f83e3e;
 $base-yellow: #f6bf41;
 
+body{
+    font-family: "Poppins", sans-serif !important;
+}
+
 :root {
-    font-family: "Poppins", sans-serif;
+    font-family: "Poppins", sans-serif !important;
     line-height: 1.5;
     font-weight: 300;
 
@@ -83,6 +89,12 @@ button:hover {
     outline: 4px auto -webkit-focus-ring-color;
 }
 
+input{
+    border: solid 1px lightgray !important;
+    padding: 10px;
+    border-radius: 12px;
+}
+
 li a{
     color: $base-black;
 }
@@ -113,12 +125,16 @@ li a{
 
 //-----------------------------------Modificators-----------------------------------//
 
+.color-white {
+    color: $base-white !important;
+}
+
 .color-purple {
     color: $base-deep-purple;
 }	
 
 .base-gradient {
-    background: $base-gradient;
+    background: $base-gradient !important;
 }
 
 .base-cian{
