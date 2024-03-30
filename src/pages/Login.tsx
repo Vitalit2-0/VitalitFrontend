@@ -1,8 +1,5 @@
-//import { Button } from "@mui/material"
 import { AuthStateProvider } from '../services/AuthStateProvider'
-//import NavigationButton from "../components/helpers/NavigationButton";
 import useUserStore from "../stores/userStore";
-
 import { useState } from 'react';
 import {Flex,
         Heading,
@@ -47,7 +44,7 @@ function Login() {
         <Flex
             className="base-gradient"
             flexDirection="column"
-            width="100wh"
+            width="100vw"
             height="100vh"
             justifyContent="center"
             alignItems="center"
@@ -57,9 +54,10 @@ function Login() {
                 mb="2"
                 justifyContent="center"
                 alignItems="center"
+                maxW="480px"
             >
-                <Image width="468px" src="../assets/images/logoVitalitBlanco.png" alt="Logo Vitalit"/>
-                <Heading width="468px" textAlign="center" color="white" fontFamily="Poppins" fontSize="25px" fontWeight="normal" >Accede a Vitalit y cambia por completo tu vida!</Heading>
+                <Image src="../assets/images/logoVitalitBlanco.png" alt="Logo Vitalit"/>
+                <Heading className="bg-text-login" textAlign="center" fontFamily="Poppins" fontSize="25px" fontWeight="normal">Accede a Vitalit y cambia por completo tu vida!</Heading>
                 <Box minW={{ base: "90%", md: "468px"}}>
                     <form>
                         <Stack
@@ -69,17 +67,16 @@ function Login() {
                             boxShadow="md"
                         >
                             <FormControl>
-                                <InputGroup>
-                                    <Input backgroundColor="white" type="email" placeholder='Correo Electrónico' _placeholder={{color: "purple"}}/>
+                                <InputGroup className="bg-input-login" borderRadius={100}>
+                                    <Input type="email" placeholder='Correo Electrónico' _placeholder={{color: "purple"}}/>
                                 </InputGroup>
                             </FormControl>
                             <FormControl>
-                                <InputGroup>
+                                <InputGroup className="bg-input-login" borderRadius={10}>
                                     <Input
                                         type={showPassword ? "text" : "password"}
                                         placeholder="Contraseña"
                                         _placeholder={{color: "purple"}}
-                                        backgroundColor="white"
                                     />
                                     <InputRightElement width="4.5rem">
                                         <Button h="1.5rem" size="sm" onClick={handleShowClick}>
@@ -89,6 +86,7 @@ function Login() {
                                 </InputGroup>
                             </FormControl>
                             <Button
+                                borderRadius={10}
                                 color="purple"
                                 type="submit"
                                 variant="solid"

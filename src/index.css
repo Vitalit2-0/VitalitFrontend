@@ -182,4 +182,11 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
+}
+.bg-text-login {
+  color: #f1f1f1;
+}
+
+.bg-input-login {
+  background-color: #f1f1f1;
 }/*# sourceMappingURL=index.css.map */
