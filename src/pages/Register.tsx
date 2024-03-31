@@ -73,9 +73,15 @@ function Register() {
                                 </FormControl>
                                 <FormControl>
                                     <InputGroup className="bg-input-login" borderRadius={100}>
+                                        <Input placeholder="Nombre de usuario" _placeholder={{color: "purple"}}/>
+                                    </InputGroup>
+                                </FormControl>
+                                <FormControl>
+                                    <InputGroup className="bg-input-login" borderRadius={100}>
                                         <Input placeholder="Nombres" _placeholder={{color: "purple"}}/>
                                     </InputGroup>
                                 </FormControl>
+                                
                                 <FormControl>
                                     <InputGroup className="bg-input-login" borderRadius={10}>
                                         <Input
