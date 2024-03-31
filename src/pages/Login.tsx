@@ -3,7 +3,6 @@ import useUserStore from "../stores/userStore";
 import { useState } from 'react';
 import {Flex,
         ChakraProvider,
-        Heading,
         Input,
         Button,
         InputGroup,
@@ -33,6 +32,10 @@ function Login({ transition } : { transition: string }) {
         }
     }
 
+    function navigateToHome() {
+        window.location.href = '/';
+    }
+
     function navigateToRecover() {
         window.location.href = '/recover';
     }
@@ -58,7 +61,7 @@ function Login({ transition } : { transition: string }) {
                         alignItems="center"
                         maxW="480px"
                     >
-                        <Image src="../assets/images/logoVitalitBlanco.png" alt="Logo Vitalit"/>
+                        <Image src="../assets/images/logoVitalitBlanco.png" onClick={() => navigateToHome()} alt="Logo Vitalit"/>
                         <h3 className="bg-text-login text-center mb-5">Accede a Vitalit y cambia por completo tu vida!</h3>
                         <Box minW={{ base: "90%", md: "468px"}}>
                             <form>
