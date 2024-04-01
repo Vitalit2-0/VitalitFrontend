@@ -166,6 +166,10 @@ li a {
   background-size: cover;
 }
 
+.circular {
+  border-radius: 100%;
+}
+
 .features-circular {
   border-radius: 100%;
   width: 64px;

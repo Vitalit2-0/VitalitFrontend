@@ -3,6 +3,8 @@ import DefaultButton from "../components/helpers/DefaultButton"
 import React from "react";
 import Login from "./Login";
 import GradientButton from "../components/helpers/GradientButton";
+import Dot from "../components/stylers/Dot";
+import Ring from "../components/stylers/Ring";
 
 function Landing() {
     const [transition, setTransition] = React.useState("") // [1
@@ -27,7 +29,12 @@ function Landing() {
                 </section>
                 <section id="vitalit" className="h-screen relative bg-white">
                     <div className="flex relative z-20 h-full">
-                        <div className="w-full rounded-3xl m-20" style={{background: "#faf9ff"}}>
+                        <div className="w-full rounded-3xl m-20 relative" style={{background: "#faf9ff"}}>
+                            <Dot width="32px" color="rgba(53, 197, 250, 0.5)" bottom="10%" right="5%"/>
+                            <Dot width="72px" color="rgba(253, 120, 159, 0.8)" top="-7%" left="-3%"/>
+                            <Dot width="64px" color="rgba(255, 152, 51, 0.5)" bottom="11%" right="8%"/>
+                            <Ring width="256px" color="rgba(53, 197, 250, 0.5)" top="-30%" right="-4%"/>
+                            <Ring width="420px" color="rgba(53, 197, 250, 0.5)" bottom="-55%" left="-14%" strokewidth="10"/>
                             <div className="flex p-20">
                                 <div className="w-1/2 pr-20 color-black">
                                     <h2 className="text-2xl color-purple mt-5">¿Qué es Vitalit?</h2>
