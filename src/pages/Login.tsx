@@ -1,6 +1,6 @@
 import { AuthStateProvider } from '../services/AuthStateProvider'
 import useUserStore from "../stores/userStore";
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import {Flex,
         ChakraProvider,
         Input,
@@ -16,18 +16,22 @@ import {Flex,
 function Login({ transition } : { transition: string }) {
     const registerUser:any = useUserStore((state:any) => state.setUser);
 
-    function setUser(User : User) 
-    {
-        registerUser(User);
-    }
+    const loginRef = useRef<HTMLInputElement | null>(null);
+    const passwordRef = useRef<HTMLInputElement | null>(null);
 
     async function handleLogin() {
+
+        const loginDto: LoginDto = {
+            login: loginRef.current?.value || "",
+            password: passwordRef.current?.value || ""
+        };
+
         var auth = new AuthStateProvider();
-        var user: User = await auth.getUserAuthState();
+        var user: User = await auth.loginUser(loginDto);
     
         if(user)
         {
-            setUser(user);
+            registerUser(user);
             window.location.href = '/home';
         }
     }
@@ -73,7 +77,14 @@ function Login({ transition } : { transition: string }) {
                                 >
                                     <FormControl>
                                         <InputGroup className="bg-input-login" borderRadius={100}>
-                                            <Input type="email" placeholder='Correo Electrónico' _placeholder={{color: "purple"}}/>
+                                            <Input 
+                                                type="text" 
+                                                placeholder='Correo Electrónico, teléfono o usuario' 
+                                                _placeholder={{color: "purple"}}
+                                                ref={loginRef}
+                                                name="login"
+                                                required
+                                            />
                                         </InputGroup>
                                     </FormControl>
                                     <FormControl>
@@ -82,6 +93,9 @@ function Login({ transition } : { transition: string }) {
                                                 type={showPassword ? "text" : "password"}
                                                 placeholder="Contraseña"
                                                 _placeholder={{color: "purple"}}
+                                                ref={passwordRef}
+                                                name="password"
+                                                required
                                             />
                                             <InputRightElement width="4.5rem">
                                                 <Button className='mr-2' h="1.5rem" size="sm" onClick={handleShowClick}>

@@ -1,4 +1,3 @@
-import { Button } from "@mui/material"
 
 function DefaultButton({ text, className, id } : { text : string, className?: string, id: string}) {
     return (

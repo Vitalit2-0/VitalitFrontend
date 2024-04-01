@@ -1,15 +1,36 @@
+import axios from "axios";
+
 export class AuthStateProvider
 {
-    public async getUserAuthState(): Promise<User> 
-    {   
-        //TODO: Implement method to bring user from API
-        return {
-            id: '1',
-            name: 'Tomas Parra',
-            email: 'tparra@unal.edu.co',
-            token: 'testing_token_here',
-            username: 'Tomas1802',
-            HasAnsweredSurvey: false
-        };
+    public async registerUser(user : RegisterDto): Promise<User> 
+    {  
+        try {
+            const response = await fetch('http://localhost:8080/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*',
+                },
+                body: JSON.stringify(user)
+            });
+            const data = await response.json();
+            console.log(data);
+            return data;
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    public async loginUser(user : LoginDto): Promise<User> 
+    {  
+        try {
+            const response = await axios.get('http://localhost:8080/login', {
+                data: user
+            });
+            console.log(response.data);
+            return response.data;
+        } catch (error) {
+            throw error;
+        }
     }
 }
