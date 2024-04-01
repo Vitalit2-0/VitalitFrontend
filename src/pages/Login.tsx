@@ -14,12 +14,16 @@ import {Flex,
 } from "@chakra-ui/react";
 
 function Login({ transition } : { transition: string }) {
-    const registerUser:any = useUserStore((state:any) => state.setUser);
+
+    const [showError, setShowError] = useState("");
+
+    const loginUser:any = useUserStore((state:any) => state.setUser);
 
     const loginRef = useRef<HTMLInputElement | null>(null);
     const passwordRef = useRef<HTMLInputElement | null>(null);
 
-    async function handleLogin() {
+    async function handleLogin(event: React.FormEvent) {
+        event.preventDefault();
 
         const loginDto: LoginDto = {
             login: loginRef.current?.value || "",
@@ -27,13 +31,16 @@ function Login({ transition } : { transition: string }) {
         };
 
         var auth = new AuthStateProvider();
-        var user: User = await auth.loginUser(loginDto);
+        var response: ResponseDto = await auth.loginUser(loginDto);
     
-        if(user)
+        if(!response.data)
         {
-            registerUser(user);
-            window.location.href = '/home';
+            setShowError(response.string);
+            return;
         }
+        
+        loginUser(response.data);
+        window.location.href = '/home';
     }
 
     function navigateToHome() {
@@ -68,7 +75,7 @@ function Login({ transition } : { transition: string }) {
                         <Image src="../assets/images/logoVitalitBlanco.png" onClick={() => navigateToHome()} alt="Logo Vitalit"/>
                         <h3 className="bg-text-login text-center mb-5">Accede a Vitalit y cambia por completo tu vida!</h3>
                         <Box minW={{ base: "90%", md: "468px"}}>
-                            <form>
+                            <form onSubmit={handleLogin}>
                                 <Stack
                                     className="base-gradient rounded-2xl"
                                     spacing={4}
@@ -104,6 +111,7 @@ function Login({ transition } : { transition: string }) {
                                             </InputRightElement>
                                         </InputGroup>
                                     </FormControl>
+                                    {showError && <p className="text-white">{showError}</p>}
                                     <Button
                                         borderRadius={10}
                                         color="purple"
@@ -111,7 +119,6 @@ function Login({ transition } : { transition: string }) {
                                         variant="solid"
                                         colorScheme="gray"
                                         width="full"
-                                        onClick={() => handleLogin()}
                                     >
                                         Iniciar sesión
                                     </Button>

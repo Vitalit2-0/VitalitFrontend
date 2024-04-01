@@ -2,35 +2,37 @@ import axios from "axios";
 
 export class AuthStateProvider
 {
-    public async registerUser(user : RegisterDto): Promise<User> 
+    public async registerUser(user : RegisterDto): Promise<ResponseDto> 
     {  
         try {
-            const response = await fetch('http://localhost:8080/register', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Access-Control-Allow-Origin': '*',
-                },
-                body: JSON.stringify(user)
+            const response = await axios.post('http://localhost:8080/register', {
+                data: user
             });
-            const data = await response.json();
-            console.log(data);
-            return data;
-        } catch (error) {
-            throw error;
+            
+            return { code: "200", string: "", data: response.data } as ResponseDto;
+        } catch (error : any) {
+            return { 
+                code: error.response.data.code, 
+                string: error.response.data.string,
+                data: null 
+            } as ResponseDto;
         }
     }
 
-    public async loginUser(user : LoginDto): Promise<User> 
+    public async loginUser(user : LoginDto): Promise<ResponseDto> 
     {  
         try {
-            const response = await axios.get('http://localhost:8080/login', {
+            const response = await axios.post('http://localhost:8080/login', {
                 data: user
             });
-            console.log(response.data);
-            return response.data;
-        } catch (error) {
-            throw error;
+            
+            return { code: "200", string: "", data: response.data } as ResponseDto;
+        } catch (error : any) {
+            return { 
+                code: error.response.data.code, 
+                string: error.response.data.string,
+                data: null 
+            } as ResponseDto;
         }
     }
 }

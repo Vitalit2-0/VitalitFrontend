@@ -32,11 +32,6 @@ function Register() {
     const passwordRef = useRef<HTMLInputElement | null>(null);
     const confirmPasswordRef = useRef<HTMLInputElement | null>(null);
 
-    function setUser(User : User) 
-    {
-        registerUser(User);
-    }
-
     async function handleRegister(event: React.FormEvent) {
         event.preventDefault();
         
@@ -58,13 +53,16 @@ function Register() {
         };
 
         var auth = new AuthStateProvider();
-        var user: User = await auth.registerUser(registerDto);
-    
-        if(user)
+        var response: ResponseDto = await auth.registerUser(registerDto);
+        console.log(response);
+        if(!response.data)
         {
-            setUser(user);
-            //window.location.href = '/home';
+            setShowError(response.string);
+            return;
         }
+        
+        registerUser(response.data);
+        window.location.href = '/home';
     }
 
     function validateUser(): ErrorResponse {
@@ -189,7 +187,7 @@ function Register() {
                                         />
                                     </InputGroup>
                                 </FormControl>
-                                {showError && <p className="text-white">{validateUser().message}</p>}
+                                {showError && <p className="text-white">{showError}</p>}
                                 <Button
                                     borderRadius={10}
                                     color="purple"
