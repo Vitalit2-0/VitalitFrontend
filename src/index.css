@@ -2,6 +2,10 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+html {
+  scroll-behavior: smooth !important;
+}
+
 body {
   font-family: "Poppins", sans-serif !important;
 }
@@ -21,8 +25,9 @@ body {
 
 a {
   font-weight: 500;
-  color: #1a1a1a !important;
+  color: #1a1a1a;
   text-decoration: none;
+  transition: all 0.1s ease-in-out;
 }
 
 a:hover {
@@ -52,16 +57,20 @@ textarea {
   height: 50%;
 }
 
-button {
-  border-radius: 8px;
+button,
+a.btn {
+  border-radius: 20px !important;
+  height: 60px;
   border: 1px solid transparent;
   padding: 0.6em 1.2em;
   font-size: 1em;
-  font-weight: bold;
   font-family: "Poppins", sans-serif !important;
   background-color: #1a1a1a;
   cursor: pointer;
   transition: border-color 0.25s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 button:hover {
@@ -111,6 +120,14 @@ li a {
   color: #f1f1f1 !important;
 }
 
+.color-white a {
+  color: #f1f1f1 !important;
+}
+
+.color-black {
+  color: #1a1a1a !important;
+}
+
 .color-purple {
   color: #a364db;
 }
@@ -128,12 +145,38 @@ li a {
   background: #a364db !important;
 }
 
+.h-header-half {
+  height: 65px !important;
+}
+
+.bg-transparent-white {
+  background: rgb(255, 255, 255);
+}
+
 .base-white {
   background: #f1f1f1 !important;
 }
 
 .base-pink {
   background: #fd789f !important;
+}
+
+.bg-image-purple {
+  background-image: url("../assets/images/background.jpg");
+  background-size: cover;
+}
+
+.features-circular {
+  border-radius: 100%;
+  width: 64px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.purple-transparent {
+  background: #ffebf7;
 }
 
 .expandable-element {

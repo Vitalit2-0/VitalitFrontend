@@ -18,6 +18,9 @@ $base-green: #75b800;
 $base-red: #f83e3e;
 $base-yellow: #f6bf41;
 
+html{
+    scroll-behavior: smooth !important;
+}
 body{
     font-family: "Poppins", sans-serif !important;
 }
@@ -39,8 +42,9 @@ body{
 
 a {
     font-weight: 500;
-    color: $base-black !important;
+    color: $base-black;
     text-decoration: none;
+    transition: all 0.1s ease-in-out;
 }
 
 a:hover {
@@ -70,16 +74,20 @@ textarea{
     height: 50%;
 }
 
-button {
-    border-radius: 8px;
+button,
+a.btn {
+    border-radius: 20px !important;
+    height: 60px;
     border: 1px solid transparent;
     padding: 0.6em 1.2em;
     font-size: 1em;
-    font-weight: bold;
     font-family: 'Poppins', sans-serif !important;
     background-color: #1a1a1a;
     cursor: pointer;
     transition: border-color 0.25s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 button:hover {
     border-color: #ffffff;
@@ -129,6 +137,14 @@ li a{
     color: $base-white !important;
 }
 
+.color-white a{
+    color: $base-white !important;
+}
+
+.color-black{
+    color: $base-black !important;
+}
+
 .color-purple {
     color: $base-deep-purple;
 }	
@@ -146,12 +162,38 @@ li a{
     background: $base-deep-purple !important;
 }
 
+.h-header-half{
+    height: 65px !important;
+}
+
+.bg-transparent-white{
+    background: rgba(255, 255, 255, 1);
+}
+
 .base-white {
     background: $base-white !important;
 }
 
 .base-pink {
     background: $base-pink !important;
+}
+
+.bg-image-purple{
+    background-image: url("../assets/images/background.jpg");
+    background-size: cover;
+}
+
+.features-circular{
+    border-radius: 100%;
+    width: 64px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+} 
+
+.purple-transparent{
+    background: #ffebf7;
 }
 
 .expandable-element {

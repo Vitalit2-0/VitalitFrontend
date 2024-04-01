@@ -1,8 +1,8 @@
 import { Button } from "@mui/material"
 
-function DefaultButton({ text, className } : { text : string, className?: string}) {
+function DefaultButton({ text, className, id } : { text : string, className?: string, id: string}) {
     return (
-        <Button variant="contained" className={`btn btn-main ${className}`} style={{height: "45px"}}>{text}</Button>
+        <a className={`btn btn-main ${className}`} href={id}>{text}</a>
     )
 }
 
