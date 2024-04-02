@@ -30,14 +30,7 @@ export class SurveyDataProvider
             {
                 id: "3",
                 question: "En una escala del 1 al 5, ¿cuán importante es para ti el establecer hábitos saludables de vida?",
-                questionType: "likert-scale",
-                options: [
-                    "1: Nada importante",
-                    "2: Poco importante",
-                    "3: Moderadamente importante",
-                    "4: Importante",
-                    "5: Muy importante"
-                ],
+                questionType: "open-text",
                 answered: false,
                 visible: false,
                 valid: false
@@ -69,7 +62,7 @@ export class SurveyDataProvider
             {
                 id: "6",
                 question: "¿Tienes alguna condición específica de salud que quieras gestionar a través de Vitalit?",
-                questionType: "multiple-choice",
+                questionType: "multiple",
                 options: [
                     "No tengo condiciones específicas",
                     "Salud cardiovascular",
@@ -85,14 +78,7 @@ export class SurveyDataProvider
             {
                 id: "7",
                 question: "¿Cuánto tiempo estás dispuesto(a) a dedicar semanalmente a actividades relacionadas con tus metas de bienestar personal?",
-                questionType: "multiple-choice",
-                options: [
-                    "Menos de 1 hora",
-                    "1 a 3 horas",
-                    "3 a 5 horas",
-                    "Más de 5 horas",
-                    "Prefiero especificar (campo de texto abierto)"
-                ],
+                questionType: "open-text",
                 answered: false,
                 visible: false,
                 valid: false
