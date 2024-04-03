@@ -157,7 +157,17 @@ function Register() {
                                             required/>
                                     </InputGroup>
                                 </FormControl>
-                                
+                                <FormControl>
+                                    <InputGroup className="bg-input-login" borderRadius={100}>
+                                        <Input 
+                                            type="last-name"
+                                            placeholder="Apellidos" 
+                                            _placeholder={{color: "purple"}} 
+                                            ref={nameRef}
+                                            name="last-name"
+                                            required/>
+                                    </InputGroup>
+                                </FormControl>
                                 <FormControl>
                                     <InputGroup className="bg-input-login" borderRadius={10}>
                                         <Input
