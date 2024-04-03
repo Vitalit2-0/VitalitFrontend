@@ -30,7 +30,7 @@ export class SurveyDataProvider
             {
                 id: "3",
                 question: "En una escala del 1 al 5, ¿cuán importante es para ti el establecer hábitos saludables de vida?",
-                questionType: "likert-scale",
+                questionType: "single-choice",
                 options: [
                     "Nada importante",
                     "Poco importante",
@@ -85,13 +85,13 @@ export class SurveyDataProvider
             {
                 id: "7",
                 question: "¿Cuánto tiempo estás dispuesto(a) a dedicar semanalmente a actividades relacionadas con tus metas de bienestar personal?",
-                questionType: "multiple-choice",
+                questionType: "single-choice",
                 options: [
+                    "Prefiero especificar (campo de texto abierto)",
                     "Menos de 1 hora",
                     "1 a 3 horas",
                     "3 a 5 horas",
                     "Más de 5 horas",
-                    "Prefiero especificar (campo de texto abierto)"
                 ],
                 answered: false,
                 visible: false,

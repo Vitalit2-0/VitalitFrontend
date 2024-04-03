@@ -204,6 +204,13 @@ li a {
           clip-path: circle(0 at calc(100% - 170px) calc(0% + 60px)); /* Start from top right */
 }
 
+.expandable-element.expand-animate {
+  width: 100vw !important; /* Full viewport width */
+  height: 100vh !important;
+  -webkit-clip-path: none !important;
+          clip-path: none !important;
+}
+
 .expandable-element.animate {
   width: 100vw; /* Full viewport width */
   height: 100vh;
@@ -224,6 +231,10 @@ li a {
 
 .fade-slide-left-out {
   animation: fadeSlideToLeft 250ms ease-out forwards;
+}
+
+.MuiTypography-root span {
+  font-family: "Poppins", sans-serif !important;
 }
 
 @keyframes fadeSlideFromRight {
