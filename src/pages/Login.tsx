@@ -1,6 +1,6 @@
 import { AuthStateProvider } from '../services/AuthStateProvider'
 import useUserStore from "../stores/userStore";
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import {Flex,
         ChakraProvider,
         Input,
@@ -14,22 +14,33 @@ import {Flex,
 } from "@chakra-ui/react";
 
 function Login({ transition } : { transition: string }) {
-    const registerUser:any = useUserStore((state:any) => state.setUser);
 
-    function setUser(User : User) 
-    {
-        registerUser(User);
-    }
+    const [showError, setShowError] = useState("");
 
-    async function handleLogin() {
+    const loginUser:any = useUserStore((state:any) => state.setUser);
+
+    const loginRef = useRef<HTMLInputElement | null>(null);
+    const passwordRef = useRef<HTMLInputElement | null>(null);
+
+    async function handleLogin(event: React.FormEvent) {
+        event.preventDefault();
+
+        const loginDto: LoginDto = {
+            login: loginRef.current?.value || "",
+            password: passwordRef.current?.value || ""
+        };
+
         var auth = new AuthStateProvider();
-        var user: User = await auth.getUserAuthState();
+        var response: ResponseDto = await auth.loginUser(loginDto);
     
-        if(user)
+        if(!response.data)
         {
-            setUser(user);
-            window.location.href = '/home';
+            setShowError(response.string);
+            return;
         }
+        
+        loginUser(response.data);
+        window.location.href = '/home';
     }
 
     function navigateToHome() {
@@ -64,7 +75,7 @@ function Login({ transition } : { transition: string }) {
                         <Image src="../assets/images/logoVitalitBlanco.png" onClick={() => navigateToHome()} alt="Logo Vitalit"/>
                         <h3 className="bg-text-login text-center mb-5">Accede a Vitalit y cambia por completo tu vida!</h3>
                         <Box minW={{ base: "90%", md: "468px"}}>
-                            <form>
+                            <form onSubmit={handleLogin}>
                                 <Stack
                                     className="base-gradient rounded-2xl"
                                     spacing={4}
@@ -73,7 +84,14 @@ function Login({ transition } : { transition: string }) {
                                 >
                                     <FormControl>
                                         <InputGroup className="bg-input-login" borderRadius={100}>
-                                            <Input type="email" placeholder='Correo Electrónico' _placeholder={{color: "purple"}}/>
+                                            <Input 
+                                                type="text" 
+                                                placeholder='Correo Electrónico, teléfono o usuario' 
+                                                _placeholder={{color: "purple"}}
+                                                ref={loginRef}
+                                                name="login"
+                                                required
+                                            />
                                         </InputGroup>
                                     </FormControl>
                                     <FormControl>
@@ -82,6 +100,9 @@ function Login({ transition } : { transition: string }) {
                                                 type={showPassword ? "text" : "password"}
                                                 placeholder="Contraseña"
                                                 _placeholder={{color: "purple"}}
+                                                ref={passwordRef}
+                                                name="password"
+                                                required
                                             />
                                             <InputRightElement width="4.5rem">
                                                 <Button className='mr-2' h="1.5rem" size="sm" onClick={handleShowClick}>
@@ -90,6 +111,7 @@ function Login({ transition } : { transition: string }) {
                                             </InputRightElement>
                                         </InputGroup>
                                     </FormControl>
+                                    {showError && <p className="text-white">{showError}</p>}
                                     <Button
                                         borderRadius={10}
                                         color="purple"
@@ -97,7 +119,6 @@ function Login({ transition } : { transition: string }) {
                                         variant="solid"
                                         colorScheme="gray"
                                         width="full"
-                                        onClick={() => handleLogin()}
                                     >
                                         Iniciar sesión
                                     </Button>

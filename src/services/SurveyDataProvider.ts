@@ -32,11 +32,11 @@ export class SurveyDataProvider
                 question: "En una escala del 1 al 5, ¿cuán importante es para ti el establecer hábitos saludables de vida?",
                 questionType: "likert-scale",
                 options: [
-                    "1: Nada importante",
-                    "2: Poco importante",
-                    "3: Moderadamente importante",
-                    "4: Importante",
-                    "5: Muy importante"
+                    "Nada importante",
+                    "Poco importante",
+                    "Moderadamente importante",
+                    "Importante",
+                    "Muy importante"
                 ],
                 answered: false,
                 visible: false,

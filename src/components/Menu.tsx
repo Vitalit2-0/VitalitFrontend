@@ -1,24 +1,24 @@
 import GradientButton from './helpers/GradientButton'
 
-function Menu({setTransition} : {setTransition: any}) {
+function Menu({setTransition, color} : {setTransition: any, color?: string}) {
     return (
         <div>
             <nav className='h-full'>
                 <ul className='flex flex-wrap content-center h-full'>
                     <li className='mr-10 flex flex-wrap content-center'>
-                        <a href="#">Inicio</a>
+                        <a href="#" className={color}>Inicio</a>
                     </li>
                     <li className='mr-10 flex flex-wrap content-center'>
-                        <a href="#">Vitalit</a>
+                        <a href="#vitalit" className={color}>Vitalit</a>
                     </li>
                     <li className='mr-10 flex flex-wrap content-center'>
-                        <a href="#">Misión y vision</a>
+                        <a href="#mission-vision" className={color}>Misión y vision</a>
                     </li>
                     <li className='mr-10 flex flex-wrap content-center'>
-                        <a href="#">Únete</a>
+                        <a href="#unete" className={color}>Únete</a>
                     </li>
                     <li className='mr-10 flex flex-wrap content-center'>
-                        <a href="#">Nosotros</a>
+                        <a href="#" className={color}>Nosotros</a>
                         <ul className="sub-menu" style={{display: "none"}}>
                             <li><a href="#">¿Quienes somos?</a></li>
                             <li><a href="#">Contáctenos</a></li>

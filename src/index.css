@@ -162,8 +162,23 @@ li a {
 }
 
 .bg-image-purple {
+  position: relative;
   background-image: url("../assets/images/background.jpg");
   background-size: cover;
+}
+
+.bg-image-purple::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.4);
+}
+
+.circular {
+  border-radius: 100%;
 }
 
 .features-circular {
@@ -195,6 +210,62 @@ li a {
   animation: fillPage 1.5s forwards;
 }
 
+.fade-slide-right {
+  animation: fadeSlideFromRight 250ms ease-out forwards;
+}
+
+.fade-slide-right-out {
+  animation: fadeSlideToRight 250ms ease-out forwards;
+}
+
+.fade-slide-left {
+  animation: fadeSlideFromLeft 250ms ease-out forwards;
+}
+
+.fade-slide-left-out {
+  animation: fadeSlideToLeft 250ms ease-out forwards;
+}
+
+@keyframes fadeSlideFromRight {
+  from {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+@keyframes fadeSlideToRight {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+}
+@keyframes fadeSlideFromLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+@keyframes fadeSlideToLeft {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(-100%);
+  }
+}
 @keyframes fillPage {
   to {
     -webkit-clip-path: circle(150% at top right);

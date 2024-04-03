@@ -1,7 +1,8 @@
-import { Checkbox, Textarea } from "@chakra-ui/react"
+import { ChakraProvider, Checkbox, Textarea } from "@chakra-ui/react"
 import NextButtonHelper from "./helpers/NextButtonHelper"
 import React from "react";
 import { SurveyDataProvider } from "../services/SurveyDataProvider"
+import { Radio, RadioGroup, FormControl, FormControlLabel } from "@mui/material";
 
 function Question({ flag, setPercentage }: any) {
 
@@ -45,6 +46,12 @@ function Question({ flag, setPercentage }: any) {
         setPercentage((updatedQuestions.filter((question: any) => question.valid).length/updatedQuestions.length)*100.0);
     }
 
+    const [value, setValue] = React.useState('female');
+
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setValue((event.target as HTMLInputElement).value);
+    };
+
     return (
         <div className="h-full">
             {currentQuestion &&
@@ -55,7 +62,22 @@ function Question({ flag, setPercentage }: any) {
                 {
                     currentQuestion.options?.map((option: any, index: any) => {
                         return (
-                            <Checkbox key={index}>{option}</Checkbox>
+                            <div key={index}>
+                                {currentQuestion.id === "3" || currentQuestion.id === "7" ? (
+                                    <FormControl>
+                                        <RadioGroup
+                                            aria-labelledby="demo-controlled-radio-buttons-group"
+                                            name="controlled-radio-buttons-group"
+                                            value={value}
+                                            onChange={handleChange}
+                                        >
+                                            <FormControlLabel value={index} control={<Radio />} label={option} />
+                                        </RadioGroup>
+                                    </FormControl>
+                                ) : (
+                                    <Checkbox key={index}>{option}</Checkbox>
+                                )}
+                            </div>
                         )
                     })
                 }
