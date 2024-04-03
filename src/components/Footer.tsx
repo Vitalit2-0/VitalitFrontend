@@ -24,7 +24,7 @@ function Footer({ setTransition } : { setTransition: any }) {
                 </div>
                 <div className="flex flex-wrap content-center gap-1">
                     <MdOutlineMail className="text-4xl color-white"/>
-                    <a href="mailto:vvitalit.co@gmail.com" className="color-white mt-5">vvitalit.co@gmail.com</a>
+                    <a href="mailto:vvitalit.co@gmail.com" className="color-white mt-2">vvitalit.co@gmail.com</a>
                 </div>
             </div>
         </div>
