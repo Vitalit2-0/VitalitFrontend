@@ -30,6 +30,7 @@ function Register() {
     const emailRef = useRef<HTMLInputElement | null>(null);
     const usernameRef = useRef<HTMLInputElement | null>(null);
     const nameRef = useRef<HTMLInputElement | null>(null);
+    const lastNameRef = useRef<HTMLInputElement | null>(null);
     const passwordRef = useRef<HTMLInputElement | null>(null);
     const confirmPasswordRef = useRef<HTMLInputElement | null>(null);
 
@@ -48,6 +49,7 @@ function Register() {
 
         const registerDto: RegisterDto = {
             name: nameRef.current?.value || "",
+            lastname: lastNameRef.current?.value || "",
             email: emailRef.current?.value || "",
             username: usernameRef.current?.value || "",
             password: passwordRef.current?.value || ""
@@ -55,7 +57,7 @@ function Register() {
 
         var auth = new AuthStateProvider();
         var response: ResponseDto = await auth.registerUser(registerDto);
-        console.log(response);
+        
         if(!response.data)
         {
             setShowError(response.string);
@@ -63,7 +65,7 @@ function Register() {
         }
         
         registerUser(response.data);
-        NavigationManager.navigateTo('/login', "", {message: "Usuario registrado"});
+        NavigationManager.navigateTo('/login', "", {message: "Usuario registrado con éxito, por favor inicia sesión con  tus credenciales"});
     }
 
     function validateUser(): ErrorResponse {
@@ -72,6 +74,7 @@ function Register() {
             { ref: emailRef, errorMessage: "Correo inválido" },
             { ref: usernameRef, errorMessage: "El nombre de usuario debe tener más de 3 caracteres" },
             { ref: nameRef, errorMessage: "El nombre debe tener más de 3 caracteres" },
+            { ref: lastNameRef, errorMessage: "El apellido debe tener más de 3 caracteres"},
             { ref: passwordRef, errorMessage: "La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula, un número y un caracter especial" },
         ];
 
@@ -160,7 +163,7 @@ function Register() {
                                             type="last-name"
                                             placeholder="Apellidos" 
                                             _placeholder={{color: "purple"}} 
-                                            ref={nameRef}
+                                            ref={lastNameRef}
                                             name="last-name"
                                             required/>
                                     </InputGroup>

@@ -31,7 +31,11 @@ function Login({ transition } : { transition: string }) {
 
     React.useEffect(() => {
         let message = queryParameters.get("message");
-        if(message) history("/login");
+        if(message) 
+        {
+            setShowError(message);
+            history("/login");
+        }
     }, []);
 
     async function handleLogin(event: React.FormEvent) {
