@@ -22,13 +22,13 @@ function Landing() {
                     <div className="w-1/2 h-screen relative flex justify-center content-center flex-col mt-18">
                         <img className="w-32 absolute bottom-20 right-10 animate-rotate-x" src="../assets/images/shape-1.png" alt="" />
                         <h1 className="text-6xl mb-10">Bienvenido a Vitalit </h1>
-                        <p className="text-xl leading-10 mb-10">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Temporibus debitis amet reprehenderit aliquid impedit adipisci tempora modi quis obcaecati voluptatibus?</p>
+                        <p className="text-xl leading-10 mb-10">Transforma tu bienestar. Únete a Vitalit y empieza tu camino hacia una vida saludable. Descubre el universo de salud física y mental a tu medida.</p>
                         <DefaultButton id="#vitalit" text="Comenzar" className="base-pink w-1/2"/>
                     </div>
                     <div className="w-1/2 relative flex flex-wrap justify-center content-center mt-28">
                         <img src="../assets/images/famale-trainer.png" alt="" className="w-1/2 h-auto" />
-                        <div className="absolute top-20 left-10 p-5 rounded-md font-bold animate-top-bottom" style={{background: "rgba(255, 255, 255, 0.6)", boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px"}}>Frase motivadora 1</div>
-                        <div className="absolute bottom-40 right-10 p-5 rounded-md font-bold animate-top-bottom " style={{background: "rgba(255, 255, 255, 0.6)", boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px"}}>Frase motivadora 2</div>
+                        <div className="absolute w-56 top-20 left-8 text-center p-5 rounded-md font-bold animate-top-bottom" style={{background: "rgba(255, 255, 255, 0.6)", boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px"}}>¡Tu meta está más cerca de lo que crees!</div>
+                        <div className="absolute w-56 bottom-40 right-5 p-5 text-center rounded-md font-bold animate-top-bottom " style={{background: "rgba(255, 255, 255, 0.6)", boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px"}}>¡Tú pones límites!</div>
                     </div>
                 </section>
                 <section id="vitalit" className="h-screen relative bg-white">
@@ -98,6 +98,7 @@ function Landing() {
                         </div>
                     </div>
                 </section>
+                <Footer setTransition={() => setTransition("animate")}/>
             </div>
         </div>
     )
