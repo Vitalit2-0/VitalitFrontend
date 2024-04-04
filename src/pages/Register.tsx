@@ -1,4 +1,3 @@
-import useUserStore from "../stores/userStore";
 import { AuthStateProvider } from '../services/AuthStateProvider'
 import { useRef, useState } from 'react';
 import NavigationManager from "../services/NavigationManager";
@@ -22,7 +21,6 @@ type ErrorResponse = {
 
 function Register() {
     const handleShowClick = () => setShowPassword(!showPassword)
-    const registerUser:any = useUserStore((state:any) => state.setUser);
 
     const [showPassword, setShowPassword] = useState(false);
     const [showError, setShowError] = useState("");
@@ -64,7 +62,6 @@ function Register() {
             return;
         }
         
-        registerUser(response.data);
         NavigationManager.navigateTo('/login', "", {message: "Usuario registrado con éxito, por favor inicia sesión con  tus credenciales"});
     }
 

@@ -1,5 +1,4 @@
 import { AuthStateProvider } from '../services/AuthStateProvider'
-import useUserStore from "../stores/userStore";
 import { useRef, useState } from 'react';
 import {Flex,
         ChakraProvider,
@@ -15,13 +14,14 @@ import {Flex,
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import React from 'react';
 import NavigationManager from '../services/NavigationManager';
+import useAuthStore from '../stores/AuthStore';
 
 function Login({ transition } : { transition: string }) {
 
     const [showError, setShowError] = useState("");
     const [showPassword, setShowPassword] = useState(false);
     
-    const loginUser:any = useUserStore((state:any) => state.setUser);
+    const user: any = useAuthStore(state => state)
     const loginRef = useRef<HTMLInputElement | null>(null);
     const passwordRef = useRef<HTMLInputElement | null>(null);
     const handleShowClick = () => setShowPassword(!showPassword)
@@ -31,6 +31,12 @@ function Login({ transition } : { transition: string }) {
 
     React.useEffect(() => {
         let message = queryParameters.get("message");
+        
+        if(user.user)
+        {
+            NavigationManager.navigateTo("/home");
+        }
+
         if(message) 
         {
             setShowError(message);
@@ -55,7 +61,8 @@ function Login({ transition } : { transition: string }) {
             return;
         }
         
-        loginUser(response.data);
+        user.login(response.data);
+        
         NavigationManager.navigateTo("/home");
     }
 

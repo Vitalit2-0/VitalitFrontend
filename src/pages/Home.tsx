@@ -1,24 +1,30 @@
 import React from "react";
 import { Button } from "@mui/material"
-import useUserStore from "../stores/userStore";
+import useAuthStore from "../stores/AuthStore";
+import NavigationManager from "../services/NavigationManager";
 
 function Home() {
 
-    const hasAnsweredSurvey = useUserStore((state: any) => state.user.HasAnsweredSurvey);
+    const auth = useAuthStore((state: any) => state);
 
     React.useEffect(() => {
-        if(!hasAnsweredSurvey){
-            window.location.href = '/survey';
+        if(!auth.user.hasAnsweredSurvey){
+            setTimeout(() => {
+
+                NavigationManager.navigateTo("/survey");
+            }, 3000);
         }
     }, [])
 
     function handleLogout() {
-        window.location.href = '/';
+        auth.logout();
+        NavigationManager.navigateTo("/login");
     }
 
     return (
-        <div className="flex flex-col gap-2 justify-center items-center">
+        <div className="flex flex-col h-screen gap-2 justify-center items-center">
             <p>Home</p>
+            <p>Redirigiendo a la encuesta inicial...</p>
             <Button variant="contained" className="btn btn-main" onClick={() => handleLogout()}>Cerrar sesión</Button>
         </div>
     )
