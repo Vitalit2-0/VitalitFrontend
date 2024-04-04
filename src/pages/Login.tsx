@@ -12,15 +12,31 @@ import {Flex,
         FormControl,
         InputRightElement
 } from "@chakra-ui/react";
+import { useSearchParams, useNavigate } from 'react-router-dom';
+import React from 'react';
+import NavigationManager from '../services/NavigationManager';
 
 function Login({ transition } : { transition: string }) {
 
     const [showError, setShowError] = useState("");
-
+    const [showPassword, setShowPassword] = useState(false);
+    
     const loginUser:any = useUserStore((state:any) => state.setUser);
-
     const loginRef = useRef<HTMLInputElement | null>(null);
     const passwordRef = useRef<HTMLInputElement | null>(null);
+    const handleShowClick = () => setShowPassword(!showPassword)
+
+    const [queryParameters] = useSearchParams()
+    let history = useNavigate();
+
+    React.useEffect(() => {
+        let message = queryParameters.get("message");
+        if(message) 
+        {
+            setShowError(message);
+            history("/login");
+        }
+    }, []);
 
     async function handleLogin(event: React.FormEvent) {
         event.preventDefault();
@@ -40,23 +56,13 @@ function Login({ transition } : { transition: string }) {
         }
         
         loginUser(response.data);
-        window.location.href = '/home';
+        NavigationManager.navigateTo("/home");
     }
 
-    function navigateToHome() {
-        window.location.href = '/';
-    }
-
-    function navigateToRecover() {
-        window.location.href = '/recover';
-    }
-
-    const [showPassword, setShowPassword] = useState(false);
-    const handleShowClick = () => setShowPassword(!showPassword)
 
     return (
         <ChakraProvider>
-            <div className={`expandable-element ${transition} absolute top-0 right-0 flex h-screen flex-col justify-center items-center gap-2 base-gradient z-50`} transition-style="in:circle:bottom-left">
+            <div className={`expandable-element ${transition} absolute top-0 right-0 flex h-screen flex-col justify-center items-center gap-2 base-gradient z-50`} transition-style={(transition == "animate") ? "in:circle:bottom-left": ""}>
                 <Flex
                     className="base-gradient"
                     flexDirection="column"
@@ -72,7 +78,7 @@ function Login({ transition } : { transition: string }) {
                         alignItems="center"
                         maxW="480px"
                     >
-                        <Image src="../assets/images/logoVitalitBlanco.png" onClick={() => navigateToHome()} alt="Logo Vitalit"/>
+                        <Image className="w-2/3" src="../assets/images/logoVitalitBlanco.png" onClick={() => NavigationManager.navigateTo("/")} alt="Logo Vitalit"/>
                         <h3 className="bg-text-login text-center mb-5">Accede a Vitalit y cambia por completo tu vida!</h3>
                         <Box minW={{ base: "90%", md: "468px"}}>
                             <form onSubmit={handleLogin}>
@@ -122,7 +128,7 @@ function Login({ transition } : { transition: string }) {
                                     >
                                         Iniciar sesión
                                     </Button>
-                                    <a className='color-white text-center' onClick={() => navigateToRecover()}>¿Olvidaste tu contraseña?</a>
+                                    <a className='color-white text-center' onClick={() => NavigationManager.navigateTo("/recover")}>¿Olvidaste tu contraseña?</a>
                                 </Stack>
                             </form>
                         </Box>

@@ -14,7 +14,7 @@ function Survey() {
     }
 
     return (
-        <div className="base-gradient w-screen h-screen inline-flex items-center justify-center p-10" style={{padding: "10% 10%"}}>
+        <div className="base-gradient w-screen h-screen flex flex-wrap items-center justify-center">
             <div className={`relative container-card ${(flip) ? "container-flipped" : ""}`} style={{width: "80%", maxWidth:"540px"}}>
                 <div className="card-inner h-full shadow-card">
                     <div className="card-front h-full inline-flex">
@@ -33,7 +33,7 @@ function Survey() {
                     </div>
                     <div className="card-back h-full absolute top-0 left-0 right-0 z-20">
                         <ProgressBar percentage={percentage}/>
-                        <div className="p-10 h-full">
+                        <div className="pr-10 pl-10 pt-6 h-full">
                             <Question flag={flip} setPercentage={setPercentage}/>
                         </div>
                     </div>

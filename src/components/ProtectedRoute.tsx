@@ -2,8 +2,8 @@ import {Navigate, Outlet} from 'react-router-dom'
 import useUserStore from '../stores/userStore'
 
 const isLoggedIn = () => {
-    const user = useUserStore(state => state)
-    return user !== null;
+    const user: User = useUserStore((state:any) => state.user)
+    return user.token;
 }
 
 const ProtectedRoute = () => {

@@ -1,8 +1,8 @@
-import { ChakraProvider, Checkbox, Textarea } from "@chakra-ui/react"
+import { ChakraProvider, Textarea } from "@chakra-ui/react"
 import NextButtonHelper from "./helpers/NextButtonHelper"
 import React from "react";
 import { SurveyDataProvider } from "../services/SurveyDataProvider"
-import { Radio, RadioGroup, FormControl, FormControlLabel } from "@mui/material";
+import { Radio, RadioGroup, FormControl, FormControlLabel, Checkbox } from "@mui/material";
 
 function Question({ flag, setPercentage }: any) {
 
@@ -42,7 +42,7 @@ function Question({ flag, setPercentage }: any) {
 
         setQuestions(updatedQuestions);
         setCurrentQuestion(nextQuestion);
-        console.log((updatedQuestions));
+        
         setPercentage((updatedQuestions.filter((question: any) => question.valid).length/updatedQuestions.length)*100.0);
     }
 
@@ -58,12 +58,12 @@ function Question({ flag, setPercentage }: any) {
             <div className="flex flex-col gap-4 h-full">
                 <p>{currentQuestion.question}</p>
                 {currentQuestion.questionType === "open-text" && <Textarea placeholder='Here is a sample placeholder'/>}
-                <div className="flex flex-col gap-2">
+                <div className="flex flex-col">
                 {
                     currentQuestion.options?.map((option: any, index: any) => {
                         return (
                             <div key={index}>
-                                {currentQuestion.id === "3" || currentQuestion.id === "7" ? (
+                                {currentQuestion.questionType === "single-choice" ? (
                                     <FormControl>
                                         <RadioGroup
                                             aria-labelledby="demo-controlled-radio-buttons-group"
@@ -75,7 +75,7 @@ function Question({ flag, setPercentage }: any) {
                                         </RadioGroup>
                                     </FormControl>
                                 ) : (
-                                    <Checkbox key={index}>{option}</Checkbox>
+                                    <FormControlLabel control={<Checkbox />} label={option} />
                                 )}
                             </div>
                         )

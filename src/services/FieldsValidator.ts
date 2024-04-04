@@ -10,6 +10,8 @@ export class FieldsValidator
                 return FieldsValidator.validateUsername(value);
             case 'name':
                 return FieldsValidator.validateName(value);
+            case 'last-name':
+                return FieldsValidator.validateName(value);
             default:
                 return true;
         }

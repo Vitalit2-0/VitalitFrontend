@@ -1,6 +1,7 @@
 import useUserStore from "../stores/userStore";
 import { AuthStateProvider } from '../services/AuthStateProvider'
 import { useRef, useState } from 'react';
+import NavigationManager from "../services/NavigationManager";
 import {Flex,
         ChakraProvider,
         Input,
@@ -29,6 +30,7 @@ function Register() {
     const emailRef = useRef<HTMLInputElement | null>(null);
     const usernameRef = useRef<HTMLInputElement | null>(null);
     const nameRef = useRef<HTMLInputElement | null>(null);
+    const lastNameRef = useRef<HTMLInputElement | null>(null);
     const passwordRef = useRef<HTMLInputElement | null>(null);
     const confirmPasswordRef = useRef<HTMLInputElement | null>(null);
 
@@ -47,6 +49,7 @@ function Register() {
 
         const registerDto: RegisterDto = {
             name: nameRef.current?.value || "",
+            lastname: lastNameRef.current?.value || "",
             email: emailRef.current?.value || "",
             username: usernameRef.current?.value || "",
             password: passwordRef.current?.value || ""
@@ -54,7 +57,7 @@ function Register() {
 
         var auth = new AuthStateProvider();
         var response: ResponseDto = await auth.registerUser(registerDto);
-        console.log(response);
+        
         if(!response.data)
         {
             setShowError(response.string);
@@ -62,7 +65,7 @@ function Register() {
         }
         
         registerUser(response.data);
-        window.location.href = '/home';
+        NavigationManager.navigateTo('/login', "", {message: "Usuario registrado con éxito, por favor inicia sesión con  tus credenciales"});
     }
 
     function validateUser(): ErrorResponse {
@@ -71,6 +74,7 @@ function Register() {
             { ref: emailRef, errorMessage: "Correo inválido" },
             { ref: usernameRef, errorMessage: "El nombre de usuario debe tener más de 3 caracteres" },
             { ref: nameRef, errorMessage: "El nombre debe tener más de 3 caracteres" },
+            { ref: lastNameRef, errorMessage: "El apellido debe tener más de 3 caracteres"},
             { ref: passwordRef, errorMessage: "La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula, un número y un caracter especial" },
         ];
 
@@ -91,10 +95,6 @@ function Register() {
         return { message: "", valid: true };
     }
 
-    function navigateToHome() {
-        window.location.href = '/';
-    }
-
     return (
         <ChakraProvider>
             <Flex
@@ -112,7 +112,7 @@ function Register() {
                     alignItems="center"
                     maxW="480px"
                 >
-                    <Image className="w-2/3" src="../assets/images/logoVitalitBlanco.png" onClick={() => navigateToHome()} alt="Logo Vitalit"/>
+                    <Image className="w-2/3" src="../assets/images/logoVitalitBlanco.png" onClick={() => NavigationManager.navigateTo("/")} alt="Logo Vitalit"/>
                     <h3 className="bg-text-login text-center mb-5">Accede a Vitalit y cambia por completo tu vida!</h3>
                     <Box minW={{ base: "90%", md: "468px"}}>
                         <form onSubmit={handleRegister}>
@@ -163,7 +163,7 @@ function Register() {
                                             type="last-name"
                                             placeholder="Apellidos" 
                                             _placeholder={{color: "purple"}} 
-                                            ref={nameRef}
+                                            ref={lastNameRef}
                                             name="last-name"
                                             required/>
                                     </InputGroup>
@@ -214,7 +214,7 @@ function Register() {
                 </Stack>
                 <p className='text-white mt-5'>
                     ¿Ya tienes una cuenta?{" "}
-                    <a className='color-white text-center' onClick={() => navigateToHome()}>Iniciar sesión</a>
+                    <a className='color-white text-center' onClick={() => NavigationManager.navigateTo("/login")}>Iniciar sesión</a>
                 </p>
                 <p className="text-white mt-3">
                     Recopilaremos algunos datos para una excelente experiencia.{" "}
