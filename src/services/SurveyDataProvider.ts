@@ -1,102 +1,124 @@
-export class SurveyDataProvider
+export async function getSurveyQuestions(): Promise<Question[]> 
+{   
+    //TODO: Implement method to bring questions from API
+    return [
+        {
+            "id": "1",
+            "question": "¿Cuál es tu principal objetivo al usar Vitalit?",
+            "questionType": "single-choice",
+            "options": [
+                "Mejorar mi condición física",
+                "Adoptar una dieta más saludable",
+                "Mejorar mi salud mental",
+                "Todas las anteriores",
+            ],
+            "visible": true,
+            "selectedOptions": [],
+        },
+        {
+            "id": "2",
+            "question": "¿Con qué frecuencia realizas actividades físicas cada semana?",
+            "questionType": "single-choice",
+            "options": [
+                "No realizo actividad física",
+                "1-2 días a la semana",
+                "3-4 días a la semana",
+                "5 días o más a la semana"
+            ],
+            "visible": false,
+            "selectedOptions": [],
+        },
+        {
+            "id": "3",
+            "question": "Selecciona tu(s) preferencia(s) dietética(s):",
+            "questionType": "multiple-choice",
+            "options": [
+                "Sin restricciones",
+                "Vegetariana",
+                "Vegana",
+                "Keto",
+                "Paleo",
+                "Baja en carbohidratos",
+            ],
+            "visible": false,
+            "selectedOptions": [],
+        },
+        {
+            "id": "4",
+            "question": "¿Tienes alguna alergia alimentaria?",
+            "questionType": "single-choice",
+            "options": [
+                "No tengo alergias",
+                "Frutos secos",
+                "Gluten",
+                "Lactosa",
+                "Mariscos",
+                "Otras"
+            ],
+            "visible": false,
+            "selectedOptions": [],
+        },
+        {
+            "id": "5",
+            "question": "¿Cómo calificarías tu estado de ánimo general en la última semana?",
+            "questionType": "single-choice",
+            "options": [
+                "Muy malo",
+                "Malo",
+                "Neutral",
+                "Bueno",
+                "Excelente"
+            ],
+            "visible": false,
+            "selectedOptions": [],
+        },
+        {
+            "id": "6",
+            "question": "En una escala del 1 al 5, ¿cuánto estrés experimentas en una semana típica?",
+            "questionType": "single-choice",
+            "options": [
+                "1 - Muy poco estrés",
+                "2 - Poco estrés",
+                "3 - Estrés moderado",
+                "4 - Bastante estrés",
+                "5 - Mucho estrés"
+            ],
+            "visible": false,
+            "selectedOptions": [],
+        },
+        {
+            "id": "7",
+            "question": "¿Cuántas horas de sueño obtienes en promedio por noche?",
+            "questionType": "single-choice",
+            "options": [
+                "Menos de 4 horas",
+                "4-6 horas",
+                "6-8 horas",
+                "Más de 8 horas"
+            ],
+            "visible": false,
+            "selectedOptions": [],
+        },
+        {
+            "id": "8",
+            "question": "¿Practicas alguna forma de relajación o mindfulness regularmente?",
+            "questionType": "multiple-choice",
+            "options": [
+                "No practico",
+                "Meditación",
+                "Yoga",
+                "Ejercicios de respiración",
+                "Otras formas"
+            ],
+            "visible": false,
+            "selectedOptions": [],
+        }
+    ];
+}
+
+export async function sendSurveyAnswers(answers: SurveyDto): Promise<boolean>
 {
-    public async getSurveyQuestios(): Promise<Question[]> 
-    {   
-        //TODO: Implement method to bring questions from API
-        return [
-            {
-                id: "1",
-                question: "¿Cuáles son tus principales metas de bienestar personal para el próximo año?",
-                questionType: "open-text",
-                answered: false,
-                visible: true,
-                valid: false
-            },
-            {
-                id: "2",
-                question: "¿Qué áreas del bienestar personal te interesan más?",
-                questionType: "multiple-choice",
-                options: [
-                    "Salud física",
-                    "Nutrición y alimentación",
-                    "Salud mental y bienestar emocional",
-                    "Gestión del estrés y relajación",
-                    "Mejora del sueño"
-                ],
-                answered: false,
-                visible: false,
-                valid: false
-            },
-            {
-                id: "3",
-                question: "En una escala del 1 al 5, ¿cuán importante es para ti el establecer hábitos saludables de vida?",
-                questionType: "single-choice",
-                options: [
-                    "Nada importante",
-                    "Poco importante",
-                    "Moderadamente importante",
-                    "Importante",
-                    "Muy importante"
-                ],
-                answered: false,
-                visible: false,
-                valid: false
-            },
-            {
-                id: "4",
-                question: "¿Cuáles de los siguientes obstáculos has encontrado al intentar alcanzar tus metas de bienestar personal?",
-                questionType: "multiple-choice",
-                options: [
-                    "Falta de motivación",
-                    "Falta de información",
-                    "Dificultad para mantener la consistencia",
-                    "Falta de apoyo social",
-                    "Barreras de tiempo y horario",
-                    "No aplicable/otros"
-                ],
-                answered: false,
-                visible: false,
-                valid: false
-            },
-            {
-                id: "5",
-                question: "¿Qué esperas lograr con la ayuda de Vitalit en tu jornada hacia el bienestar personal?",
-                questionType: "open-text",
-                answered: false,
-                visible: false,
-                valid: false
-            },
-            {
-                id: "6",
-                question: "¿Tienes alguna condición específica de salud que quieras gestionar a través de Vitalit?",
-                questionType: "multiple-choice",
-                options: [
-                    "No tengo condiciones específicas",
-                    "Salud cardiovascular",
-                    "Diabetes",
-                    "Sobrepeso u obesidad",
-                    "Ansiedad o depresión",
-                    "Otra condición"
-                ],
-                answered: false,
-                visible: false,
-                valid: false
-            },
-            {
-                id: "7",
-                question: "¿Cuánto tiempo estás dispuesto(a) a dedicar semanalmente a actividades relacionadas con tus metas de bienestar personal?",
-                questionType: "single-choice",
-                options: [
-                    "Prefiero especificar (campo de texto abierto)",
-                    "Menos de 1 hora",
-                    "1 a 3 horas",
-                    "3 a 5 horas",
-                    "Más de 5 horas",
-                ],
-                answered: false,
-                visible: false,
-                valid: false
-            }
-        ];
-    }
+    //TODO: Implement method to send answers to API
+    console.log("Sending: ", answers);
+    return true;
 }

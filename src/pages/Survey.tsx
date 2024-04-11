@@ -26,8 +26,8 @@ function Survey() {
                                 <p className="text-4xl mt-10">¡Hola!</p>
                                 <p className="mt-14 pt-8 bg-text-card">Bienvenido a <span className="highlight-text">Vitalit</span>. Queremos personalizar tu experiencia al máximo y ayudarte a alcanzar tus metas. Esta rápida encuesta es el primer paso para crear tu plan de salud personalizado.</p>
                             </div>
-                            <div className="flex justify-end"> 
-                                <NextButtonHelper text="Comenzar" className="mt-10" onclick={getQuestions}/>
+                            <div className="flex justify-end  mt-10"> 
+                                <NextButtonHelper text="Comenzar" onclick={getQuestions}/>
                             </div>
                         </div>
                     </div>

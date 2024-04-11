@@ -10,7 +10,6 @@ function Home() {
     React.useEffect(() => {
         if(!auth.user.hasAnsweredSurvey){
             setTimeout(() => {
-
                 NavigationManager.navigateTo("/survey");
             }, 3000);
         }
@@ -22,10 +21,12 @@ function Home() {
     }
 
     return (
-        <div className="flex flex-col h-screen gap-2 justify-center items-center">
-            <p>Home</p>
-            <p>Redirigiendo a la encuesta inicial...</p>
-            <Button variant="contained" className="btn btn-main" onClick={() => handleLogout()}>Cerrar sesión</Button>
+        <div>
+            <div className="flex flex-col h-screen gap-2 justify-center items-center base-gray">
+                <p>Home</p>
+                <p>Redirigiendo a la encuesta inicial...</p>
+                <Button variant="contained" className="btn btn-main" onClick={() => handleLogout()}>Cerrar sesión</Button>
+            </div>
         </div>
     )
 }

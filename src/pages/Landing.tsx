@@ -9,15 +9,29 @@ import FeatureCard from "../components/FeatureCard";
 import FadeRightComponent from "../components/animators/FadeRightComponent";
 import FadeLeftComponent from "../components/animators/FadeLeftComponent";
 import Footer from "../components/Footer";
+import NavigationManager from "../services/NavigationManager";
+import useAuthStore from "../stores/AuthStore";
 
 function Landing() {
     const [transition, setTransition] = React.useState("") 
+    const user: any = useAuthStore(state => state)
+
+    function handleLogin()
+    {
+        setTransition("animate");
+        setTimeout(() => {
+            if(user.user)
+            {
+                NavigationManager.navigateTo("/home");
+            }
+        }, 1000);
+    }
 
     return (
         <div className="relative w-full h-screen">
             <Login transition={transition}/>
             <div className="h-screen relative">
-                <Header setTransition={() => setTransition("animate")}/>
+                <Header setTransition={handleLogin}/>
                 <section id="#inicio" className="flex pr-20 pl-20 relative z-10">
                     <div className="w-1/2 h-screen relative flex justify-center content-center flex-col mt-18">
                         <img className="w-32 absolute bottom-20 right-10 animate-rotate-x" src="../assets/images/shape-1.png" alt="" />

@@ -3,8 +3,6 @@ type Question = {
     question: string;
     questionType: string;
     options?: string[];
-    answer?: string;
-    answered: boolean;
     visible: boolean;
-    valid: boolean;
+    selectedOptions?: number[];
 }
