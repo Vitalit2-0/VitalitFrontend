@@ -140,6 +140,10 @@ li a {
   background: #d1d5db;
 }
 
+.base-icons {
+  color: #374151;
+}
+
 .base-gradient {
   background: linear-gradient(to right, #fd789f, #c99bfa) !important;
 }

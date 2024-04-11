@@ -22,7 +22,7 @@ function Landing() {
         setTimeout(() => {
             if(user.user)
             {
-                NavigationManager.navigateTo("/home");
+                NavigationManager.navigateTo("/dashboard");
             }
         }, 1000);
     }
