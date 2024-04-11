@@ -58,7 +58,7 @@ function Login({ transition } : { transition: string }) {
         
         user.login(response.data.data);
         
-        NavigationManager.navigateTo("/home");
+        NavigationManager.navigateTo("/dashboard");
     }
 
 

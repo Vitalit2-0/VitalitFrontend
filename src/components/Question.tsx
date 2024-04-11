@@ -98,7 +98,7 @@ function Question({ flag, setPercentage }: any) {
                 sendSurveyAnswers(answers);
                 setCurrentQuestion(null);
                 auth.setSurveyAnswered(auth.user, true);
-                NavigationManager.navigateTo("/home");
+                NavigationManager.navigateTo("/dashboard");
             }, 3000);
         }
     }

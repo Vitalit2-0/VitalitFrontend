@@ -19,6 +19,7 @@ $base-red: #f83e3e;
 $base-yellow: #f6bf41;
 $base-dark-purple: rgb(45, 6, 83);
 $base-gray: #d1d5db;
+$base-icons: #374151;
 
 html{
     scroll-behavior: smooth !important;
@@ -157,6 +158,10 @@ li a{
 
 .base-gray{
     background: $base-gray;
+}
+
+.base-icons{
+    color: $base-icons;
 }
 
 .base-gradient {
