@@ -8,6 +8,7 @@ import Survey from './pages/Survey'
 import Landing from './pages/Landing'
 import Login from './pages/Login'
 import { ThemeProvider, createTheme } from '@mui/material/styles'
+import Layout from './components/Layout'
 
 const THEME = createTheme({
     typography: {
@@ -29,7 +30,9 @@ function App() {
                     <Route path="/register" element={<Register/>}/>
                     <Route path="/recover" element={<RecoverPass/>}/>
                     <Route path="/" element={<ProtectedRoute/>}>
-                        <Route path="/home" element={<Home/>}/>
+                        <Route element={<Layout/>}>
+                            <Route path="/home" element={<Home/>}/>
+                        </Route>
                         <Route path="/survey" element={<Survey/>}/>
                     </Route>
                 </Routes>

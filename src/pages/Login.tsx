@@ -32,11 +32,6 @@ function Login({ transition } : { transition: string }) {
     React.useEffect(() => {
         let message = queryParameters.get("message");
         
-        if(user.user)
-        {
-            NavigationManager.navigateTo("/home");
-        }
-
         if(message) 
         {
             setShowError(message);
@@ -61,7 +56,7 @@ function Login({ transition } : { transition: string }) {
             return;
         }
         
-        user.login(response.data);
+        user.login(response.data.data);
         
         NavigationManager.navigateTo("/home");
     }
@@ -99,7 +94,7 @@ function Login({ transition } : { transition: string }) {
                                         <InputGroup className="bg-input-login" borderRadius={100}>
                                             <Input 
                                                 type="text" 
-                                                placeholder='Correo Electrónico, teléfono o usuario' 
+                                                placeholder='Correo Electrónico o usuario' 
                                                 _placeholder={{color: "purple"}}
                                                 ref={loginRef}
                                                 name="login"

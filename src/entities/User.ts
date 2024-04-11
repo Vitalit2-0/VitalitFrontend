@@ -5,5 +5,6 @@ type User = {
     email: string | undefined;
     token: string | undefined;
     username: string | undefined;
+    login_id: string | undefined;
     hasAnsweredSurvey: boolean;
 }
