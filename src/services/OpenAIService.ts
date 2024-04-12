@@ -13,7 +13,7 @@ export async function CreateWorkoutPlan(surveyAnswers: SurveyDto)
     const response = await fetch("https://api.openai.com/v1/chat/completions", {
     method: "POST",
     headers: {
-        "Authorization": "Bearer " + "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",
+        "Authorization": "Bearer " + "",
         "Content-Type": "application/json",
     },
     body: JSON.stringify(apiRequestBody),
