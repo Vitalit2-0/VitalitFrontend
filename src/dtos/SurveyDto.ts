@@ -1,5 +1,5 @@
 type SurveyDto = {
     idUser: string;
-    focusUser: number;
+    focusUser: string;
     answers: AnswerDto[]
 }
