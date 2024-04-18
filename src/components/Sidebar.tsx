@@ -20,7 +20,7 @@ function Sidebar() {
 
     return (
         <div className='absolute p-2 top-0 left-0 w-20 h-screen'>
-            <div className='base-white flex flex-col justify-between rounded-md w-full h-full shadow-light p-2'>
+            <div className='bg-white flex flex-col justify-between rounded-md w-full h-full shadow-light p-2'>
                 <div>
                     <div className="flex w-full justify-center items-center h-16">
                         <picture><img src="../assets/images/logo-short.png" className="p-2" alt="" /></picture>

@@ -1,13 +1,13 @@
 import { create } from "zustand"
+import { persist } from "zustand/middleware";
 
-const useSurveyStore = create(set => ({
-    questions: [] as Question[],
-    setQuestions: (questions: Question[]) => set(() => ({ questions })),
-    setAnsweredQuestion: (questionId: string) => set((state: any) => ({
-        questions: state.questions.map((question: any) =>
-            question.id === questionId ? { ...question, valid: true } : question
-        ),
-    })),
-}))
-
+const useSurveyStore = create(persist(
+    (set) => ({
+        surveyData: null,
+        setSurveyData: (surveyData: AnswerDto) => set({ surveyData: surveyData }),
+    }),
+    {
+        name: 'survey-storage',
+    }
+));
 export default useSurveyStore;

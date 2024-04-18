@@ -5,6 +5,8 @@ import { Radio, RadioGroup, FormControl, FormControlLabel, Checkbox } from "@mui
 import NavigationManager from "../services/NavigationManager";
 import useAuthStore from "../stores/AuthStore";
 import Loader from "./Loader";
+import useSurveyStore from "../stores/surveyStore";
+import { CreateWorkoutPlan } from "../services/OpenAIService";
 
 function Question({ flag, setPercentage }: any) {
 
@@ -13,6 +15,7 @@ function Question({ flag, setPercentage }: any) {
     const [selectedOptions, setSelectedOptions] = React.useState<string[]>([]);
     const [error, setError] = React.useState<boolean>(false);
     const auth = useAuthStore((state: any) => state);
+    const setSurveyData = useSurveyStore((state: any) => state.setSurveyData);
 
     React.useEffect(() => {
         getQuestions();
@@ -71,15 +74,16 @@ function Question({ flag, setPercentage }: any) {
 
     function buildQuestionsObject(questions: Question[]) : SurveyDto
     {
-        let focus = 3;
+        let focus = "";
         let answers: AnswerDto[] = questions.map((question: Question, index: number) => {
-            if(index === 0) focus = question.selectedOptions ? question.selectedOptions[0] : 3;
+            if(index === 0) focus = (question.options && question.selectedOptions) ? question.options[question.selectedOptions[0]] : "";
             return {
                 idQuestion: question.id,
-                selectedOptions: question.selectedOptions || []
+                question: question.question,
+                selectedOptions: question.options?.map((option: string, index: number) => question.selectedOptions?.includes(index) ? option : "").filter((option: string) => option !== "") || []
             };
         });
-
+        
         return {
             idUser: auth.user.id,
             focusUser: focus,
@@ -93,24 +97,30 @@ function Question({ flag, setPercentage }: any) {
         if(currentQuestion.id === updatedQuestions[questions.length - 1].id)
         {
             setTimeout(() => {
-                console.log(auth.user);
                 let answers: SurveyDto = buildQuestionsObject(updatedQuestions);
+
                 sendSurveyAnswers(answers);
+                setSurveyData(answers);
                 setCurrentQuestion(null);
+
                 auth.setSurveyAnswered(auth.user, true);
+
                 NavigationManager.navigateTo("/dashboard");
             }, 3000);
         }
     }
 
     const handleAnswerChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        
         if(currentQuestion.questionType === "single-choice") 
         {
             setSelectedOptions([(event.target as HTMLInputElement).value]);
+            console.log(selectedOptions);
             return;
         }
-
+        
         setSelectedOptions([...selectedOptions, (event.target as HTMLInputElement).value]);
+        console.log(selectedOptions);
     };
 
     return (
