@@ -15,6 +15,8 @@ import MentalHealth from './pages/MentalHealth'
 import Nutrition from './pages/Nutrition'
 import Profile from './pages/Profile'
 import Settings from './pages/Settings'
+import PopupAlert from './components/PopupAlert'
+import 'react-toastify/dist/ReactToastify.css';
 
 const THEME = createTheme({
     typography: {
@@ -31,21 +33,23 @@ function App() {
         <ThemeProvider theme={THEME}>
             <BrowserRouter>
                 <Routes>
-                    <Route path="/" element={<Landing/>}/>
-                    <Route path="/login/:message?" element={<Login transition='expand-animate'/>}/>
-                    <Route path="/register" element={<Register/>}/>
-                    <Route path="/recover" element={<RecoverPass/>}/>
-                    <Route path="/" element={<ProtectedRoute/>}>
-                        <Route element={<Layout/>}>
-                            <Route path="/dashboard" element={<Home/>}/>
-                            <Route path="/insights" element={<Insights/>}/>
-                            <Route path="/workout" element={<Workout/>}/>
-                            <Route path="/mental-health" element={<MentalHealth/>}/>
-                            <Route path="/nutrition" element={<Nutrition/>}/>
-                            <Route path="/profile" element={<Profile/>}/>
-                            <Route path="/settings" element={<Settings/>}/>
+                    <Route element={<PopupAlert/>}>
+                        <Route path="/" element={<Landing/>}/>
+                        <Route path="/login/:message?" element={<Login transition='expand-animate'/>}/>
+                        <Route path="/register" element={<Register/>}/>
+                        <Route path="/recover" element={<RecoverPass/>}/>
+                        <Route path="/" element={<ProtectedRoute/>}>
+                            <Route element={<Layout/>}>
+                                <Route path="/dashboard" element={<Home/>}/>
+                                <Route path="/insights" element={<Insights/>}/>
+                                <Route path="/workout" element={<Workout/>}/>
+                                <Route path="/mental-health" element={<MentalHealth/>}/>
+                                <Route path="/nutrition" element={<Nutrition/>}/>
+                                <Route path="/profile" element={<Profile/>}/>
+                                <Route path="/settings" element={<Settings/>}/>
+                            </Route>
+                            <Route path="/survey" element={<Survey/>}/>
                         </Route>
-                        <Route path="/survey" element={<Survey/>}/>
                     </Route>
                 </Routes>
             </BrowserRouter>

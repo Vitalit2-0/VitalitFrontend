@@ -43,6 +43,12 @@ body{
     -moz-osx-font-smoothing: grayscale;
 }
 
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
 a {
     font-weight: 500;
     color: $base-black;
@@ -101,7 +107,7 @@ button:hover {
 }
 
 input{
-    border: solid 1px lightgray !important;
+    border: solid 1px lightgray;
     padding: 10px;
     border-radius: 12px;
 }
