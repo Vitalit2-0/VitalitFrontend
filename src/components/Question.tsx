@@ -1,18 +1,23 @@
 import NextButtonHelper from "./helpers/NextButtonHelper"
 import React from "react";
 import { getSurveyQuestions, sendSurveyAnswers } from "../services/SurveyDataProvider"
-import { Radio, RadioGroup, FormControl, FormControlLabel, Checkbox } from "@mui/material";
+import { Radio, RadioGroup, FormControl, FormControlLabel, Checkbox, TextField } from "@mui/material";
 import NavigationManager from "../services/NavigationManager";
 import useAuthStore from "../stores/AuthStore";
 import Loader from "./Loader";
 import useSurveyStore from "../stores/surveyStore";
 import { useModal } from "./PopupAlert";
+import DatePickerHelper from "./DatePickerHelper";
 
 function Question({ flag, setPercentage }: any) {
 
     const [questions, setQuestions] = React.useState<Question[]>([]);
     const [currentQuestion, setCurrentQuestion] = React.useState<Question | any>(null);
     const [selectedOptions, setSelectedOptions] = React.useState<string[]>([]);
+    const [bornDate, setBornDate] = React.useState<Date | null>(null);
+    const [weight, setWeight] = React.useState<number>(0);
+    const [height, setHeight] = React.useState<number>(0);
+    const [imc, setImc] = React.useState<number>(0);
     const [error, setError] = React.useState<boolean>(false);
     const auth = useAuthStore((state: any) => state);
     const setSurveyData = useSurveyStore((state: any) => state.setSurveyData);
@@ -35,8 +40,8 @@ function Question({ flag, setPercentage }: any) {
 
     function validQuesion()
     {
-        setError(selectedOptions.length == 0);
-        return (selectedOptions.length > 0);
+        setError(selectedOptions.length == 0 && currentQuestion.questionType !== "weight-height");
+        return (selectedOptions.length > 0 || currentQuestion.questionType === "weight-height");
     }
 
     function goNextQuestion()
@@ -88,6 +93,10 @@ function Question({ flag, setPercentage }: any) {
         return {
             idUser: auth.user.id,
             focusUser: focus,
+            bornDate: bornDate,
+            weight: weight,
+            height: height,
+            imc: imc,
             answers: answers
         };
     }
@@ -106,7 +115,8 @@ function Question({ flag, setPercentage }: any) {
 
                 auth.setSurveyAnswered(auth.user, true);
 
-                NavigationManager.navigateTo("/dashboard");
+                console.log("Survey finished", answers);
+                //NavigationManager.navigateTo("/dashboard");
             }, 3000);
         }
     }
@@ -136,6 +146,33 @@ function Question({ flag, setPercentage }: any) {
         NavigationManager.navigateTo("/dashboard");
     }
 
+    function handlePersonalData(event: React.ChangeEvent<HTMLInputElement>)
+    {
+        let value = (event.target as HTMLInputElement).value;
+        let id = (event.target as HTMLInputElement).id;
+
+        if(id === "weight-field") setWeight(Number(value));
+        if(id === "height-field") setHeight(Number(value));
+        setImc(calculateIMC(weight, height));
+    }
+
+    function calculateIMC(weight: number, height: number) : number
+    {
+        if (height === 0) {
+            return 0;
+        }
+        return Math.round((weight / (height * height))*100 * 100) / 100;
+    }
+
+    function handleDateChange(e: any)
+    {
+        let day = e.$D;
+        let month = e.$M + 1;
+        let year = e.$y;
+
+        setBornDate(new Date(year, month, day));
+    }
+
     return (
         <div className="h-full">
             {currentQuestion &&
@@ -163,6 +200,17 @@ function Question({ flag, setPercentage }: any) {
                             </div>
                         )
                     })
+                }
+                {currentQuestion.questionType === "weight-height" &&
+                    <div>
+                        <div className="w-full flex gap-2">
+                            <TextField className="w-1/3" id="weight-field" type="number" value={weight} onInput={handlePersonalData} label="Peso (kg)" variant="outlined" inputProps={{ min: "0", max: "400", step: "1" }} />
+                            <TextField className="w-1/3" id="height-field"  type="number" value={height} onInput={handlePersonalData} label="Altura (cm)" variant="outlined" inputProps={{ min: "0", max: "230", step: "1" }} />
+                            <TextField className="w-1/3" id="imc-field"  type="number" value={imc} onInput={handlePersonalData} label="IMC" variant="outlined" inputProps={{ min: "0", max: "400", step: "1" }} disabled />
+                        </div>
+                        <p className="mt-5 mb-3">Fecha de nacimiento</p>
+                        <DatePickerHelper onChange={handleDateChange}/>
+                    </div>
                 }
                 </div>
                 <div className="flex justify-end items-center absolute bottom-5 right-10 mt-10"> 

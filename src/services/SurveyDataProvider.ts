@@ -31,7 +31,7 @@ export async function getSurveyQuestions(): Promise<Question[]>
         {
             "id": "3",
             "question": "Selecciona tu(s) preferencia(s) dietética(s):",
-            "questionType": "multiple-choice",
+            "questionType": "single-choice",
             "options": [
                 "Sin restricciones",
                 "Vegetariana",
@@ -111,6 +111,13 @@ export async function getSurveyQuestions(): Promise<Question[]>
                 "Otras formas"
             ],
             "visible": false,
+            "selectedOptions": [],
+        },
+        {
+            "id": "9",
+            "question": "Por último, algunos datos personales que nos serán de utilidad para tu plan",
+            "questionType": "weight-height",
+            "visible": true,
             "selectedOptions": [],
         }
     ];
