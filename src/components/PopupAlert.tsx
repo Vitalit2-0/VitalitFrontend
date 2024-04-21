@@ -1,4 +1,4 @@
-import { Box, Button, Modal, Typography } from '@mui/material';
+import { Box, Modal, Typography } from '@mui/material';
 import { Outlet } from 'react-router-dom';
 import { createContext, useContext, useState } from 'react';
 import DefaultButton from './helpers/DefaultButton';
