@@ -1,4 +1,3 @@
-import { AuthStateProvider } from '../services/AuthStateProvider'
 import { useRef, useState } from 'react';
 import {Flex,
         ChakraProvider,
@@ -15,11 +14,15 @@ import { useSearchParams, useNavigate } from 'react-router-dom';
 import React from 'react';
 import NavigationManager from '../services/NavigationManager';
 import useAuthStore from '../stores/AuthStore';
+import { loginUser, validateUser } from '../services/AuthStateProvider';
+import ModalQr from '../components/ModalQr';
 
 function Login({ transition } : { transition: string }) {
 
     const [showError, setShowError] = useState("");
     const [showPassword, setShowPassword] = useState(false);
+    const [open, setOpen] = useState(false);
+    const [faUsername, setfaUsername] = useState("")
     
     const user: any = useAuthStore(state => state)
     const loginRef = useRef<HTMLInputElement | null>(null);
@@ -47,8 +50,7 @@ function Login({ transition } : { transition: string }) {
             password: passwordRef.current?.value || ""
         };
 
-        var auth = new AuthStateProvider();
-        var response: ResponseDto = await auth.loginUser(loginDto);
+        let response: ResponseDto = await loginUser(loginDto);
     
         if(!response.data)
         {
@@ -56,14 +58,28 @@ function Login({ transition } : { transition: string }) {
             return;
         }
         
-        user.login(response.data.data);
-        
-        NavigationManager.navigateTo("/dashboard");
-    }
+        if(response.data.ft_login)
+        {
+            response = await validateUser({code: "000000", login: response.data.username});
 
+            if(response.code !== "200")
+            {
+                setShowError(response.string);
+                return;
+            }
+
+            user.login(response.data);
+            NavigationManager.navigateTo("/dashboard");
+            return;
+        }
+
+        setfaUsername(response.data.username);
+        setOpen(true);
+    }
 
     return (
         <ChakraProvider>
+            <ModalQr isRegister={false} open={open} setOpen={setOpen} username={faUsername} />
             <div className={`expandable-element ${transition} absolute top-0 right-0 flex h-screen flex-col justify-center items-center gap-2 base-gradient z-50`} transition-style={(transition == "animate") ? "in:circle:bottom-left": ""}>
                 <Flex
                     className="base-gradient"

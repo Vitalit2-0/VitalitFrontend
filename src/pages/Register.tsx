@@ -1,4 +1,3 @@
-import { AuthStateProvider } from '../services/AuthStateProvider'
 import { useRef, useState } from 'react';
 import NavigationManager from "../services/NavigationManager";
 import {Flex,
@@ -13,6 +12,7 @@ import {Flex,
         InputRightElement
 } from "@chakra-ui/react";
 import { FieldsValidator } from "../services/FieldsValidator";
+import { registerUser } from '../services/AuthStateProvider';
 
 type ErrorResponse = {
     message: string;
@@ -53,8 +53,7 @@ function Register() {
             password: passwordRef.current?.value || ""
         };
 
-        var auth = new AuthStateProvider();
-        var response: ResponseDto = await auth.registerUser(registerDto);
+        var response: ResponseDto = await registerUser(registerDto);
         
         if(!response.data)
         {

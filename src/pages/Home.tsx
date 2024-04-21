@@ -7,7 +7,10 @@ function Home() {
     const auth = useAuthStore((state: any) => state);
 
     React.useEffect(() => {
-        if(!auth.user.hasAnsweredSurvey){
+
+        let skippedSurvey = localStorage.getItem("skipSurvey");
+
+        if(!auth.user.hasAnsweredSurvey && !skippedSurvey){
             setTimeout(() => {
                 NavigationManager.navigateTo("/survey");
             }, 3000);
