@@ -1,9 +1,9 @@
 import {Navigate, Outlet} from 'react-router-dom'
-import useUserStore from '../stores/userStore'
+import useAuthStore from '../stores/AuthStore';
 
 const isLoggedIn = () => {
-    const user = useUserStore(state => state)
-    return user !== null;
+    const auth = useAuthStore((state: any) => state)
+    return auth.user;
 }
 
 const ProtectedRoute = () => {

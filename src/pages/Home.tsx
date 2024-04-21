@@ -1,25 +1,27 @@
 import React from "react";
-import { Button } from "@mui/material"
-import useUserStore from "../stores/userStore";
+import useAuthStore from "../stores/AuthStore";
+import NavigationManager from "../services/NavigationManager";
 
 function Home() {
 
-    const hasAnsweredSurvey = useUserStore((state: any) => state.user.HasAnsweredSurvey);
+    const auth = useAuthStore((state: any) => state);
 
     React.useEffect(() => {
-        if(!hasAnsweredSurvey){
-            window.location.href = '/survey';
+
+        let skippedSurvey = localStorage.getItem("skipSurvey");
+
+        if(!auth.user.hasAnsweredSurvey && !skippedSurvey){
+            setTimeout(() => {
+                NavigationManager.navigateTo("/survey");
+            }, 3000);
         }
     }, [])
 
-    function handleLogout() {
-        window.location.href = '/';
-    }
-
     return (
-        <div className="flex flex-col gap-2 justify-center items-center">
-            <p>Home</p>
-            <Button variant="contained" className="btn btn-main" onClick={() => handleLogout()}>Cerrar sesión</Button>
+        <div>
+            <div className="flex flex-col h-screen gap-2 justify-center items-center base-gray">
+                <p>Dashboard</p>
+            </div>
         </div>
     )
 }

@@ -1,8 +1,13 @@
-import { Button } from "@mui/material"
 
-function DefaultButton({ text, className, id } : { text : string, className?: string, id: string}) {
+function DefaultButton({ text, className, id, onclick } : { text : string, className?: string, id?: string, onclick?: () => void}) {
     return (
-        <a className={`btn btn-main ${className}`} href={id}>{text}</a>
+        <a 
+            className={`btn btn-main ${className}`} 
+            href={id}
+            onClick={onclick}
+        >
+            {text}
+        </a>
     )
 }
 

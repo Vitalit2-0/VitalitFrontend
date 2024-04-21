@@ -17,6 +17,9 @@ $base-black: #1a1a1a;
 $base-green: #75b800;
 $base-red: #f83e3e;
 $base-yellow: #f6bf41;
+$base-dark-purple: rgb(45, 6, 83);
+$base-gray: #f1f2f6;
+$base-icons: #374151;
 
 html{
     scroll-behavior: smooth !important;
@@ -38,6 +41,12 @@ body{
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
 }
 
 a {
@@ -98,7 +107,7 @@ button:hover {
 }
 
 input{
-    border: solid 1px lightgray !important;
+    border: solid 1px lightgray;
     padding: 10px;
     border-radius: 12px;
 }
@@ -149,6 +158,18 @@ li a{
     color: $base-deep-purple;
 }	
 
+.shadow-light{
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}
+
+.base-gray{
+    background: $base-gray;
+}
+
+.base-icons{
+    color: $base-icons;
+}
+
 .base-gradient {
     background: $base-gradient !important;
 }
@@ -160,6 +181,10 @@ li a{
 
 .base-purple {
     background: $base-deep-purple !important;
+}
+
+.base-dark-purple {
+    background: $base-dark-purple !important;
 }
 
 .h-header-half{
@@ -179,8 +204,23 @@ li a{
 }
 
 .bg-image-purple{
+    position: relative; // Add position relative to the parent element
     background-image: url("../assets/images/background.jpg");
     background-size: cover;
+}
+
+.bg-image-purple::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.4); 
+}
+
+.circular{
+    border-radius: 100%;
 }
 
 .features-circular{
@@ -206,10 +246,80 @@ li a{
     //transition: clip-path 0.5s, width 0.5s, height 0.5s; /* Smooth transition */
 }
 
+.expandable-element.expand-animate {
+    width: 100vw !important; /* Full viewport width */
+    height: 100vh !important;
+    clip-path: none !important;
+}
+
 .expandable-element.animate {
     width: 100vw; /* Full viewport width */
     height: 100vh;
     animation: fillPage 1.5s forwards;
+}
+
+.fade-slide-right {
+    animation: fadeSlideFromRight 250ms ease-out forwards;
+}
+
+.fade-slide-right-out {
+    animation: fadeSlideToRight 250ms ease-out forwards;
+}
+
+.fade-slide-left {
+    animation: fadeSlideFromLeft 250ms ease-out forwards;
+}
+
+.fade-slide-left-out {
+    animation: fadeSlideToLeft 250ms ease-out forwards;
+}
+
+.MuiTypography-root span{
+    font-family: 'Poppins', sans-serif !important;
+}
+
+@keyframes fadeSlideFromRight {
+    from {
+        opacity: 0;
+        transform: translateX(100%);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes fadeSlideToRight {
+    from {
+        opacity: 1;
+        transform: translateX(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateX(100%);
+    }
+}
+
+@keyframes fadeSlideFromLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-100%);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes fadeSlideToLeft {
+    from {
+        opacity: 1;
+        transform: translateX(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateX(-100%);
+    }
 }
 
 @keyframes fillPage {
@@ -364,7 +474,149 @@ $bar-radius: 60px;
     }
 }
 
+//------------------------------------Loader------------------------------------//
 
+:root {
+	--hue: 223;
+	--bg: hsl(var(--hue),90%,90%);
+	--fg: hsl(var(--hue),90%,0%);
+	--primary: hsl(var(--hue),90%,50%);
+	--trans-dur: 0.3s;
+}
+body {
+	transition:
+		background-color var(--trans-dur),
+		color var(--trans-dur);
+}
+.bike {
+	display: block;
+	margin: auto;
+	width: 16em;
+	height: auto;
+}
+.bike__body,
+.bike__front,
+.bike__handlebars,
+.bike__pedals,
+.bike__pedals-spin,
+.bike__seat,
+.bike__spokes,
+.bike__spokes-spin,
+.bike__tire {
+	animation: bikeBody 3s ease-in-out infinite;
+	stroke: $base-deep-purple;
+	transition: stroke var(--trans-dur);
+}
+.bike__front {
+	animation-name: bikeFront;
+}
+.bike__handlebars {
+	animation-name: bikeHandlebars;
+}
+.bike__pedals {
+	animation-name: bikePedals;
+}
+.bike__pedals-spin {
+	animation-name: bikePedalsSpin;
+}
+.bike__seat {
+	animation-name: bikeSeat;
+}
+.bike__spokes,
+.bike__tire {
+	stroke: $base-mid-orchid;
+}
+.bike__spokes {
+	animation-name: bikeSpokes;
+}
+.bike__spokes-spin {
+	animation-name: bikeSpokesSpin;
+}
+.bike__tire {
+	animation-name: bikeTire;
+}
+
+/* Animations */
+@keyframes bikeBody {
+	from { stroke-dashoffset: 79; }
+	33%,
+	67% { stroke-dashoffset: 0; }
+	to { stroke-dashoffset: -79; }
+}
+@keyframes bikeFront {
+	from { stroke-dashoffset: 19; }
+	33%,
+	67% { stroke-dashoffset: 0; }
+	to { stroke-dashoffset: -19; }
+}
+@keyframes bikeHandlebars {
+	from { stroke-dashoffset: 10; }
+	33%,
+	67% { stroke-dashoffset: 0; }
+	to { stroke-dashoffset: -10; }
+}
+@keyframes bikePedals {
+	from {
+		animation-timing-function: ease-in;
+		stroke-dashoffset: -25.133;
+	}
+	33%,
+	67% {
+		animation-timing-function: ease-out;
+		stroke-dashoffset: -21.991;
+	}
+	to {
+		stroke-dashoffset: -25.133;
+	}
+}
+@keyframes bikePedalsSpin {
+	from { transform: rotate(0.1875turn); }
+	to { transform: rotate(3.1875turn); }
+}
+@keyframes bikeSeat {
+	from { stroke-dashoffset: 5; }
+	33%,
+	67% { stroke-dashoffset: 0; }
+	to { stroke-dashoffset: -5; }
+}
+@keyframes bikeSpokes {
+	from {
+		animation-timing-function: ease-in;
+		stroke-dashoffset: -31.416;
+	}
+	33%,
+	67% {
+		animation-timing-function: ease-out;
+		stroke-dashoffset: -23.562;
+	}
+	to {
+		stroke-dashoffset: -31.416;
+	}
+}
+@keyframes bikeSpokesSpin {
+	from { transform: rotate(0); }
+	to { transform: rotate(3turn); }
+}
+@keyframes bikeTire {
+	from {
+		animation-timing-function: ease-in;
+		stroke-dashoffset: 56.549;
+		transform: rotate(0);
+	}
+	33% {
+		stroke-dashoffset: 0;
+		transform: rotate(0.33turn);
+	}
+	67% {
+		animation-timing-function: ease-out;
+		stroke-dashoffset: 0;
+		transform: rotate(0.67turn);
+	}
+	to {
+		stroke-dashoffset: -56.549;
+		transform: rotate(1turn);
+	}
+}
 //----------------------------------Login Colors----------------------------------//
 .bg-text-login {
     color:$base-white; 

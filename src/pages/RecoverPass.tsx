@@ -8,13 +8,9 @@ import {Flex,
         Image,
         FormControl,
 } from "@chakra-ui/react";
+import NavigationManager from "../services/NavigationManager";
 
 function RecoverPass() {
-
-    function navigateToHome() {
-        window.location.href = '/';
-    }
-
     return (
         <ChakraProvider>
             <Flex
@@ -32,7 +28,7 @@ function RecoverPass() {
                     alignItems="center"
                     maxW="480px"
                 >
-                    <Image src="../assets/images/logoVitalitBlanco.png" onClick={() => navigateToHome()} alt="Logo Vitalit"/>
+                    <Image className="w-2/3" src="../assets/images/logoVitalitBlanco.png" onClick={() => NavigationManager.navigateTo("/")} alt="Logo Vitalit"/>
                     <h3 className="bg-text-login text-center mb-5">Enviaremos un link a tu correo electrónico para cabiar tu contraseña</h3>
                     <Box minW={{ base: "90%", md: "468px"}}>
                         <form>
@@ -62,7 +58,7 @@ function RecoverPass() {
                     </Box>
                 </Stack>
                 <p className='text-white mt-5'>
-                    <a className='color-white text-center' onClick={() => navigateToHome()}>Regresar</a>
+                    <a className='color-white text-center' onClick={() => NavigationManager.navigateTo("/login")}>Regresar</a>
                 </p>
             </Flex>
         </ChakraProvider>

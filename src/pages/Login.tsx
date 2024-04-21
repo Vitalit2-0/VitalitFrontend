@@ -1,6 +1,4 @@
-import { AuthStateProvider } from '../services/AuthStateProvider'
-import useUserStore from "../stores/userStore";
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import {Flex,
         ChakraProvider,
         Input,
@@ -12,40 +10,77 @@ import {Flex,
         FormControl,
         InputRightElement
 } from "@chakra-ui/react";
+import { useSearchParams, useNavigate } from 'react-router-dom';
+import React from 'react';
+import NavigationManager from '../services/NavigationManager';
+import useAuthStore from '../stores/AuthStore';
+import { loginUser, validateUser } from '../services/AuthStateProvider';
+import ModalQr from '../components/ModalQr';
 
 function Login({ transition } : { transition: string }) {
-    const registerUser:any = useUserStore((state:any) => state.setUser);
 
-    function setUser(User : User) 
-    {
-        registerUser(User);
-    }
-
-    async function handleLogin() {
-        var auth = new AuthStateProvider();
-        var user: User = await auth.getUserAuthState();
-    
-        if(user)
-        {
-            setUser(user);
-            window.location.href = '/home';
-        }
-    }
-
-    function navigateToHome() {
-        window.location.href = '/';
-    }
-
-    function navigateToRecover() {
-        window.location.href = '/recover';
-    }
-
+    const [showError, setShowError] = useState("");
     const [showPassword, setShowPassword] = useState(false);
+    const [open, setOpen] = useState(false);
+    const [faUsername, setfaUsername] = useState("")
+    
+    const user: any = useAuthStore(state => state)
+    const loginRef = useRef<HTMLInputElement | null>(null);
+    const passwordRef = useRef<HTMLInputElement | null>(null);
     const handleShowClick = () => setShowPassword(!showPassword)
+
+    const [queryParameters] = useSearchParams()
+    let history = useNavigate();
+
+    React.useEffect(() => {
+        let message = queryParameters.get("message");
+        
+        if(message) 
+        {
+            setShowError(message);
+            history("/login");
+        }
+    }, []);
+
+    async function handleLogin(event: React.FormEvent) {
+        event.preventDefault();
+
+        const loginDto: LoginDto = {
+            login: loginRef.current?.value || "",
+            password: passwordRef.current?.value || ""
+        };
+
+        let response: ResponseDto = await loginUser(loginDto);
+    
+        if(!response.data)
+        {
+            setShowError(response.string);
+            return;
+        }
+        
+        if(response.data.ft_login)
+        {
+            response = await validateUser({code: "000000", login: response.data.username});
+
+            if(response.code !== "200")
+            {
+                setShowError(response.string);
+                return;
+            }
+
+            user.login(response.data);
+            NavigationManager.navigateTo("/dashboard");
+            return;
+        }
+
+        setfaUsername(response.data.username);
+        setOpen(true);
+    }
 
     return (
         <ChakraProvider>
-            <div className={`expandable-element ${transition} absolute top-0 right-0 flex h-screen flex-col justify-center items-center gap-2 base-gradient z-50`} transition-style="in:circle:bottom-left">
+            <ModalQr isRegister={false} open={open} setOpen={setOpen} username={faUsername} />
+            <div className={`expandable-element ${transition} absolute top-0 right-0 flex h-screen flex-col justify-center items-center gap-2 base-gradient z-50`} transition-style={(transition == "animate") ? "in:circle:bottom-left": ""}>
                 <Flex
                     className="base-gradient"
                     flexDirection="column"
@@ -61,10 +96,10 @@ function Login({ transition } : { transition: string }) {
                         alignItems="center"
                         maxW="480px"
                     >
-                        <Image src="../assets/images/logoVitalitBlanco.png" onClick={() => navigateToHome()} alt="Logo Vitalit"/>
+                        <Image className="w-2/3" src="../assets/images/logoVitalitBlanco.png" onClick={() => NavigationManager.navigateTo("/")} alt="Logo Vitalit"/>
                         <h3 className="bg-text-login text-center mb-5">Accede a Vitalit y cambia por completo tu vida!</h3>
                         <Box minW={{ base: "90%", md: "468px"}}>
-                            <form>
+                            <form onSubmit={handleLogin}>
                                 <Stack
                                     className="base-gradient rounded-2xl"
                                     spacing={4}
@@ -73,7 +108,14 @@ function Login({ transition } : { transition: string }) {
                                 >
                                     <FormControl>
                                         <InputGroup className="bg-input-login" borderRadius={100}>
-                                            <Input type="email" placeholder='Correo Electrónico' _placeholder={{color: "purple"}}/>
+                                            <Input 
+                                                type="text" 
+                                                placeholder='Correo Electrónico o usuario' 
+                                                _placeholder={{color: "purple"}}
+                                                ref={loginRef}
+                                                name="login"
+                                                required
+                                            />
                                         </InputGroup>
                                     </FormControl>
                                     <FormControl>
@@ -82,6 +124,9 @@ function Login({ transition } : { transition: string }) {
                                                 type={showPassword ? "text" : "password"}
                                                 placeholder="Contraseña"
                                                 _placeholder={{color: "purple"}}
+                                                ref={passwordRef}
+                                                name="password"
+                                                required
                                             />
                                             <InputRightElement width="4.5rem">
                                                 <Button className='mr-2' h="1.5rem" size="sm" onClick={handleShowClick}>
@@ -90,6 +135,7 @@ function Login({ transition } : { transition: string }) {
                                             </InputRightElement>
                                         </InputGroup>
                                     </FormControl>
+                                    {showError && <p className="text-white">{showError}</p>}
                                     <Button
                                         borderRadius={10}
                                         color="purple"
@@ -97,11 +143,10 @@ function Login({ transition } : { transition: string }) {
                                         variant="solid"
                                         colorScheme="gray"
                                         width="full"
-                                        onClick={() => handleLogin()}
                                     >
                                         Iniciar sesión
                                     </Button>
-                                    <a className='color-white text-center' onClick={() => navigateToRecover()}>¿Olvidaste tu contraseña?</a>
+                                    <a className='color-white text-center' onClick={() => NavigationManager.navigateTo("/recover")}>¿Olvidaste tu contraseña?</a>
                                 </Stack>
                             </form>
                         </Box>
