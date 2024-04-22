@@ -8,7 +8,12 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { TimeClock } from '@mui/x-date-pickers/TimeClock';
 
-function ModalNotification({ openDate, setOpenDate, style } : { openDate: boolean, setOpenDate: any, style: any}) {
+function ModalNotification({ openDate, setOpenDate, style, section } : { openDate: boolean, setOpenDate: any, style: any, section: string}) {
+
+
+    const getCheckboxLabel = () => {
+        return `No quiero recibir notificaciones de la sección ${section}`;
+    };
 
     return (
         <Modal
@@ -81,7 +86,7 @@ function ModalNotification({ openDate, setOpenDate, style } : { openDate: boolea
                         <FormControlLabel
                             value="no-notifications"
                             control={<Checkbox />}
-                            label="No recibir notificaciones de esta actividad"
+                            label={getCheckboxLabel()}
                             labelPlacement="top"
                         />
                 </FormControl>

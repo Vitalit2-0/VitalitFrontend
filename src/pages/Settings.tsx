@@ -1,6 +1,6 @@
 import { Switch } from "@mui/material";
 import { useModal } from "../components/PopupAlert";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import useAuthStore from "../stores/AuthStore";
 import { activate2fa } from "../services/AuthStateProvider";
 import ModalQr from "../components/ModalQr";
@@ -21,7 +21,11 @@ function Settings() {
     const [isChecked, setIsChecked] = React.useState(false);
 
     const [openDate, setOpenDate] = React.useState(false);
-    const handleOpen = () => setOpenDate(true);
+    const [activeSection, setActiveSection] = useState('');
+    const handleOpen = (section: string) => {
+        setActiveSection(section);
+        setOpenDate(true);
+    };
 
     const handleChange = () => {
         setIsChecked(!isChecked);
@@ -95,34 +99,31 @@ function Settings() {
                         <div className="mt-3">
                             <div className="flex justify-between items-center mb-3">
                                 <p>Actividad Física</p>
-                                <IconButton color="secondary" aria-label="add an alarm" onClick={handleOpen}>
+                                <IconButton color="secondary" aria-label="add an alarm" onClick={() => handleOpen("Actividad Física")}>
                                     <AlarmIcon />
                                 </IconButton>
-                                {<ModalNotification openDate={openDate} setOpenDate={setOpenDate} style={style} />}
                             </div>
                             <div className="flex justify-between items-center mb-3">
                                 <p>Salud mental</p>
-                                <IconButton color="secondary" aria-label="add an alarm" onClick={handleOpen}>
+                                <IconButton color="secondary" aria-label="add an alarm" onClick={() => handleOpen("Salud mental")}>
                                     <AlarmIcon />
                                 </IconButton>
-                                {<ModalNotification openDate={openDate} setOpenDate={setOpenDate} style={style} />}
                             </div>
                             <div className="flex justify-between items-center mb-3">
                                 <p>Nutrición</p>
-                                <IconButton color="secondary" aria-label="add an alarm" onClick={handleOpen}>
+                                <IconButton color="secondary" aria-label="add an alarm" onClick={() => handleOpen("Nutrición")}>
                                     <AlarmIcon />
                                 </IconButton>
-                                {<ModalNotification openDate={openDate} setOpenDate={setOpenDate} style={style} />}
                             </div>
                             <div className="flex justify-between items-center mb-3">
                                 <p>Generales</p>
-                                <IconButton color="secondary" aria-label="add an alarm" onClick={handleOpen}>
+                                <IconButton color="secondary" aria-label="add an alarm" onClick={() => handleOpen("Generales")}>
                                     <AlarmIcon />
                                 </IconButton>
-                                {<ModalNotification openDate={openDate} setOpenDate={setOpenDate} style={style} />}
                             </div>
                         </div>
                     )}
+                    <ModalNotification openDate={openDate} setOpenDate={setOpenDate} style={style} section={activeSection} />
                 </div>
             </div>
         </div>
