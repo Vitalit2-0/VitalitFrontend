@@ -4,6 +4,9 @@ import React, { useEffect } from "react";
 import useAuthStore from "../stores/AuthStore";
 import { activate2fa } from "../services/AuthStateProvider";
 import ModalQr from "../components/ModalQr";
+import IconButton from '@mui/material/IconButton';
+import AlarmIcon from '@mui/icons-material/Alarm';
+import ModalNotification from "../components/ModalNotification"
 
 function Settings() {
     const { openModal } = useModal();
@@ -14,6 +17,27 @@ function Settings() {
     const [qr, setQr] = React.useState("");
     const [value2fa, setValue2fa] = React.useState(false);
     const [open, setOpen] = React.useState(false);
+
+    const [isChecked, setIsChecked] = React.useState(false);
+
+    const [openDate, setOpenDate] = React.useState(false);
+    const handleOpen = () => setOpenDate(true);
+
+    const handleChange = () => {
+        setIsChecked(!isChecked);
+    };
+
+    const style = {
+        position: 'absolute' as 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: 400,
+        bgcolor: 'background.paper',
+        border: '2px solid #000',
+        boxShadow: 24,
+        p: 4,
+    };
 
     useEffect(() => {
         setValue2fa(user.ft_login === false);
@@ -61,8 +85,44 @@ function Settings() {
                     <div className="text-xl mt-5 mb-3 color-purple">Notificaciones</div>
                     <hr />
                     <div className="flex justify-between items-center pl-2 rounded-md hover:cursor-pointer h-12 hover:bg-gray-100"> 
-                        
+                            <p>Recibir notificaciones</p>
+                            <Switch {...label} 
+                                checked={isChecked}
+                                onChange={handleChange}
+                            />
                     </div>
+                    {isChecked && (
+                        <div className="mt-3">
+                            <div className="flex justify-between items-center mb-3">
+                                <p>Actividad Física</p>
+                                <IconButton color="secondary" aria-label="add an alarm" onClick={handleOpen}>
+                                    <AlarmIcon />
+                                </IconButton>
+                                {<ModalNotification openDate={openDate} setOpenDate={setOpenDate} style={style} />}
+                            </div>
+                            <div className="flex justify-between items-center mb-3">
+                                <p>Salud mental</p>
+                                <IconButton color="secondary" aria-label="add an alarm" onClick={handleOpen}>
+                                    <AlarmIcon />
+                                </IconButton>
+                                {<ModalNotification openDate={openDate} setOpenDate={setOpenDate} style={style} />}
+                            </div>
+                            <div className="flex justify-between items-center mb-3">
+                                <p>Nutrición</p>
+                                <IconButton color="secondary" aria-label="add an alarm" onClick={handleOpen}>
+                                    <AlarmIcon />
+                                </IconButton>
+                                {<ModalNotification openDate={openDate} setOpenDate={setOpenDate} style={style} />}
+                            </div>
+                            <div className="flex justify-between items-center mb-3">
+                                <p>Generales</p>
+                                <IconButton color="secondary" aria-label="add an alarm" onClick={handleOpen}>
+                                    <AlarmIcon />
+                                </IconButton>
+                                {<ModalNotification openDate={openDate} setOpenDate={setOpenDate} style={style} />}
+                            </div>
+                        </div>
+                    )}
                 </div>
             </div>
         </div>
