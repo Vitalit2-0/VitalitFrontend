@@ -10,7 +10,8 @@ function Home() {
 
         let skippedSurvey = localStorage.getItem("skipSurvey");
 
-        if(!auth.user.hasAnsweredSurvey && !skippedSurvey){
+        console.log(auth.user)
+        if(!auth.user.survey_answered && !skippedSurvey){
             setTimeout(() => {
                 NavigationManager.navigateTo("/survey");
             }, 3000);

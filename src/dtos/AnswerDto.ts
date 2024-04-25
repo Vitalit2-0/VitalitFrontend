@@ -1,5 +1,5 @@
 type AnswerDto = {
-    idQuestion: string;
+    question_id: string;
     question: string;
     selectedOptions: string[];
 }

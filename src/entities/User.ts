@@ -6,5 +6,5 @@ type User = {
     token: string | undefined;
     username: string | undefined;
     login_id: string | undefined;
-    hasAnsweredSurvey: boolean;
+    survey_answered: boolean;
 }
