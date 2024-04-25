@@ -1,23 +1,21 @@
 import NextButtonHelper from "./helpers/NextButtonHelper"
 import React from "react";
 import { getSurveyQuestions, sendSurveyAnswers } from "../services/SurveyDataProvider"
-import { Radio, RadioGroup, FormControl, FormControlLabel, Checkbox, TextField } from "@mui/material";
+import { Radio, RadioGroup, FormControl, FormControlLabel, Checkbox, TextField, InputLabel, Select, MenuItem } from "@mui/material";
 import NavigationManager from "../services/NavigationManager";
 import useAuthStore from "../stores/AuthStore";
 import Loader from "./Loader";
 import useSurveyStore from "../stores/surveyStore";
 import { useModal } from "./PopupAlert";
-import DatePickerHelper from "./DatePickerHelper";
+import DatePickerHelper from "./helpers/DatePickerHelper";
+import GenderSelectHelper from "./helpers/GenderSelectHelper";
 
 function Question({ flag, setPercentage }: any) {
 
     const [questions, setQuestions] = React.useState<Question[]>([]);
     const [currentQuestion, setCurrentQuestion] = React.useState<Question | any>(null);
     const [selectedOptions, setSelectedOptions] = React.useState<string[]>([]);
-    const [bornDate, setBornDate] = React.useState<Date | null>(null);
-    const [weight, setWeight] = React.useState<number>(0);
-    const [height, setHeight] = React.useState<number>(0);
-    const [imc, setImc] = React.useState<number>(0);
+    const [userData, setUserData] = React.useState<any>({});
     const [error, setError] = React.useState<boolean>(false);
     const auth = useAuthStore((state: any) => state);
     const setSurveyData = useSurveyStore((state: any) => state.setSurveyData);
@@ -40,8 +38,9 @@ function Question({ flag, setPercentage }: any) {
 
     function validQuesion()
     {
-        setError(selectedOptions.length == 0 && currentQuestion.questionType !== "weight-height");
-        return (selectedOptions.length > 0 || currentQuestion.questionType === "weight-height");
+        setError((selectedOptions.length == 0 && currentQuestion.questionType !== "weight-height")
+                || (currentQuestion.questionType === "weight-height" && (userData.weight === 0 || userData.height === 0 || userData.bornDate === null)));
+        return (selectedOptions.length > 0 || (currentQuestion.questionType === "weight-height" && (userData.weight > 0 && userData.height > 0 && userData.bornDate !== null)));
     }
 
     function goNextQuestion()
@@ -60,7 +59,7 @@ function Question({ flag, setPercentage }: any) {
             if (question.id === currentQuestion.id) {
                 return {
                     ...question,
-                    selectedOptions: selectedOptions.map(Number)
+                    selectedOptions: (currentQuestion.questionType === "weight-height") ? [userData.weight, userData.height, userData.imc] : selectedOptions.map(Number)
                 };
             }
             return question;
@@ -84,19 +83,22 @@ function Question({ flag, setPercentage }: any) {
         let answers: AnswerDto[] = questions.map((question: Question, index: number) => {
             if(index === 0) focus = (question.options && question.selectedOptions) ? question.options[question.selectedOptions[0]] : "";
             return {
-                idQuestion: question.id,
+                question_id: question.id,
                 question: question.question,
                 selectedOptions: question.options?.map((option: string, index: number) => question.selectedOptions?.includes(index) ? option : "").filter((option: string) => option !== "") || []
             };
         });
-        
+        console.log(auth.user)
         return {
-            idUser: auth.user.id,
-            focusUser: focus,
-            bornDate: bornDate,
-            weight: weight,
-            height: height,
-            imc: imc,
+            user_data: {
+            focus_user: focus,
+            phone_user: auth.user.phone,
+            weight_user: userData.weight,
+            height_user: userData.height,
+            imc_user: userData.imc,
+            gender_user: userData.gender,
+            born_user: userData.bornDate?.toISOString() || ""
+            },
             answers: answers
         };
     }
@@ -115,7 +117,6 @@ function Question({ flag, setPercentage }: any) {
 
                 auth.setSurveyAnswered(auth.user, true);
 
-                console.log("Survey finished", answers);
                 //NavigationManager.navigateTo("/dashboard");
             }, 3000);
         }
@@ -126,7 +127,6 @@ function Question({ flag, setPercentage }: any) {
         if(currentQuestion.questionType === "single-choice") 
         {
             setSelectedOptions([(event.target as HTMLInputElement).value]);
-            console.log(selectedOptions);
             return;
         }
         
@@ -143,7 +143,7 @@ function Question({ flag, setPercentage }: any) {
         setSurveyData(null);
         setCurrentQuestion(null);
         localStorage.setItem("skipSurvey", "true");
-        NavigationManager.navigateTo("/dashboard");
+        //NavigationManager.navigateTo("/dashboard");
     }
 
     function handlePersonalData(event: React.ChangeEvent<HTMLInputElement>)
@@ -151,9 +151,9 @@ function Question({ flag, setPercentage }: any) {
         let value = (event.target as HTMLInputElement).value;
         let id = (event.target as HTMLInputElement).id;
 
-        if(id === "weight-field") setWeight(Number(value));
-        if(id === "height-field") setHeight(Number(value));
-        setImc(calculateIMC(weight, height));
+        if(id === "weight-field") setUserData({...userData, weight: Number(value)});
+        if(id === "height-field") setUserData({...userData, height: Number(value)});
+        setUserData({...userData, imc: calculateIMC(userData.weight, userData.height)});
     }
 
     function calculateIMC(weight: number, height: number) : number
@@ -170,7 +170,19 @@ function Question({ flag, setPercentage }: any) {
         let month = e.$M + 1;
         let year = e.$y;
 
-        setBornDate(new Date(year, month, day));
+        if(validateDate(day, month, year)) return;
+        setUserData({...userData, bornDate: new Date(year, month, day)});
+    }
+
+    function validateDate(day: number, month: number, year: number)
+    {
+        return(!day || !month || !year || year > new Date().getFullYear() || year < 1900);
+    }
+
+    function handleGenderSelectChange(event: any)
+    {
+        const { value } = event.target;
+        setUserData({...userData, gender: value});
     }
 
     return (
@@ -204,12 +216,15 @@ function Question({ flag, setPercentage }: any) {
                 {currentQuestion.questionType === "weight-height" &&
                     <div>
                         <div className="w-full flex gap-2">
-                            <TextField className="w-1/3" id="weight-field" type="number" value={weight} onInput={handlePersonalData} label="Peso (kg)" variant="outlined" inputProps={{ min: "0", max: "400", step: "1" }} />
-                            <TextField className="w-1/3" id="height-field"  type="number" value={height} onInput={handlePersonalData} label="Altura (cm)" variant="outlined" inputProps={{ min: "0", max: "230", step: "1" }} />
-                            <TextField className="w-1/3" id="imc-field"  type="number" value={imc} onInput={handlePersonalData} label="IMC" variant="outlined" inputProps={{ min: "0", max: "400", step: "1" }} disabled />
+                            <TextField className="w-1/3" id="weight-field" type="number" value={userData.weight} onInput={handlePersonalData} label="Peso (kg)" variant="outlined" inputProps={{ min: "0", max: "400", step: "1" }} />
+                            <TextField className="w-1/3" id="height-field"  type="number" value={userData.height} onInput={handlePersonalData} label="Altura (cm)" variant="outlined" inputProps={{ min: "0", max: "230", step: "1" }} />
+                            <TextField className="w-1/3" id="imc-field"  type="number" value={userData.imc} onInput={handlePersonalData} label="IMC" variant="outlined" inputProps={{ min: "0", max: "400", step: "1" }} disabled />
                         </div>
                         <p className="mt-5 mb-3">Fecha de nacimiento</p>
-                        <DatePickerHelper onChange={handleDateChange}/>
+                        <div className="w-full flex gap-2">
+                            <GenderSelectHelper value={userData.gender} handleGenderSelectChange={handleGenderSelectChange}/>
+                            <DatePickerHelper onChange={handleDateChange}/>
+                        </div>
                     </div>
                 }
                 </div>
