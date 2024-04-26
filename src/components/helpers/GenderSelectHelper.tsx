@@ -1,6 +1,4 @@
-import { MenuItem } from '@chakra-ui/react'
-import { Select } from '@mui/material'
-import React from 'react'
+import { MenuItem, Select } from '@mui/material'
 
 function GenderSelectHelper({ value, handleGenderSelectChange }: { value: string, handleGenderSelectChange: any }) {
     return (
@@ -13,6 +11,8 @@ function GenderSelectHelper({ value, handleGenderSelectChange }: { value: string
             onChange={handleGenderSelectChange}
         >
             <MenuItem key={0} value={'M'}>Masculino</MenuItem>
+            <MenuItem key={1} value={'F'}>Femenino</MenuItem>
+            <MenuItem key={2} value={'O'}>Otro</MenuItem>
         </Select>
     )
 }
