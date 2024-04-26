@@ -1,8 +1,8 @@
 type Question = {
-    id: string;
-    question: string;
-    questionType: string;
-    options?: string[];
+    question_id: string;
+    question_text: string;
+    question_type: string;
+    question_options?: string[];
     visible: boolean;
-    selectedOptions?: number[];
+    answer?: string[];
 }

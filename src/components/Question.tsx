@@ -1,7 +1,7 @@
 import NextButtonHelper from "./helpers/NextButtonHelper"
 import React from "react";
 import { getSurveyQuestions, sendSurveyAnswers } from "../services/SurveyDataProvider"
-import { Radio, RadioGroup, FormControl, FormControlLabel, Checkbox, TextField, InputLabel, Select, MenuItem } from "@mui/material";
+import { Radio, RadioGroup, FormControl, FormControlLabel, Checkbox, TextField } from "@mui/material";
 import NavigationManager from "../services/NavigationManager";
 import useAuthStore from "../stores/AuthStore";
 import Loader from "./Loader";
@@ -12,14 +12,29 @@ import GenderSelectHelper from "./helpers/GenderSelectHelper";
 
 function Question({ flag, setPercentage }: any) {
 
-    const [questions, setQuestions] = React.useState<Question[]>([]);
-    const [currentQuestion, setCurrentQuestion] = React.useState<Question | any>(null);
-    const [selectedOptions, setSelectedOptions] = React.useState<string[]>([]);
-    const [userData, setUserData] = React.useState<any>({});
-    const [error, setError] = React.useState<boolean>(false);
+    const [questionsData, setQuestionsData] = React.useState<
+        {
+            questions: Question[],
+            question: Question | null, 
+            index: number, 
+            answer: number[],
+            error: boolean
+        }>
+    (
+        {
+            questions: [],
+            question: null, 
+            index: -1, 
+            answer: [],
+            error: false
+        }
+    );
+    
+    const [userData, setUserData] = React.useState<{weight: number, height: number, imc: number, gender: string, bornDate: string | null}>({weight: 0, height: 0, imc: 0, gender: 'M', bornDate: null});
     const auth = useAuthStore((state: any) => state);
     const setSurveyData = useSurveyStore((state: any) => state.setSurveyData);
     const { openModal } = useModal();
+    const { showNotification } = useModal();
 
     React.useEffect(() => {
         getQuestions();
@@ -27,53 +42,53 @@ function Question({ flag, setPercentage }: any) {
 
     async function getQuestions()
     {
-        var questions = await getSurveyQuestions();
+        let response = await getSurveyQuestions(auth.user.token);
         
+        if(response.code !== "200") return;
+
+        let questions = response.data;
         if(questions.length > 0)
         {
-            setQuestions(questions);
-            setCurrentQuestion(questions.find((question: Question) => question.visible));
+            setQuestionsData({questions: questions, question: questions[0], index: 0, answer: [], error: false});
         }
     }
 
     function validQuesion()
     {
-        setError((selectedOptions.length == 0 && currentQuestion.questionType !== "weight-height")
-                || (currentQuestion.questionType === "weight-height" && (userData.weight === 0 || userData.height === 0 || userData.bornDate === null)));
-        return (selectedOptions.length > 0 || (currentQuestion.questionType === "weight-height" && (userData.weight > 0 && userData.height > 0 && userData.bornDate !== null)));
-    }
-
-    function goNextQuestion()
-    {
-        let id = Number(currentQuestion?.id) + 1;
-        let nextQuestion = questions.find((question: Question) => question.id == id.toString());
-        setCurrentQuestion(nextQuestion);
-        setSelectedOptions([]);
+        let error = questionsData.answer.length === 0;
+        setQuestionsData({...questionsData, error: error});
+        return !error;
     }
 
     let updatedQuestions:Question[] = [];
 
     function registerAnswer()
     {
-        updatedQuestions = questions.map((question: Question) => {
-            if (question.id === currentQuestion.id) {
+        updatedQuestions = questionsData.questions.map((question: Question) => {
+            if (question.question_id === questionsData.question?.question_id) {
+                let answers: string[] = [];
+
+                questionsData.answer.forEach((index: number) => {
+                    if(question.question_options)
+                        answers.push(question.question_options[index]);
+                });
                 return {
                     ...question,
-                    selectedOptions: (currentQuestion.questionType === "weight-height") ? [userData.weight, userData.height, userData.imc] : selectedOptions.map(Number)
+                    answer: (questionsData.question?.question_type === "weight-height") ? ['filled'] : answers
                 };
             }
             return question;
         });
         
-        setPercentage((updatedQuestions.filter((question: any) => question.selectedOptions.length > 0).length/updatedQuestions.length)*100.0);
-        setQuestions(updatedQuestions);
+        setPercentage((updatedQuestions.filter((question: any) => question.answer?.length > 0).length/updatedQuestions.length)*100.0);
+        setQuestionsData({questions: updatedQuestions, question: questionsData.questions[questionsData.index + 1], index: questionsData.index + 1, answer: [], error: false});
     }
 
     function handleNextQuestion() 
     {
         if(!validQuesion()) return;
+
         registerAnswer();
-        goNextQuestion();
         endSurveyIfFinished();
     }
 
@@ -81,57 +96,60 @@ function Question({ flag, setPercentage }: any) {
     {
         let focus = "";
         let answers: AnswerDto[] = questions.map((question: Question, index: number) => {
-            if(index === 0) focus = (question.options && question.selectedOptions) ? question.options[question.selectedOptions[0]] : "";
+            if(index === 0) focus = (question.question_options && question.answer) ? question.answer[0] : "";
             return {
-                question_id: question.id,
-                question: question.question,
-                selectedOptions: question.options?.map((option: string, index: number) => question.selectedOptions?.includes(index) ? option : "").filter((option: string) => option !== "") || []
+                question_id: question.question_id,
+                answer: question.answer || []
             };
         });
-        console.log(auth.user)
+        
         return {
             user_data: {
-            focus_user: focus,
-            phone_user: auth.user.phone,
-            weight_user: userData.weight,
-            height_user: userData.height,
-            imc_user: userData.imc,
-            gender_user: userData.gender,
-            born_user: userData.bornDate?.toISOString() || ""
+                focus_user: focus,
+                phone_user: auth.user.phone,
+                weight_user: userData.weight,
+                height_user: userData.height,
+                imc_user: userData.imc,
+                gender_user: userData.gender,
+                born_user: userData.bornDate || ""
             },
             answers: answers
         };
     }
 
-    function endSurveyIfFinished()
+    async function endSurveyIfFinished()
     {
-        if(!currentQuestion) return;
-        if(currentQuestion.id === updatedQuestions[questions.length - 1].id)
+        if(!questionsData.question) return;
+
+        if(questionsData.question?.question_id === questionsData.questions[questionsData.questions.length - 1].question_id)
         {
-            setTimeout(() => {
-                let answers: SurveyDto = buildQuestionsObject(updatedQuestions);
+            let answers: SurveyDto = buildQuestionsObject(updatedQuestions);
 
-                sendSurveyAnswers(answers);
-                setSurveyData(answers);
-                setCurrentQuestion(null);
+            let response = await sendSurveyAnswers(answers, auth.user.token);
+            
+            if(response.code !== "200")
+            {
+                showNotification("Ocurrió un error, por favor intenta de nuevo", "error");
+            }
 
-                auth.setSurveyAnswered(auth.user, true);
+            setSurveyData(answers);
+            setQuestionsData({questions: [], question: null, index: -1, answer: [], error: false});
 
-                //NavigationManager.navigateTo("/dashboard");
-            }, 3000);
+            auth.setSurveyAnswered(auth.user, true);
+
+            NavigationManager.navigateTo("/dashboard");
         }
     }
 
     const handleAnswerChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        
-        if(currentQuestion.questionType === "single-choice") 
+
+        if(questionsData.question?.question_type === "single-choice") 
         {
-            setSelectedOptions([(event.target as HTMLInputElement).value]);
+            setQuestionsData({...questionsData, answer: [Number((event.target as HTMLInputElement).value)]});
             return;
         }
         
-        setSelectedOptions([...selectedOptions, (event.target as HTMLInputElement).value]);
-        console.log(selectedOptions);
+        setQuestionsData({...questionsData, answer: [...questionsData.answer, Number((event.target as HTMLInputElement).value)]});
     };
 
     async function handleSkipSurvey()
@@ -141,7 +159,7 @@ function Question({ flag, setPercentage }: any) {
         if(!confirm) return;
 
         setSurveyData(null);
-        setCurrentQuestion(null);
+        setQuestionsData({questions: [], question: null, index: -1, answer: [], error: false});
         localStorage.setItem("skipSurvey", "true");
         //NavigationManager.navigateTo("/dashboard");
     }
@@ -150,10 +168,15 @@ function Question({ flag, setPercentage }: any) {
     {
         let value = (event.target as HTMLInputElement).value;
         let id = (event.target as HTMLInputElement).id;
+        
+        setUserData({
+            ...userData, 
+            weight: (id === 'weight-field') ? Number(value) : userData.weight, 
+            height: (id === 'height-field') ? Number(value) : userData.height, 
+            imc: calculateIMC(userData.weight, userData.height)
+        });
 
-        if(id === "weight-field") setUserData({...userData, weight: Number(value)});
-        if(id === "height-field") setUserData({...userData, height: Number(value)});
-        setUserData({...userData, imc: calculateIMC(userData.weight, userData.height)});
+        setQuestionsData({...questionsData, answer: [0]});
     }
 
     function calculateIMC(weight: number, height: number) : number
@@ -171,7 +194,7 @@ function Question({ flag, setPercentage }: any) {
         let year = e.$y;
 
         if(validateDate(day, month, year)) return;
-        setUserData({...userData, bornDate: new Date(year, month, day)});
+        setUserData({...userData, bornDate: `${year}-${month}-${day}`});
     }
 
     function validateDate(day: number, month: number, year: number)
@@ -187,20 +210,20 @@ function Question({ flag, setPercentage }: any) {
 
     return (
         <div className="h-full">
-            {currentQuestion &&
+            {questionsData.question &&
             <div className="flex flex-col gap-4 h-full">
-                <p>{currentQuestion.question}</p>
+                <p>{questionsData.question.question_text}</p>
                 <div className="flex flex-col">
-                {
-                    currentQuestion.options?.map((option: any, index: any) => {
+                {questionsData.question?.question_type !== "weight-height" &&
+                    questionsData.question.question_options?.map((option: any, index: any) => {
                         return (
                             <div key={index}>
-                                {currentQuestion.questionType === "single-choice" ? (
+                                {questionsData.question?.question_type === "single-choice" ? (
                                     <FormControl>
                                         <RadioGroup
                                             aria-labelledby="demo-controlled-radio-buttons-group"
                                             name="controlled-radio-buttons-group"
-                                            value={selectedOptions}
+                                            value={questionsData.answer}
                                             onChange={handleAnswerChange}
                                         >
                                             <FormControlLabel value={index} control={<Radio />} label={option} />
@@ -213,7 +236,7 @@ function Question({ flag, setPercentage }: any) {
                         )
                     })
                 }
-                {currentQuestion.questionType === "weight-height" &&
+                {questionsData.question?.question_type === "weight-height" &&
                     <div>
                         <div className="w-full flex gap-2">
                             <TextField className="w-1/3" id="weight-field" type="number" value={userData.weight} onInput={handlePersonalData} label="Peso (kg)" variant="outlined" inputProps={{ min: "0", max: "400", step: "1" }} />
@@ -222,8 +245,8 @@ function Question({ flag, setPercentage }: any) {
                         </div>
                         <p className="mt-5 mb-3">Fecha de nacimiento</p>
                         <div className="w-full flex gap-2">
-                            <GenderSelectHelper value={userData.gender} handleGenderSelectChange={handleGenderSelectChange}/>
                             <DatePickerHelper onChange={handleDateChange}/>
+                            <GenderSelectHelper value={userData.gender} handleGenderSelectChange={handleGenderSelectChange}/>
                         </div>
                     </div>
                 }
@@ -233,7 +256,7 @@ function Question({ flag, setPercentage }: any) {
                 </div>
                 <div onClick={handleSkipSurvey} className="absolute bottom-10 left-10 underline text-gray-400 hover:cursor-pointer">Saltar encuesta</div>
             </div>}
-            {!currentQuestion &&
+            {!questionsData.question &&
                 <div>
                     <div className="h-full">¡Listo! Estamos creando tu plan personalizado. En breve tendremos todo listo para ti.</div>
                     <div className="mt-20">
@@ -241,7 +264,7 @@ function Question({ flag, setPercentage }: any) {
                     </div>
                 </div>
             }
-            {error && <div className="flex flex-wrap absolute right-0 items-center mr-10 text-white font-bold"><p>Por favor selecciona una respuesta</p></div>}
+            {questionsData.error && <div className="flex flex-wrap absolute right-0 items-center mr-10 text-white font-bold"><p>Por favor selecciona una respuesta</p></div>}
         </div>
     )
 }
