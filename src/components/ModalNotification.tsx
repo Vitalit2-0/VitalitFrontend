@@ -8,11 +8,13 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { TimeClock } from '@mui/x-date-pickers/TimeClock';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
+import { NotificationChecker } from '../services/NotificationChecker';
+import { useEffect } from 'react';
 
 function ModalNotification({ openDate, setOpenDate, style, section } : { openDate: boolean, setOpenDate: any, style: any, section: string}) {
 
     const [selectedDays, setSelectedDays] = useState<string[]>([]);
-    const [selectedTime, setSelectedTime] = useState(null);
+    const [selectedTime, setSelectedTime] = useState<string>("");
 
     const getCheckboxLabel = () => {
         return `No quiero recibir notificaciones de la sección ${section}`;
@@ -27,10 +29,14 @@ function ModalNotification({ openDate, setOpenDate, style, section } : { openDat
     };
 
     const handleTimeChange = (time: any) => {
-        setSelectedTime(time);
+        const localTime = new Date(time);
+        const hours = localTime.getHours().toString().padStart(2, '0');
+        const minutes = localTime.getMinutes().toString().padStart(2, '0');
+        const formattedTime = `${hours}:${minutes}`;
+        setSelectedTime(formattedTime);
     };
 
-        const handleSaveChanges = () => {
+    const handleSaveChanges = () => {
         let message = 'Cambios guardados correctamente!';
 
         if (selectedDays.length > 0) {
@@ -42,7 +48,15 @@ function ModalNotification({ openDate, setOpenDate, style, section } : { openDat
         }
 
         toast.success(message);
+
+        const checker = new NotificationChecker();
+        checker.checkNotification({ day: selectedDays, time: selectedTime, section });
     };
+
+    //useEffect(() => {
+    //    const checker = new NotificationChecker();
+    //    checker.checkNotification({ day: selectedDays, time: selectedTime, section });
+    //}, [selectedDays, selectedTime, section]);
 
     return (
         <Modal
@@ -61,43 +75,43 @@ function ModalNotification({ openDate, setOpenDate, style, section } : { openDat
                 <FormControl component="fieldset">
                     <FormGroup aria-label="position" row>
                         <FormControlLabel
-                            value="lunes"
+                            value="Lunes"
                             control={<Checkbox onChange={handleCheckboxChange}/>}
                             label="Lunes"
                             labelPlacement="top"
                         />
                         <FormControlLabel
-                            value="martes"
+                            value="Martes"
                             control={<Checkbox onChange={handleCheckboxChange}/>}
                             label="Martes"
                             labelPlacement="top"
                         />
                         <FormControlLabel
-                            value="miercoles"
+                            value="Miércoles"
                             control={<Checkbox onChange={handleCheckboxChange}/>}
                             label="Miércoles"
                             labelPlacement="top"
                         />
                         <FormControlLabel
-                            value="jueves"
+                            value="Jueves"
                             control={<Checkbox onChange={handleCheckboxChange}/>}
                             label="Jueves"
                             labelPlacement="top"
                         />
                         <FormControlLabel
-                            value="viernes"
+                            value="Viernes"
                             control={<Checkbox onChange={handleCheckboxChange}/>}
                             label="Viernes"
                             labelPlacement="top"
                         />
                         <FormControlLabel
-                            value="sabado"
+                            value="Sábado"
                             control={<Checkbox onChange={handleCheckboxChange}/>}
                             label="Sábado"
                             labelPlacement="top"
                         />
                         <FormControlLabel
-                            value="domingo"
+                            value="Domingo"
                             control={<Checkbox onChange={handleCheckboxChange}/>}
                             label="Domingo"
                             labelPlacement="top"
