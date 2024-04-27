@@ -18,7 +18,7 @@ export async function getNotificationContent(): Promise<Notification[]> {
             message: "Recuerda hacer actividad nutrición",
         },
         {
-            section: "Actividad Generales",
+            section: "Generales",
             title: "Notificación generales",
             message: "Recuerda hacer actividad generales",
         },
