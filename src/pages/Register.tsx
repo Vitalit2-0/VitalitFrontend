@@ -14,11 +14,6 @@ import {Flex,
 import { FieldsValidator } from "../services/FieldsValidator";
 import { registerUser } from '../services/AuthStateProvider';
 
-type ErrorResponse = {
-    message: string;
-    valid: boolean;
-}
-
 function Register() {
     const handleShowClick = () => setShowPassword(!showPassword)
 

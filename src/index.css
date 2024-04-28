@@ -94,6 +94,12 @@ input {
   border-radius: 12px;
 }
 
+textarea:focus, input:focus {
+  outline: none;
+  padding: 10px !important;
+  border: solid 1px #cb9af7;
+}
+
 li a {
   color: #1a1a1a;
 }
@@ -161,6 +167,14 @@ li a {
 
 .base-purple {
   background: #a364db !important;
+}
+
+.base-white-light {
+  background: #fff !important;
+}
+
+.color-purple {
+  color: #a364db !important;
 }
 
 .base-dark-purple {

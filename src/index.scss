@@ -112,6 +112,12 @@ input{
     border-radius: 12px;
 }
 
+textarea:focus, input:focus{
+    outline: none;
+    padding: 10px !important;
+    border: solid 1px $base-purple;
+}
+
 li a{
     color: $base-black;
 }
@@ -181,6 +187,14 @@ li a{
 
 .base-purple {
     background: $base-deep-purple !important;
+}
+
+.base-white-light {
+    background: #fff !important;
+}
+
+.color-purple {
+  color: $base-deep-purple !important;
 }
 
 .base-dark-purple {

@@ -58,7 +58,7 @@ function Login({ transition } : { transition: string }) {
             return;
         }
         
-        if(response.data.ft_login)
+        if(!response.data.ft_login)
         {
             response = await validateUser({code: "000000", login: response.data.username});
 

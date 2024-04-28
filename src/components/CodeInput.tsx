@@ -66,7 +66,7 @@ function CodeInput({ numberOfDigits, username, setOpen, isRegister, setValue2fa 
         if(!isRegister)
         {
             console.log(response);
-            user.login({...response.data, ft_login: false})
+            user.login({...response.data, ft_login: true})
             NavigationManager.navigateTo("/dashboard");
         }
 

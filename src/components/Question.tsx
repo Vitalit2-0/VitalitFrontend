@@ -9,6 +9,7 @@ import useSurveyStore from "../stores/surveyStore";
 import { useModal } from "./PopupAlert";
 import DatePickerHelper from "./helpers/DatePickerHelper";
 import GenderSelectHelper from "./helpers/GenderSelectHelper";
+import { calculateIMC } from "../services/FitCalcProvider";
 
 function Question({ flag, setPercentage }: any) {
 
@@ -177,14 +178,6 @@ function Question({ flag, setPercentage }: any) {
         });
 
         setQuestionsData({...questionsData, answer: [0]});
-    }
-
-    function calculateIMC(weight: number, height: number) : number
-    {
-        if (height === 0) {
-            return 0;
-        }
-        return Math.round((weight / (height * height))*100 * 100) / 100;
     }
 
     function handleDateChange(e: any)

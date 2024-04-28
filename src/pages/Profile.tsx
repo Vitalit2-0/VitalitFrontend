@@ -1,23 +1,204 @@
+import { useState } from "react";
 import UserDataField from "../components/UserDataField"
+import { Button } from "@mui/material";
+import { useModal } from "../components/PopupAlert";
+import { FieldsValidator } from "../services/FieldsValidator";
+import useAuthStore from "../stores/AuthStore";
+import { translations } from "../services/TranslationsProvider";
+import { calculateAge, calculateIMC } from "../services/FitCalcProvider";
+import { updateProfile } from "../services/ProfileController";
+import { FaUser } from "react-icons/fa";
+import { IoIosFemale, IoIosMale } from "react-icons/io";
 
 function Profile() {
+    const { showNotification } = useModal()
+    const user = useAuthStore((state:any) => state.user)
+    const [editProfile, setEditProfile] = useState({disabled: true, text: "Editar perfil"})
+
+    const [userData, setUserData] = useState({
+        name: user.name,
+        lastname: user.lastname,
+        photo: "",
+        username: "tparra",
+        email: "tomopa18@hotmail.com",
+        born_date: "18-02-2001",
+        gender: "M",
+        height: "180",
+        weight: "75",
+        imc: 23.1,
+        age: "23",
+        ft_login: user.ft_login
+    })
+
+    const [lastUserData, setLastUserData] = useState(userData)
+    
+    const handleEditProfile = () => {
+        setEditProfile({disabled: !editProfile.disabled, text: editProfile.disabled ? "Guardar cambios" : "Editar perfil"})
+    }
+
+    const handleSubmitChanges = (e: any) => {
+        e.preventDefault()
+
+        if(JSON.stringify(userData) === JSON.stringify(lastUserData))
+        {
+            handleEditProfile();
+            return;
+        }   
+
+        if (!validateUser()) return;
+
+        handleEditProfile();
+        setLastUserData({
+            ...userData, 
+            imc: calculateIMC(Number(userData.weight), Number(userData.height)),
+            age: String(new Date().getFullYear() - new Date(userData.born_date).getFullYear())
+        });
+        
+        setLastUserData(userData);
+
+        // updateProfile({
+        //     ...userData, 
+        //     imc: calculateIMC(Number(userData.weight), Number(userData.height)),
+        //     age: calculateAge(userData.born_date),
+        //     weight: Number(userData.weight),
+        //     height: Number(userData.height)
+        // }, user.token)
+    }
+
+    function validateUser() : boolean {
+        
+        if(editProfile.disabled) return true;
+
+        for (const field of Object.entries(userData)) {
+            const isValid = FieldsValidator.validateField(field[0], field[1]);
+
+            if (!isValid) {
+                showNotification(`El campo ${translations[field[0] as keyof typeof translations]} no es válido${field[0] === "bornDate" ? ", debes ser mayor de edad" : ""}`, "error");
+                return false;
+            }
+        }
+        
+        return true;
+    }
+
+    const handlePhotoChange = () => {
+        if(editProfile.disabled) return;
+
+        const fileInput = document.createElement("input");
+        fileInput.type = "file";
+        fileInput.accept = "image/*";
+        fileInput.click();
+
+        fileInput.addEventListener("change", (e) => {
+            const file = (e.target as HTMLInputElement).files?.item(0);
+
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+
+            reader.onload = () => {
+                setUserData({...userData, photo: reader.result as string});
+            }
+        })
+    }
+
     return (
         <div className="base-gray">
-            <div className="ml-16 flex h-screen p-10 gap-5">
+            <div className="ml-16 flex ps-10 pe-10 gap-5">
                 <div className="w-1/3">
-                    <div className="bg-white w-full h-full rounded-3xl shadow-md">
-                        <div className="w-full p-10 flex flex-col items-center">
-                            <div className="m-auto w-32 h-32 bg-gray-200 rounded-full border-solid border-black"><img src="" alt="" /></div>
-                            <h3 className="text-2xl font-bold mt-5">Tomás Parra</h3>
-                            <div className="pl-3 pr-3 pt-2 pb-2 mt-5 mb-5 border border-black rounded-md">tparra</div>
-                            <UserDataField title="Edad" value="23" />
-                            <UserDataField title="Altura" value="1.80 m" />
-                            <UserDataField title="Peso" value="75 kg" />
-                            <UserDataField title="IMC" value="23.1" />
+                    <div className="bg-white h-[660px] w-full rounded-3xl shadow-md sticky top-10">
+                        <div className="w-full p-10 pt-5 flex flex-col items-center sticky">
+                            <div className="flex">
+                                <div className="w-1/3">
+                                    <div className={`m-auto w-28 h-28 bg-gray-200 rounded-full border-solid ${!editProfile.disabled ? "hover:cursor-pointer" : ""}`} onClick={handlePhotoChange}>
+                                        {userData.photo ? <img className="rounded-full" src={userData.photo ? userData.photo : "../assets/user.png"} alt="" /> :
+                                            <div className="h-full flex items-center justify-center">
+                                                <FaUser size={56} className="m-auto" />
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                                <div className="w-2/3 ml-5">
+                                    <h2 className="font-bold ml-3 mt-5 text-xl">{`${user.name ? user.name : ""} ${user.lastname ? user.lastname : ""}`}</h2>
+                                    <div className="flex items-center color-purple">
+                                        <UserDataField 
+                                            title="" 
+                                            value={userData.username} 
+                                            disabled={editProfile.disabled} 
+                                            handleValueChange={setUserData}
+                                            field="username"
+                                            type="text"
+                                        />
+                                        <div>
+                                            {editProfile.disabled ? (userData.gender === "M" ? <IoIosMale size={30} /> : <IoIosFemale size={30} />) : 
+                                                <div className="flex">
+                                                    <div>
+                                                        <IoIosMale size={30} className={`${userData.gender === "M" ? "base-purple text-white" : ""} p-1 rounded-md hover:bg-gray-200 hover:cursor-pointer`} onClick={() => setUserData({...userData, gender: "M"})}/>
+                                                    </div>
+                                                    <div>
+                                                        <IoIosFemale size={30} className={`${userData.gender === "F" ? "base-purple text-white" : ""} p-1 rounded-md hover:bg-gray-200 hover:cursor-pointer`} onClick={() => setUserData({...userData, gender: "F"})} />
+                                                    </div>
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <form className="w-full mt-5" onSubmit={handleSubmitChanges}>
+                                <hr />
+                                <UserDataField 
+                                    title="Email" 
+                                    value={userData.email} 
+                                    disabled={editProfile.disabled} 
+                                    handleValueChange={setUserData}
+                                    field="email"
+                                    type="text"
+                                /><hr />
+                                <UserDataField 
+                                    title="Altura (cm)" 
+                                    value={userData.height} 
+                                    disabled={editProfile.disabled} 
+                                    type="number" 
+                                    handleValueChange={setUserData}
+                                    field="height"
+                                /><hr />
+                                <UserDataField 
+                                    title="Peso (kg)" 
+                                    value={userData.weight} 
+                                    type="number" 
+                                    disabled={editProfile.disabled} 
+                                    handleValueChange={setUserData}
+                                    field="weight"
+                                /><hr />
+                                <UserDataField 
+                                    title="IMC" 
+                                    value="23.1" 
+                                    type="number" 
+                                    disabled={true} 
+                                    field="imc"
+                                /><hr />
+                                <UserDataField 
+                                    title="Edad" 
+                                    value="23" 
+                                    type="number" 
+                                    disabled={true} 
+                                    field="age"
+                                />
+                                <UserDataField 
+                                    title="Cumpleaños" 
+                                    value={userData.born_date} 
+                                    disabled={editProfile.disabled} 
+                                    handleValueChange={setUserData}
+                                    field="bornDate"
+                                    type="date"
+                                />
+                                <Button className="base-purple w-full mt-5 color-white" type="submit" >{editProfile.text}</Button>
+                            </form>
                         </div>
                     </div>
                 </div>
-                <div className="w-2/3 h-full flex flex-col">
+                <div className="w-2/3 flex flex-col">
                     <div className="w-full flex flex-wrap">
                         <div className="w-1/3 pr-2">
                             <div className="bg-white shadow-md rounded-3xl p-5">
@@ -38,7 +219,7 @@ function Profile() {
                             </div>
                         </div>
                     </div>
-                    <div className="bg-white shadow-md rounded-3xl p-5 mt-5 h-full">
+                    <div className="bg-white shadow-md h-screen rounded-3xl p-5 mt-5 h-full">
                         <h2 className="text-xl color-purple">Historial de actividad</h2>
                         <hr className="mt-5"/>
                         <div className="flex justify-center items-center h-full">No hay actividad hasta el momento</div>
