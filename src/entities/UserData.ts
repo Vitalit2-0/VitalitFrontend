@@ -1,11 +1,12 @@
-type User = {
-    id: string | undefined;
+type UserData = {
     name: string | undefined;
     lastname: string | undefined;
     email: string | undefined;
-    token: string | undefined;
     username: string | undefined;
-    login_id: string | undefined;
-    survey_answered: boolean;
     ft_login: boolean;
+    born_date: string;
+    height: number;
+    weight: number;
+    imc: number;
+    age: number;
 }

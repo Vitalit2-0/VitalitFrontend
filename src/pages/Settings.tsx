@@ -44,7 +44,7 @@ function Settings() {
     };
 
     useEffect(() => {
-        setValue2fa(user.ft_login === false);
+        setValue2fa(user.ft_login === true);
     }, [])
 
     const handleConfirm = async() => {

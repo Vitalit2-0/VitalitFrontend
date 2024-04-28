@@ -2,11 +2,11 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
-export default function DatePickerHelper({ onChange }: any ) {
+export default function DatePickerHelper({ onChange, className }: { onChange: any, className?: string } ) {
     return (
         <div className="w-full">
             <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DatePicker className="w-full" onChange={onChange} />
+                <DatePicker className={`w-48 ${className}`} onChange={onChange} />
             </LocalizationProvider>
         </div>
     );
