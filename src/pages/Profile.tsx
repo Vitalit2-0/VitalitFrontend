@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import UserDataField from "../components/UserDataField"
 import { Button } from "@mui/material";
 import { useModal } from "../components/PopupAlert";
@@ -6,39 +6,45 @@ import { FieldsValidator } from "../services/FieldsValidator";
 import useAuthStore from "../stores/AuthStore";
 import { translations } from "../services/TranslationsProvider";
 import { calculateAge, calculateIMC } from "../services/FitCalcProvider";
-import { updateProfile } from "../services/ProfileController";
+import { getProfile, updateProfile } from "../services/ProfileController";
 import { FaUser } from "react-icons/fa";
 import { IoIosFemale, IoIosMale } from "react-icons/io";
 
 function Profile() {
     const { showNotification } = useModal()
     const user = useAuthStore((state:any) => state.user)
+    
     const [editProfile, setEditProfile] = useState({disabled: true, text: "Editar perfil"})
-
-    const [userData, setUserData] = useState({
-        name: user.name,
-        lastname: user.lastname,
-        photo: "",
-        username: "tparra",
-        email: "tomopa18@hotmail.com",
-        born_date: "18-02-2001",
-        gender: "M",
-        height: "180",
-        weight: "75",
-        imc: 23.1,
-        age: "23",
-        ft_login: user.ft_login
-    })
+    const [userData, setUserData] = useState<User>(user)
 
     const [lastUserData, setLastUserData] = useState(userData)
-    
+
+    useEffect(() => {
+        getProfileData();
+    }, [])
+
+    const getProfileData = async() => {
+        const response = await getProfile(user.token, user.id);
+
+        if(response.code !== "200")
+        {
+            showNotification(response.string, "error");
+            return;
+        }
+        
+        const data = response.data;
+        
+        setUserData({...user, ...data})
+        setLastUserData({...user, ...data});
+    }
+
     const handleEditProfile = () => {
         setEditProfile({disabled: !editProfile.disabled, text: editProfile.disabled ? "Guardar cambios" : "Editar perfil"})
     }
 
-    const handleSubmitChanges = (e: any) => {
+    const handleSubmitChanges = async(e: any) => {
         e.preventDefault()
-
+        
         if(JSON.stringify(userData) === JSON.stringify(lastUserData))
         {
             handleEditProfile();
@@ -48,21 +54,27 @@ function Profile() {
         if (!validateUser()) return;
 
         handleEditProfile();
-        setLastUserData({
+    
+        const data = {
             ...userData, 
             imc: calculateIMC(Number(userData.weight), Number(userData.height)),
-            age: String(new Date().getFullYear() - new Date(userData.born_date).getFullYear())
-        });
-        
-        setLastUserData(userData);
+            age: calculateAge(userData.born_date),
+            weight: Number(userData.weight),
+            height: Number(userData.height),
+            ft_login: user.ft_login ? 1 : 0
+        }
 
-        // updateProfile({
-        //     ...userData, 
-        //     imc: calculateIMC(Number(userData.weight), Number(userData.height)),
-        //     age: calculateAge(userData.born_date),
-        //     weight: Number(userData.weight),
-        //     height: Number(userData.height)
-        // }, user.token)
+        const reponse = await updateProfile(data, user.token)
+
+        if(reponse.code !== "200")
+        {
+            showNotification(reponse.string, "error");
+            return;
+        }
+
+        showNotification("Perfil actualizado correctamente", "success");
+        setUserData({...user, ...data})
+        setLastUserData({...user, ...data});
     }
 
     function validateUser() : boolean {
@@ -70,7 +82,7 @@ function Profile() {
         if(editProfile.disabled) return true;
 
         for (const field of Object.entries(userData)) {
-            const isValid = FieldsValidator.validateField(field[0], field[1]);
+            const isValid = FieldsValidator.validateField(field[0], field[1] as string);
 
             if (!isValid) {
                 showNotification(`El campo ${translations[field[0] as keyof typeof translations]} no es válido${field[0] === "bornDate" ? ", debes ser mayor de edad" : ""}`, "error");
@@ -124,7 +136,7 @@ function Profile() {
                                     <div className="flex items-center color-purple">
                                         <UserDataField 
                                             title="" 
-                                            value={userData.username} 
+                                            value={userData.username ? userData.username : ""} 
                                             disabled={editProfile.disabled} 
                                             handleValueChange={setUserData}
                                             field="username"
@@ -149,7 +161,7 @@ function Profile() {
                                 <hr />
                                 <UserDataField 
                                     title="Email" 
-                                    value={userData.email} 
+                                    value={userData.email ? userData.email : ""} 
                                     disabled={editProfile.disabled} 
                                     handleValueChange={setUserData}
                                     field="email"
@@ -157,7 +169,7 @@ function Profile() {
                                 /><hr />
                                 <UserDataField 
                                     title="Altura (cm)" 
-                                    value={userData.height} 
+                                    value={userData.height ? userData.height.toString() : ""} 
                                     disabled={editProfile.disabled} 
                                     type="number" 
                                     handleValueChange={setUserData}
@@ -165,7 +177,7 @@ function Profile() {
                                 /><hr />
                                 <UserDataField 
                                     title="Peso (kg)" 
-                                    value={userData.weight} 
+                                    value={userData.weight ? userData.weight.toString() : ""} 
                                     type="number" 
                                     disabled={editProfile.disabled} 
                                     handleValueChange={setUserData}
@@ -219,7 +231,7 @@ function Profile() {
                             </div>
                         </div>
                     </div>
-                    <div className="bg-white shadow-md h-screen rounded-3xl p-5 mt-5 h-full">
+                    <div className="bg-white shadow-md rounded-3xl p-5 mt-5 h-full">
                         <h2 className="text-xl color-purple">Historial de actividad</h2>
                         <hr className="mt-5"/>
                         <div className="flex justify-center items-center h-full">No hay actividad hasta el momento</div>

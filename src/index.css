@@ -96,8 +96,6 @@ input {
 
 textarea:focus, input:focus {
   outline: none;
-  padding: 10px !important;
-  border: solid 1px #cb9af7;
 }
 
 li a {

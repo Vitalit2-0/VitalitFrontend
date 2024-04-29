@@ -7,7 +7,7 @@ function UserDataField({ title, value, handleValueChange, type, disabled, field 
 
     useEffect(() => {
         setDefaultValue(value)
-    }, [disabled])
+    }, [disabled, value])
 
     const handleInputChange = (e: any) => {
         setDefaultValue(e.target.value)

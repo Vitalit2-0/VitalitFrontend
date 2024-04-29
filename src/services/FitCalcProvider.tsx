@@ -4,8 +4,11 @@ export function calculateIMC(weight: number, height: number) : number
         return 0;
     }
     let heightMeters = height / 100; 
+    console.log("heightMeters",heightMeters);
     let bmi = weight / (heightMeters * heightMeters); 
+    console.log("bmi",bmi);
     bmi = Math.round(bmi * 100) / 100;
+    console.log("bmi",bmi);
     return bmi;
 }
 
