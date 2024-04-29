@@ -1,7 +1,7 @@
 import NextButtonHelper from "./helpers/NextButtonHelper"
 import React from "react";
 import { getSurveyQuestions, sendSurveyAnswers } from "../services/SurveyDataProvider"
-import { Radio, RadioGroup, FormControl, FormControlLabel, Checkbox, TextField } from "@mui/material";
+import { Radio, RadioGroup, FormControl, FormControlLabel, Checkbox } from "@mui/material";
 import NavigationManager from "../services/NavigationManager";
 import useAuthStore from "../stores/AuthStore";
 import Loader from "./Loader";
@@ -9,7 +9,7 @@ import useSurveyStore from "../stores/surveyStore";
 import { useModal } from "./PopupAlert";
 import DatePickerHelper from "./helpers/DatePickerHelper";
 import GenderSelectHelper from "./helpers/GenderSelectHelper";
-import { calculateIMC } from "../services/FitCalcProvider";
+import UserDataInputHelper from "./helpers/UserDataInputHelper";
 
 function Question({ flag, setPercentage }: any) {
 
@@ -108,8 +108,8 @@ function Question({ flag, setPercentage }: any) {
             user_data: {
                 focus_user: focus,
                 phone_user: auth.user.phone,
-                weight_user: userData.weight,
-                height_user: userData.height,
+                weight_user: Number(userData.weight),
+                height_user: Number(userData.height),
                 imc_user: userData.imc,
                 gender_user: userData.gender,
                 born_user: userData.bornDate || ""
@@ -125,12 +125,13 @@ function Question({ flag, setPercentage }: any) {
         if(questionsData.question?.question_id === questionsData.questions[questionsData.questions.length - 1].question_id)
         {
             let answers: SurveyDto = buildQuestionsObject(updatedQuestions);
-
+            console.log("answers", answers);
             let response = await sendSurveyAnswers(answers, auth.user.token);
-            
+            console.log("response", response);
             if(response.code !== "200")
             {
-                showNotification("Ocurrió un error, por favor intenta de nuevo", "error");
+                showNotification("Ocurrió un error, por favor recarga la página e intenta de nuevo", "error");
+                return;
             }
 
             setSurveyData(answers);
@@ -162,28 +163,13 @@ function Question({ flag, setPercentage }: any) {
         setSurveyData(null);
         setQuestionsData({questions: [], question: null, index: -1, answer: [], error: false});
         localStorage.setItem("skipSurvey", "true");
-        //NavigationManager.navigateTo("/dashboard");
-    }
-
-    function handlePersonalData(event: React.ChangeEvent<HTMLInputElement>)
-    {
-        let value = (event.target as HTMLInputElement).value;
-        let id = (event.target as HTMLInputElement).id;
-        
-        setUserData({
-            ...userData, 
-            weight: (id === 'weight-field') ? Number(value) : userData.weight, 
-            height: (id === 'height-field') ? Number(value) : userData.height, 
-            imc: calculateIMC(userData.weight, userData.height)
-        });
-
-        setQuestionsData({...questionsData, answer: [0]});
+        NavigationManager.navigateTo("/dashboard");
     }
 
     function handleDateChange(e: any)
     {
-        let day = e.$D;
-        let month = e.$M + 1;
+        let day = e.$D < 10 ? `0${e.$D}` : e.$D;
+        let month = e.$M + 1 < 10 ? `0${e.$M + 1}` : e.$M + 1;
         let year = e.$y;
 
         if(validateDate(day, month, year)) return;
@@ -232,9 +218,9 @@ function Question({ flag, setPercentage }: any) {
                 {questionsData.question?.question_type === "weight-height" &&
                     <div>
                         <div className="w-full flex gap-2">
-                            <TextField className="w-1/3" id="weight-field" type="number" value={userData.weight} onInput={handlePersonalData} label="Peso (kg)" variant="outlined" inputProps={{ min: "0", max: "400", step: "1" }} />
-                            <TextField className="w-1/3" id="height-field"  type="number" value={userData.height} onInput={handlePersonalData} label="Altura (cm)" variant="outlined" inputProps={{ min: "0", max: "230", step: "1" }} />
-                            <TextField className="w-1/3" id="imc-field"  type="number" value={userData.imc} onInput={handlePersonalData} label="IMC" variant="outlined" inputProps={{ min: "0", max: "400", step: "1" }} disabled />
+                            <UserDataInputHelper field="weight" type="number" userData={userData} setUserData={setUserData} value={userData.weight} setQuestionsData={setQuestionsData} questionsData={questionsData} label={"Peso(kg)"} min={0} max={400} />
+                            <UserDataInputHelper field="height" type="number" userData={userData} setUserData={setUserData} value={userData.height} setQuestionsData={setQuestionsData} questionsData={questionsData} label={"Altura(cm)"} min={0} max={230} />
+                            <UserDataInputHelper field="imc" type="number" userData={userData} setUserData={setUserData} value={userData.imc} setQuestionsData={setQuestionsData} questionsData={questionsData} label={"IMC"} min={0} max={400} disabled />
                         </div>
                         <p className="mt-5 mb-3">Fecha de nacimiento</p>
                         <div className="w-full flex gap-2">

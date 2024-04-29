@@ -53,7 +53,7 @@ function Settings() {
         if(confirm && value2fa === false) 
         {
             const result = await activate2fa({username: user.username});
-
+            console.log(result);
             if(!result.data) {
                 showNotification('Error generando el código QR', 'error');
                 return;
