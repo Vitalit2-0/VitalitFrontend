@@ -9,22 +9,17 @@ import { TimeClock } from '@mui/x-date-pickers/TimeClock';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 import { NotificationChecker } from '../services/NotificationChecker';
-import { useEffect } from 'react';
 
 function ModalNotification({ openDate, setOpenDate, style, section } : { openDate: boolean, setOpenDate: any, style: any, section: string}) {
 
-    const [selectedDays, setSelectedDays] = useState<string[]>([]);
-    const [selectedTime, setSelectedTime] = useState<string>("");
-
-    const getCheckboxLabel = () => {
-        return `No quiero recibir notificaciones de la sección ${section}`;
-    };
+    const [selectedData, setSelectedData] = useState<{ [key: string]: { days: string[], time: string } }>({});
 
     const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const days = selectedData[section]?.days || [];
         if (event.target.checked) {
-            setSelectedDays([...selectedDays, event.target.value]);
+            setSelectedData({ ...selectedData, [section]: { ...selectedData[section], days: [...days, event.target.value] } });
         } else {
-            setSelectedDays(selectedDays.filter((day: string) => day !== event.target.value));
+            setSelectedData({ ...selectedData, [section]: { ...selectedData[section], days: days.filter((day: string) => day !== event.target.value) } });
         }
     };
 
@@ -33,30 +28,40 @@ function ModalNotification({ openDate, setOpenDate, style, section } : { openDat
         const hours = localTime.getHours().toString().padStart(2, '0');
         const minutes = localTime.getMinutes().toString().padStart(2, '0');
         const formattedTime = `${hours}:${minutes}`;
-        setSelectedTime(formattedTime);
+        setSelectedData({ ...selectedData, [section]: { ...selectedData[section], time: formattedTime } });
     };
 
     const handleSaveChanges = () => {
+
+        const selectedDays = selectedData[section]?.days || [];
+        const selectedTime = selectedData[section]?.time || "";
+
+        if (selectedDays.length === 0 && !selectedTime) {
+            toast.info(`No recibirás notificaciones para la sección ${section}.`);
+            return;
+        }
+
+        if (selectedDays.length === 0) {
+            toast.error('Selecciona al menos un día.');
+            return;
+        }
+
+        if (!selectedTime) {
+            toast.error('Selecciona una hora.');
+            return;
+        }
+
         let message = 'Cambios guardados correctamente!';
 
-        if (selectedDays.length > 0) {
+        if (selectedDays.length > 0 && selectedTime) {
             message += ` Recibiras notificaciones los días: ${selectedDays.join(', ')}.`;
-        }
-
-        if (selectedTime) {
             message += ` A la hora: ${selectedTime}.`;
+            toast.success(message);
         }
-
-        toast.success(message);
 
         const checker = new NotificationChecker();
         checker.checkNotification({ day: selectedDays, time: selectedTime, section });
     };
-
-    //useEffect(() => {
-    //    const checker = new NotificationChecker();
-    //    checker.checkNotification({ day: selectedDays, time: selectedTime, section });
-    //}, [selectedDays, selectedTime, section]);
 
     return (
         <Modal
@@ -70,71 +75,79 @@ function ModalNotification({ openDate, setOpenDate, style, section } : { openDat
                     ¿Cuándo quieres recibir tus notificaciones?
                 </Typography>
 
-                <p>Selecciona los días</p>
+                <p className="mt-3">Selecciona los días</p>
 
                 <FormControl component="fieldset">
                     <FormGroup aria-label="position" row>
                         <FormControlLabel
                             value="Lunes"
-                            control={<Checkbox onChange={handleCheckboxChange}/>}
-                            label="Lunes"
+                            control={<Checkbox onChange={handleCheckboxChange} style={{ padding: 3 }}/>}
+                            label="L"
                             labelPlacement="top"
+                            style={{ marginRight: 0 }} 
                         />
                         <FormControlLabel
                             value="Martes"
-                            control={<Checkbox onChange={handleCheckboxChange}/>}
-                            label="Martes"
+                            control={<Checkbox onChange={handleCheckboxChange} style={{ padding: 3 }}/>}
+                            label="M"
                             labelPlacement="top"
+                            style={{ marginRight: 0 }} 
                         />
                         <FormControlLabel
                             value="Miércoles"
-                            control={<Checkbox onChange={handleCheckboxChange}/>}
-                            label="Miércoles"
+                            control={<Checkbox onChange={handleCheckboxChange} style={{ padding: 3 }}/>}
+                            label="M"
                             labelPlacement="top"
+                            style={{ marginRight: 0 }} 
                         />
                         <FormControlLabel
                             value="Jueves"
-                            control={<Checkbox onChange={handleCheckboxChange}/>}
-                            label="Jueves"
+                            control={<Checkbox onChange={handleCheckboxChange} style={{ padding: 3 }}/>}
+                            label="J"
                             labelPlacement="top"
+                            style={{ marginRight: 0 }} 
                         />
                         <FormControlLabel
                             value="Viernes"
-                            control={<Checkbox onChange={handleCheckboxChange}/>}
-                            label="Viernes"
+                            control={<Checkbox onChange={handleCheckboxChange} style={{ padding: 3 }}/>}
+                            label="V"
                             labelPlacement="top"
+                            style={{ marginRight: 0 }} 
                         />
                         <FormControlLabel
                             value="Sábado"
-                            control={<Checkbox onChange={handleCheckboxChange}/>}
-                            label="Sábado"
+                            control={<Checkbox onChange={handleCheckboxChange} style={{ padding: 3 }}/>}
+                            label="S"
                             labelPlacement="top"
+                            style={{ marginRight: 0 }} 
                         />
                         <FormControlLabel
                             value="Domingo"
-                            control={<Checkbox onChange={handleCheckboxChange}/>}
-                            label="Domingo"
+                            control={<Checkbox onChange={handleCheckboxChange} style={{ padding: 3 }}/>}
+                            label="D"
                             labelPlacement="top"
+                            style={{ marginRight: 0 }} 
                         />
                     </FormGroup>
                 </FormControl>
 
-                <p>Selecciona la hora</p>
+                <p className="mt-3">Selecciona la hora</p>
 
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <TimeClock ampm={false} onChange={handleTimeChange}/>
                 </LocalizationProvider>
 
-                <FormControl component="fieldset">
-                        <FormControlLabel
-                            value="no-notifications"
-                            control={<Checkbox />}
-                            label={getCheckboxLabel()}
-                            labelPlacement="top"
-                        />
-                </FormControl>
+                <Box style={{ display: 'flex', justifyContent: 'center'}}>
+                    <Button 
+                        style={{ marginTop: 10, backgroundColor: 'purple'}} 
+                        variant="contained" 
+                        onClick={handleSaveChanges}
+                    >
+                        Guardar cambios
+                    </Button>
+                </Box>
 
-                <Button onClick={handleSaveChanges}>Guardar cambios</Button>
+
             </Box>
         </Modal>
     )
