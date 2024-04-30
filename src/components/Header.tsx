@@ -16,7 +16,7 @@ function Header({ setTransition } : { setTransition: any }) {
     return (
         <div style={{height: "115px"}} className='flex justify-between pl-20 pr-20 pt-5 pb-5 absolute w-full top-0 m-0 z-40 transition-all'>
             <div className='flex content-center flex-wrap ml-1'>
-                <img className="w-36" src="../assets/images/logoVitalit.png" alt="" />
+                <img className="w-36" src="assets/images/logoVitalit.png" alt="" />
             </div>
             <Menu setTransition={setTransition}/>
         </div>

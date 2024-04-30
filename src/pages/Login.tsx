@@ -96,7 +96,7 @@ function Login({ transition } : { transition: string }) {
                         alignItems="center"
                         maxW="480px"
                     >
-                        <Image className="w-2/3" src="../assets/images/logoVitalitBlanco.png" onClick={() => NavigationManager.navigateTo("/")} alt="Logo Vitalit"/>
+                        <Image className="w-2/3" src="assets/images/logoVitalitBlanco.png" onClick={() => NavigationManager.navigateTo("/")} alt="Logo Vitalit"/>
                         <h3 className="bg-text-login text-center mb-5">Accede a Vitalit y cambia por completo tu vida!</h3>
                         <Box minW={{ base: "90%", md: "468px"}}>
                             <form onSubmit={handleLogin}>
@@ -153,7 +153,7 @@ function Login({ transition } : { transition: string }) {
                     </Stack>
                     <p className='text-white mt-5'>
                         No tienes cuenta?{" "}
-                        <a className='color-white text-center' href="/register" >
+                        <a className='color-white text-center' onClick={() => NavigationManager.navigateTo("/register")} >
                             Regístrate
                         </a>
                     </p>

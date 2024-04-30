@@ -197,7 +197,7 @@ li a {
 
 .bg-image-purple {
   position: relative;
-  background-image: url("../assets/images/background.jpg");
+  background-image: url("assets/images/background.jpg");
   background-size: cover;
 }
 

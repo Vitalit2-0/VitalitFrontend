@@ -19,7 +19,7 @@ function Survey() {
                 <div className="card-inner h-full shadow-card">
                     <div className="card-front h-full inline-flex">
                         <picture className="absolute top-8 right-5 w-48 z-0">
-                            <img src="../assets/images/trainer-half.png" alt="entrenador"/>
+                            <img src="assets/images/trainer-half.png" alt="entrenador"/>
                         </picture>
                         <div className="relative inline-flex flex-col z-10">
                             <div>

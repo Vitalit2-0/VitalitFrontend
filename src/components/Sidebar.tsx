@@ -24,7 +24,7 @@ function Sidebar() {
             <div className='bg-white flex flex-col justify-between rounded-md w-full h-full shadow-light p-2'>
                 <div>
                     <div className="flex w-full justify-center items-center h-16">
-                        <picture><img src="../assets/images/logo-short.png" className="p-2" alt="" /></picture>
+                        <picture><img src="assets/images/logo-short.png" className="p-2" alt="" /></picture>
                     </div>
                     <hr style={{border: "solid 1px #d1d5db"}}/>
                     <div>

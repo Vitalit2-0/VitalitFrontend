@@ -5,7 +5,7 @@ function Layout() {
     return (
         <div className='relative'>
             <Sidebar/>
-            <div className='pt-10'>
+            <div>
                 <Outlet/> 
             </div>
         </div>

@@ -61,7 +61,8 @@ function Profile() {
             age: calculateAge(userData.born_date),
             weight: Number(userData.weight),
             height: Number(userData.height),
-            ft_login: user.ft_login ? 1 : 0
+            ft_login: user.ft_login ? 1 : 0,
+            survey_answered: user.survey_answered
         }
 
         const reponse = await updateProfile(data, user.token)
@@ -116,7 +117,7 @@ function Profile() {
     }
 
     return (
-        <div className="base-gray">
+        <div className="base-gray pt-10">
             <div className="ml-16 flex ps-10 pe-10 gap-5">
                 <div className="w-1/3">
                     <div className="bg-white h-[660px] w-full rounded-3xl shadow-md sticky top-10">
@@ -124,7 +125,7 @@ function Profile() {
                             <div className="flex">
                                 <div className="w-1/3">
                                     <div className={`m-auto w-28 h-28 bg-gray-200 rounded-full border-solid ${!editProfile.disabled ? "hover:cursor-pointer" : ""}`} onClick={handlePhotoChange}>
-                                        {userData.photo ? <img className="rounded-full" src={userData.photo ? userData.photo : "../assets/user.png"} alt="" /> :
+                                        {userData.photo ? <img className="rounded-full" src={userData.photo ? userData.photo : "assets/user.png"} alt="" /> :
                                             <div className="h-full flex items-center justify-center">
                                                 <FaUser size={56} className="m-auto" />
                                             </div>

@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { HashRouter, Route, Routes } from 'react-router-dom'
 import './App.css'
 import ProtectedRoute from './components/ProtectedRoute'
 import Home from './pages/Home'
@@ -31,7 +31,7 @@ const THEME = createTheme({
 function App() {
     return (
         <ThemeProvider theme={THEME}>
-            <BrowserRouter>
+            <HashRouter>
                 <Routes>
                     <Route element={<PopupAlert/>}>
                         <Route path="/" element={<Landing/>}/>
@@ -52,7 +52,7 @@ function App() {
                         </Route>
                     </Route>
                 </Routes>
-            </BrowserRouter>
+            </HashRouter>
         </ThemeProvider>
         
     )

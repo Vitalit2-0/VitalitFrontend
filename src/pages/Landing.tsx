@@ -34,13 +34,13 @@ function Landing() {
                 <Header setTransition={handleLogin}/>
                 <section id="#inicio" className="flex pr-20 pl-20 relative z-10">
                     <div className="w-1/2 h-screen relative flex justify-center content-center flex-col mt-18">
-                        <img className="w-32 absolute bottom-20 right-10 animate-rotate-x" src="../assets/images/shape-1.png" alt="" />
+                        <img className="w-32 absolute bottom-20 right-10 animate-rotate-x" src="assets/images/shape-1.png" alt="" />
                         <h1 className="text-6xl mb-10">Bienvenido a Vitalit </h1>
                         <p className="text-xl leading-10 mb-10">Transforma tu bienestar. Únete a Vitalit y empieza tu camino hacia una vida saludable. Descubre el universo de salud física y mental a tu medida.</p>
                         <DefaultButton id="#vitalit" text="Comenzar" className="base-pink w-1/2"/>
                     </div>
                     <div className="w-1/2 relative flex flex-wrap justify-center content-center mt-28">
-                        <img src="../assets/images/famale-trainer.png" alt="" className="w-1/2 h-auto" />
+                        <img src="assets/images/famale-trainer.png" alt="" className="w-1/2 h-auto" />
                         <div className="absolute w-56 top-20 left-8 text-center p-5 rounded-md font-bold animate-top-bottom" style={{background: "rgba(255, 255, 255, 0.6)", boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px"}}>¡Tu meta está más cerca de lo que crees!</div>
                         <div className="absolute w-56 bottom-40 right-5 p-5 text-center rounded-md font-bold animate-top-bottom " style={{background: "rgba(255, 255, 255, 0.6)", boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px"}}>¡Tú pones límites!</div>
                     </div>
@@ -77,14 +77,14 @@ function Landing() {
                         <div className="bg-image-purple overflow-hidden w-full h-full flex pl-48 pr-48 pt-20 pb-20" style={{borderRadius: "10px", borderTopLeftRadius: "200px", borderBottomRightRadius: "200px"}}>
                             <FadeLeftComponent className="w-1/2">
                                 <div className="base-white p-10 rounded-3xl shadow-card text-center mr-5">
-                                    <img className="w-1/4 m-auto" src="../assets/images/vision.png" alt="" />
+                                    <img className="w-1/4 m-auto" src="assets/images/vision.png" alt="" />
                                     <h3 className="text-2xl color-purple font-bold mt-5 mb-5">Visión</h3>
                                     <p className="leading-8">Para el año 2027, <span className="font-bold">Vitalit</span> busca ser el referente por excelencia en la promoción del cuidado personal, físico y mental, mediante un enfoque en la innovación continua, el apoyo mutuo y una experiencia enriquecedora.</p>
                                 </div>
                             </FadeLeftComponent>
                             <FadeRightComponent className="w-1/2">
                                 <div className="base-white p-10 rounded-3xl shadow-card text-center ml-5">
-                                    <img className="w-1/4 m-auto" src="../assets/images/mision.png" alt="" />
+                                    <img className="w-1/4 m-auto" src="assets/images/mision.png" alt="" />
                                     <h3 className="text-2xl color-purple font-bold mt-5 mb-5">Misión</h3>
                                     <p className="leading-8">Para el año 2027, <span className="font-bold">Vitalit</span> busca ser el referente por excelencia en la promoción del cuidado personal, físico y mental, mediante un enfoque en la innovación continua, el apoyo mutuo y una experiencia enriquecedora.</p>
                                 </div>
@@ -95,11 +95,11 @@ function Landing() {
                 <section id="unete" className="h-screen relative bg-white overflow-hidden">
                     <Ring width="320px" color="rgba(53, 197, 250, 0.5)" bottom="-15%" right="-8%" strokewidth="10"/>
                     <Dot width="72px" color="rgba(253, 120, 159, 0.8)" top="7%" left="3%"/>
-                    <img className="w-32 absolute top-20 right-40 animate-rotate-x" src="../assets/images/shape-1.png" alt="" />
+                    <img className="w-32 absolute top-20 right-40 animate-rotate-x" src="assets/images/shape-1.png" alt="" />
                     <div className="h-full p-20">
                         <div className="flex h-full rounded-3xl" style={{background: "#faf9ff"}}>
                             <div className="w-1/3 h-full flex content-center flex-wrap">
-                                <img src="../assets/images/runner.png" alt="" className="w-full h-auto" />
+                                <img src="assets/images/runner.png" alt="" className="w-full h-auto" />
                             </div>
                             <div className="w-2/3 p-20 flex flex-col justify-center">
                                 <h3 className="text-6xl font-bold color-purple">Únete a Vitalit</h3>
