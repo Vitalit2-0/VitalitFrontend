@@ -1,7 +1,7 @@
 import React from "react"
 import NextButtonHelper from "../components/helpers/NextButtonHelper"
-import ProgressBar from "../components/ProgressBar"
-import Question from "../components/Question"
+import ProgressBar from "../components/shared/ProgressBar"
+import Question from "../components/pages/survey/Question"
 
 function Survey() {
 

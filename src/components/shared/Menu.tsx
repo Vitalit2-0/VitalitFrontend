@@ -1,4 +1,4 @@
-import GradientButton from './helpers/GradientButton'
+import GradientButton from '../helpers/GradientButton'
 
 function Menu({setTransition, color} : {setTransition: any, color?: string}) {
     return (

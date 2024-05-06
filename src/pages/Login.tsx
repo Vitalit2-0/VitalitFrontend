@@ -15,7 +15,7 @@ import React from 'react';
 import NavigationManager from '../services/NavigationManager';
 import useAuthStore from '../stores/AuthStore';
 import { loginUser, validateUser } from '../services/AuthStateProvider';
-import ModalQr from '../components/ModalQr';
+import ModalQr from '../components/shared/Modal2fa';
 
 function Login({ transition } : { transition: string }) {
 

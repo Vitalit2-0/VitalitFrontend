@@ -1,8 +1,8 @@
 import { Box, Modal, Typography } from '@mui/material'
 import QRCode from 'react-qr-code'
-import CodeInput from './CodeInput';
+import CodeInput from './OtpValidator';
 
-function ModalQr({ qr, open, username, setOpen, isRegister, setValue2fa } : { qr?: string, open: boolean, username: string, setOpen: any, isRegister: boolean, setValue2fa?: any }) {
+function Modal2fa({ qr, open, username, setOpen, isRegister, setValue2fa } : { qr?: string, open: boolean, username: string, setOpen: any, isRegister: boolean, setValue2fa?: any }) {
 
     return (
         <Modal
@@ -39,4 +39,4 @@ function ModalQr({ qr, open, username, setOpen, isRegister, setValue2fa } : { qr
     )
 }
 
-export default ModalQr
+export default Modal2fa

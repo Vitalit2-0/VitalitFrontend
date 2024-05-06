@@ -1,14 +1,14 @@
-import Header from "../components/Header"
+import Header from "../components/pages/landing/Header"
 import DefaultButton from "../components/helpers/DefaultButton"
 import React from "react";
 import Login from "./Login";
 import GradientButton from "../components/helpers/GradientButton";
 import Dot from "../components/stylers/Dot";
 import Ring from "../components/stylers/Ring";
-import FeatureCard from "../components/FeatureCard";
+import FeatureCard from "../components/shared/FeatureCard";
 import FadeRightComponent from "../components/animators/FadeRightComponent";
 import FadeLeftComponent from "../components/animators/FadeLeftComponent";
-import Footer from "../components/Footer";
+import Footer from "../components/pages/landing/Footer";
 import NavigationManager from "../services/NavigationManager";
 import useAuthStore from "../stores/AuthStore";
 

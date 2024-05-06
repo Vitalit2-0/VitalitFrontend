@@ -1,4 +1,4 @@
-import Menu from "./Menu"
+import Menu from "../../shared/Menu"
 import { FaFacebookSquare } from "react-icons/fa";
 import { RiInstagramFill } from "react-icons/ri";
 import { IoLogoLinkedin } from "react-icons/io5";

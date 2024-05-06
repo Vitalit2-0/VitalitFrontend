@@ -1,5 +1,5 @@
 import { IoMdNotificationsOutline } from "react-icons/io";
-import Dot from "./stylers/Dot";
+import Dot from "../stylers/Dot";
 
 function NotificationCenter() {
     return (

@@ -6,112 +6,68 @@ import useAuthStore from "../stores/AuthStore";
 import GradientButton from "../components/helpers/GradientButton";
 import { getSurveyResults } from "../services/SurveyDataProvider";
 import { CreateWorkoutPlan } from "../services/OpenAIService";
-import WorkoutPlan from "../components/WorkoutPlan";
-import { useModal } from "../components/PopupAlert";
+import WorkoutPlan from "../components/pages/workout/WorkoutPlan";
+import { useModal } from "../components/shared/PopupAlert";
+import { SearchImages } from "../services/UnsPlashImagesProvider";
 
 function Workout() {
 
     const [workoutStarted, setWorkoutStarted] = useState<boolean>(false);
+    const [workoutFinished, setWorkoutFinished] = useState<boolean>(false);
     const [workoutPlan, setWorkoutPlan] = useState<any>([]);
-    const { openModal } = useModal();
+    const [error, setError] = useState<boolean>(false);
+    const { openModal, showNotification, showFullScreenLoader } = useModal();
     const user = useAuthStore((state: any) => state.user)
 
     useEffect(() => {
+        SearchImages("saltos de tijera");
+        const workoutAlreadyCompleted = localStorage.getItem("workoutComplete");
+        //TODO: Add workout to user history. Service is not implemented yet.
+        if(workoutAlreadyCompleted)
+        {
+            setWorkoutFinished(true);
+            return;
+        }
+
         CreateWorkoutRoutine();
     }, [])
 
-    async function startWorkout(start: boolean) {
+    async function startWorkout(start: boolean, restart?: boolean) {
         if(!start) {
             let confirm = await openModal("¡Atención!", "¿Estás seguro de que deseas terminar el entrenamiento?, puedes volver a empezarlo en cualquier momento.");
     
             if(!confirm) return;
-            setWorkoutStarted(start);
+            setWorkoutStarted(false);
             window.location.reload();
         }   
 
-        setWorkoutStarted(start);
+        if(restart) 
+        {
+            localStorage.removeItem("workoutComplete");
+            window.location.reload();
+        }
+
+        setWorkoutStarted(true);
     }
     
     async function CreateWorkoutRoutine() {
+
+        showFullScreenLoader(true);
         const response: any = await getSurveyResults(user.id, user.token);
-        const workout: any = [
-            {
-                "exerciseName": "Jumping Jacks",
-                "equipment": "None",
-                "sets": 2,
-                "repetitions": 20,
-                "type": "warming",
-                "rest": 5
-            },
-            {
-                "exerciseName": "High Knees",
-                "equipment": "None",
-                "sets": 2,
-                "repetitions": 30,
-                "type": "warming",
-                "rest": 30
-            },
-            {
-                "exerciseName": "Arm Circles",
-                "equipment": "None",
-                "sets": 2,
-                "repetitions": 12,
-                "type": "warming",
-                "rest": 30
-            },
-            {
-                "exerciseName": "Squats",
-                "equipment": "None",
-                "sets": 3,
-                "repetitions": 15,
-                "type": "workout",
-                "rest": 60
-            },
-            {
-                "exerciseName": "Push-ups",
-                "equipment": "Mat",
-                "sets": 3,
-                "repetitions": 12,
-                "type": "workout",
-                "rest": 60
-            },
-            {
-                "exerciseName": "Plank",
-                "equipment": "Mat",
-                "sets": 3,
-                "repetitions": 30,
-                "type": "workout",
-                "rest": 60
-            },
-            {
-                "exerciseName": "Hamstring Stretch",
-                "equipment": "None",
-                "sets": 2,
-                "repetitions": 15,
-                "type": "stretch",
-                "rest": 30
-            },
-            {
-                "exerciseName": "Shoulder Stretch",
-                "equipment": "None",
-                "sets": 2,
-                "repetitions": 15,
-                "type": "stretch",
-                "rest": 30
-            },
-            {
-                "exerciseName": "Quad Stretch",
-                "equipment": "None",
-                "sets": 2,
-                "repetitions": 15,
-                "type": "stretch",
-                "rest": 30
-            }
-        ];
-        // const requestRoutine = await CreateWorkoutPlan(response.data ? response.data : null);
-        // console.log(requestRoutine.data);
+        const workout = await CreateWorkoutPlan(response.data ? response.data : null);
+
+        console.log(workout.data);
         
-        setWorkoutPlan(workout);
+        if(!workout.data)
+        {
+            showNotification("¡Lo sentimos! Ha ocurrido un error al cargar tu entrenamiento, por favor intenta de nuevo en un minuto.", "error");
+            setError(true);
+            showFullScreenLoader(false);
+            return;
+        }
+
+        setWorkoutPlan(workout.data);
+        showFullScreenLoader(false);
     }
 
     return (
@@ -124,7 +80,7 @@ function Workout() {
                             <img className="w-full rounded-xl" src="assets/images/workout.webp" alt="" />
                             <div className="w-full h-full flex flex-col justify-between rounded-xl absolute top-0 right-0 left-0 bg-[rgba(0,0,0,0.4)]">
                                 <h2 className="font-bold text-white text-xl mt-5 ms-5">Entrenamiento de hoy</h2>
-                                <a className="w-12 mb-5 ms-5" onClick={() => startWorkout(!workoutStarted)} data-tooltip-id="start-tooltip" data-tooltip-variant="success" data-tooltip-content="Empecemos!">
+                                <a className="w-12 mb-5 ms-5" href="#workout-section" onClick={() => startWorkout(!workoutStarted)} data-tooltip-id="start-tooltip" data-tooltip-variant="success" data-tooltip-content="Empecemos!">
                                     {!workoutStarted ? <FaCirclePlay className="text-white text-5xl cursor-pointer" /> :
                                     <FaStopCircle className="text-white text-5xl cursor-pointer" />}
                                 </a>
@@ -132,8 +88,46 @@ function Workout() {
                             </div>
                         </div>
                     </div>
-                    <div className="w-2/3 bg-white rounded-3xl shadow-md mt-8 sticky top-0 p-4 h-[90vh]">
-                        <WorkoutPlan workoutPlan={workoutPlan} workoutStarted={workoutStarted} startWorkout={startWorkout} />
+                    <div id="workout-section" className="w-2/3 bg-white rounded-3xl shadow-md mt-8 sticky top-0 min-h-[90vh] flex items-center">
+                        {!workoutStarted && !workoutFinished &&
+                            <div className='h-full flex items-center'>
+                                <div className='p-32 flex flex-col justify-center'>
+                                    <div className='flex items-center'>
+                                        <img className='w-4/12 mr-10' src="assets/images/ready-start.webp" alt="" />
+                                        <div>
+                                            <h1 className="text-2xl font-bold text-[#374151]">Aqui está tu plan de entrenamiento de hoy!</h1>
+                                            <p className="mt-3 mb-3 pt-3 pb-3 rounded-xl">
+                                                {user.survey_answered ? "Disfruta este entrenamiento creado por inteligencia artificial especialmente para ti, basado en tus intereses y gustos." :
+                                                                "Disfruta este entrenamiento general creado por inteligencia artificial. Completa la encuesta inicial para que puedas recibir tu entrenamiento personalizado."}
+                                                <span className='ms-1 color-purple font-bold'>¿Estás preparad@?</span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                    {!error ? <GradientButton className="base-gradient w-full" text="Comenzar" onClick={() => startWorkout(!workoutStarted)} /> :
+                                    <GradientButton className="base-gradient w-full" text="Intentar de nuevo" onClick={() => CreateWorkoutRoutine()} />}
+                                </div>
+                            </div>
+                        }
+                        {workoutStarted && !workoutFinished &&
+                            <WorkoutPlan workoutPlan={workoutPlan} workoutFinished={workoutFinished} workoutStarted={workoutStarted} setWorkoutFinished={setWorkoutFinished} setWorkoutStarted={setWorkoutStarted} />
+                        }
+                        {workoutFinished &&
+                            <div className="flex h-full items-center">
+                                <div className='p-10 ps-32 pe-32 flex flex-col justify-center'>
+                                    <div className='text-center'>
+                                        <h1 className="text-2xl font-bold text-[#374151]">¡Felicitaciones!</h1>
+                                        <img className='mx-auto w-2/5' src="assets/images/train-success.webp" alt="" />
+                                        <div className='mt-3 mb-3 '>
+                                            <p className="rounded-xl">Has terminado tu entrenamiento de hoy.  
+                                                <span className='ms-1 color-purple font-bold'>¡Buen trabajo!</span>
+                                            </p>
+                                            <p>En caso de que lo desees, puedes realizar otro entrenamiento</p>
+                                        </div>
+                                    </div>
+                                    <GradientButton className="base-gradient w-full" text="Comenzar nuevo entrenamiento" onClick={() => startWorkout(!workoutStarted, true)} />
+                                </div>
+                            </div>
+                        }
                     </div>
                 </div>
             </div>

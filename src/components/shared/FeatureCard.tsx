@@ -1,4 +1,4 @@
-import FadeRightComponent from "./animators/FadeRightComponent";
+import FadeRightComponent from "../animators/FadeRightComponent";
 
 function FeatureCard({ emoji, text, paragraph } : { emoji: string, text: string, paragraph: string }) {
     

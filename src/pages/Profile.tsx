@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import UserDataField from "../components/UserDataField"
+import UserDataField from "../components/pages/survey/UserDataField"
 import { Button } from "@mui/material";
-import { useModal } from "../components/PopupAlert";
+import { useModal } from "../components/shared/PopupAlert";
 import { FieldsValidator } from "../services/FieldsValidator";
 import useAuthStore from "../stores/AuthStore";
 import { translations } from "../services/TranslationsProvider";
