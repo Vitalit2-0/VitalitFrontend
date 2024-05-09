@@ -146,6 +146,10 @@ li a {
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
 }
 
+.color-dark-cyan {
+  color: #374151;
+}
+
 .base-gray {
   background: #f1f2f6;
 }
@@ -596,6 +600,23 @@ body {
     opacity: 0;
   }
 }
+.choose-workout-card_info {
+  display: none;
+}
+
+.choose-workout-card_hover {
+  height: 20%;
+  transition: all 100ms ease-in-out;
+}
+
+.choose-workout-card:hover .choose-workout-card_info {
+  display: flex;
+}
+
+.choose-workout-card:hover .choose-workout-card_hover {
+  height: 100%;
+}
+
 .loader {
   width: 50px;
   aspect-ratio: 1;

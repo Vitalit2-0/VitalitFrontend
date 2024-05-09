@@ -1,6 +1,6 @@
 import { useEffect } from "react"
 
-function WorkoutLoader({ workoutStarted } : { workoutStarted: any }) {
+function WorkoutLoader({ workoutStarted } : { workoutStarted: boolean }) {
 
     useEffect(() => {
         
