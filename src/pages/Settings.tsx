@@ -1,12 +1,12 @@
 import { Switch } from "@mui/material";
-import { useModal } from "../components/PopupAlert";
+import { useModal } from "../components/shared/PopupAlert";
 import React, { useEffect, useState } from "react";
 import useAuthStore from "../stores/AuthStore";
 import { activate2fa } from "../services/AuthStateProvider";
-import ModalQr from "../components/ModalQr";
+import ModalQr from "../components/shared/Modal2fa";
 import IconButton from '@mui/material/IconButton';
 import AlarmIcon from '@mui/icons-material/Alarm';
-import ModalNotification from "../components/ModalNotification"
+import ModalNotification from "../components/shared/ModalNotification"
 
 function Settings() {
     const { openModal } = useModal();

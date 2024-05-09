@@ -1,10 +1,10 @@
 import { useRef, useEffect, useState } from 'react';
-import { notify2fa, validateUser } from '../services/AuthStateProvider';
+import { notify2fa, validateUser } from '../../services/AuthStateProvider';
 import { useModal } from './PopupAlert';
-import NavigationManager from '../services/NavigationManager';
-import useAuthStore from '../stores/AuthStore';
+import NavigationManager from '../../services/NavigationManager';
+import useAuthStore from '../../stores/AuthStore';
 
-function CodeInput({ numberOfDigits, username, setOpen, isRegister, setValue2fa } : { numberOfDigits: number, username: string, setOpen: any, isRegister: boolean, setValue2fa?: any }) {
+function OtpValidator({ numberOfDigits, username, setOpen, isRegister, setValue2fa } : { numberOfDigits: number, username: string, setOpen: any, isRegister: boolean, setValue2fa?: any }) {
     const user: any = useAuthStore(state => state)
     const { showNotification } = useModal();
     const [otp, setOtp] = useState(new Array(numberOfDigits).fill(""));
@@ -87,4 +87,4 @@ function CodeInput({ numberOfDigits, username, setOpen, isRegister, setValue2fa 
     );
 }
 
-export default CodeInput;
+export default OtpValidator;

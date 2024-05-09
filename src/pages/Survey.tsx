@@ -1,7 +1,7 @@
 import React from "react"
 import NextButtonHelper from "../components/helpers/NextButtonHelper"
-import ProgressBar from "../components/ProgressBar"
-import Question from "../components/Question"
+import ProgressBar from "../components/shared/ProgressBar"
+import Question from "../components/pages/survey/Question"
 
 function Survey() {
 
@@ -32,7 +32,9 @@ function Survey() {
                         </div>
                     </div>
                     <div className="card-back h-full absolute top-0 left-0 right-0 z-20">
-                        <ProgressBar percentage={percentage}/>
+                        <div className="p-2">
+                            <ProgressBar percentage={percentage}/>
+                        </div>
                         <div className="pr-10 pl-10 pt-6 h-full">
                             <Question flag={flip} setPercentage={setPercentage}/>
                         </div>

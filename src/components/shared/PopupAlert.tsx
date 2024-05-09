@@ -1,8 +1,9 @@
 import { Box, Modal, Typography } from '@mui/material';
 import { Outlet } from 'react-router-dom';
 import { createContext, useContext, useState } from 'react';
-import DefaultButton from './helpers/DefaultButton';
+import DefaultButton from '../helpers/DefaultButton';
 import { ToastContainer, toast } from 'react-toastify';
+import FullScreenLoader from './FullScreenLoader';
 
 const ModalContext = createContext<any>(null)
 
@@ -14,6 +15,7 @@ function PopupAlert() {
 
     const [notification, setNotification] = useState({ text: '', type: 'success' }); 
     const [modal, setModal] = useState({ open: false, title: '', description: '' });
+    const [loading, setLoading] = useState(false);
     const [resolver, setResolver] = useState<(value: boolean | PromiseLike<boolean>) => void>();
 
     const openModal = (title: string, description: string) => {
@@ -38,9 +40,14 @@ function PopupAlert() {
         }, 100);
     }
 
+    const showFullScreenLoader = (show: boolean) => {
+        console.log(show);
+        setLoading(show);
+    }
+
     return(
-        <div>
-            <ModalContext.Provider value={{ ...modal, openModal, closeModal, showNotification }}>
+        <div className='global-actions-container'>
+            <ModalContext.Provider value={{ ...modal, openModal, closeModal, showNotification, showFullScreenLoader }}>
                 <Modal
                     open={modal.open}
                     onClose={() => closeModal(false)}
@@ -67,6 +74,7 @@ function PopupAlert() {
                         color: '#fff',
                     }}
                 />
+                <FullScreenLoader loading={loading}/>
                 <Outlet/>
             </ModalContext.Provider>
         </div>

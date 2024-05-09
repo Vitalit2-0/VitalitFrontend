@@ -7,8 +7,9 @@ import { FaRegUser } from "react-icons/fa";
 import { VscSettings } from "react-icons/vsc";
 import { TbLogout2 } from "react-icons/tb";
 import { Link } from "react-router-dom";
-import NavigationManager from "../services/NavigationManager";
-import useAuthStore from "../stores/AuthStore";
+import { MdOutlineFileUpload } from "react-icons/md";
+import NavigationManager from "../../services/NavigationManager";
+import useAuthStore from "../../stores/AuthStore";
 import NotificationCenter from "./NotificationCenter";
 
 function Sidebar() {

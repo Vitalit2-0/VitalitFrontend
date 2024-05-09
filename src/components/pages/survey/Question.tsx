@@ -1,15 +1,15 @@
-import NextButtonHelper from "./helpers/NextButtonHelper"
+import NextButtonHelper from "../../helpers/NextButtonHelper"
 import React from "react";
-import { getSurveyQuestions, sendSurveyAnswers } from "../services/SurveyDataProvider"
+import { getSurveyQuestions, sendSurveyAnswers } from "../../../services/SurveyDataProvider"
 import { Radio, RadioGroup, FormControl, FormControlLabel, Checkbox } from "@mui/material";
-import NavigationManager from "../services/NavigationManager";
-import useAuthStore from "../stores/AuthStore";
-import Loader from "./Loader";
-import useSurveyStore from "../stores/surveyStore";
-import { useModal } from "./PopupAlert";
-import DatePickerHelper from "./helpers/DatePickerHelper";
-import GenderSelectHelper from "./helpers/GenderSelectHelper";
-import UserDataInputHelper from "./helpers/UserDataInputHelper";
+import NavigationManager from "../../../services/NavigationManager";
+import useAuthStore from "../../../stores/AuthStore";
+import Loader from "../../shared/Loader";
+import useSurveyStore from "../../../stores/surveyStore";
+import { useModal } from "../../shared/PopupAlert";
+import DatePickerHelper from "../../helpers/DatePickerHelper";
+import GenderSelectHelper from "../../helpers/GenderSelectHelper";
+import UserDataInputHelper from "../../helpers/UserDataInputHelper";
 
 function Question({ flag, setPercentage }: any) {
 
