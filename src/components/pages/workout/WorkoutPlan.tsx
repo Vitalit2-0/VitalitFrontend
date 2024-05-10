@@ -94,18 +94,22 @@ function WorkoutPlan({workoutPlan, stage, setStage}: any) {
     return (
         <div className='w-full h-full flex flex-col justify-start'>
             {currentExercise ?
-                <div className='flex w-full p-5'>
+                <div className='flex w-full p-5 pb-2'>
                     <div className='w-1/12 flex items-center justify-center rounded-xl cursor-pointer hover:bg-gray-200' onClick={previousExercise} >
                         <IoIosArrowBack className='text-black text-2xl cursor-pointer'/>
                     </div>
-                    <div className='w-10/12 p-3 pt-0'>
+                    <div className='w-10/12 p-3 py-0'>
                         <StatusBar title={resting.isResting ? "Descansa" : "¡Comienza!"} seconds={resting.seconds} />
                         <ProgressBar percentage={percentage}/>
-                        <div className='mb-10'></div>
-                        <div className='flex gap-10'>
-                            <ExerciseContainer exerciseId={currentExercise.exerciseId} />
-                            <div className='min-w-80 flex flex-col '>
-                                <h2 className="font-bold text-xl mb-5">{currentExercise.exerciseName}</h2>
+                        <div className='flex items-center gap-5 justify-start my-5'>
+                            <div className='p-2 bg-purple-200 color-purple rounded-lg'>{currentExercise.type}</div>
+                            <h2 className="font-bold text-xl text-center">Inicia con {currentExercise.repetitions} {currentExercise.exerciseName}</h2>
+                        </div>
+                        <div className='relative flex mt-5'>
+                            <div className="w-72 flex flex-col items-center">
+                                <ExerciseContainer exerciseId={currentExercise.exerciseId} />
+                            </div>
+                            <div className='w-full flex flex-col '>
                                 <div>
                                     <div className='flex justify-between pt-2 pb-2'>
                                         <p className='color-purple'>Equipo:</p>
@@ -113,21 +117,11 @@ function WorkoutPlan({workoutPlan, stage, setStage}: any) {
                                     </div>
                                     <hr />
                                     <div className='flex justify-between pt-2 pb-2'>
-                                        <p className='color-purple'>Repeticiones:</p>
-                                        <p>{currentExercise.repetitions}</p>
-                                    </div>
-                                    <hr />
-                                    <div className='flex justify-between pt-2 pb-2'>
-                                        <p className='color-purple'>Tipo:</p>
-                                        <p>{currentExercise.type}</p>
-                                    </div>
-                                    <hr />
-                                    <div className='flex justify-between pt-2 pb-2'>
                                         <p className='color-purple'>Descanso:</p>
                                         <p>{currentExercise.rest} segundos</p>
                                     </div>
                                     <hr />
-                                    <div className='mt-8'>
+                                    <div className='mt-4'>
                                         <div className='flex'>
                                             <h3 className='font-bold mb-5 mr-2'>Series completadas:</h3>
                                             <span>{`${currentExercise.completedSeries}/${currentExercise.sets}`}</span>
