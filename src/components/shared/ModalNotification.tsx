@@ -9,7 +9,6 @@ import { TimeClock } from '@mui/x-date-pickers/TimeClock';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 import { NotificationChecker } from '../../services/NotificationChecker';
-import { useEffect } from 'react';
 
 function ModalNotification({ openDate, setOpenDate, style, section } : { openDate: boolean, setOpenDate: any, style: any, section: string}) {
 

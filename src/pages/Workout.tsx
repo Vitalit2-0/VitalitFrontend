@@ -38,6 +38,7 @@ function Workout() {
             if(!confirm) return;
             setStage(stages.choosingFocus);
             window.location.reload();
+            return;
         }   
 
         if(restart) 
@@ -86,7 +87,7 @@ function Workout() {
         <div className="flex base-gray">
             <div className="w-full pb-10 ps-28 pe-10">
                 <div className="flex items-start gap-5 relative">
-                    {stage !== stages.choosingFocus &&<div className={`w-1/3 p-4 bg-white rounded-3xl shadow-md mt-8 sticky top-0 transition-all`}>
+                    {stage !== stages.choosingFocus &&<div className={`w-1/3 p-4 bg-white rounded-3xl shadow-md mt-8 sticky top-8 transition-all`}>
                         <div>
                             <p className="color-purple font-bold text-center bg-purple-200 p-3 rounded-xl">Recuerda que la constancia es la clave para lograr tus objetivos.</p>
                             <div className="mt-3 relative h-64 overflow-hidden rounded-xl">
@@ -112,7 +113,7 @@ function Workout() {
                                     <h3 className="mb-8 text-left color-dark-cyan mt-10">¿Alguna recomendación especifica antes de crear tu rutina?</h3>
                                     <TextareaAutosize onChange={handleRecomendations} className="w-full p-3 rounded-xl" placeholder="Escribe aquí tus recomendaciones" />
                                 </div>
-                                <div className="w-2/3">
+                                <div className="w-2/3 px-10">
                                     <h1 className="font-bold text-2xl mb-4 text-left color-dark-cyan">¿Que te gustaría entrenar hoy?</h1>
                                     <p className="mb-4">Has click en el enfoque que quieres tener hoy para iniciar tu rutina!</p>
                                     <div className="w-full grid grid-cols-3 gap-5">
@@ -120,15 +121,16 @@ function Workout() {
                                             Array.from(focusOptions).map((focus: any) => {
                                                 return (
                                                     <div key={focus.id} className="w-full flex flex-col items-center">
-                                                        <div className="w-full h-60 relative rounded-xl overflow-hidden choose-workout-card">
-                                                            <img className="w-full h-full object-cover" src={focus.image} alt={focus.name} />
-                                                            <div onClick={() => handleFocus(focus.id)} className={`flex w-full choose-workout-card_hover cursor-pointer flex-col justify-between rounded-xl absolute bottom-0 right-0 left-0 px-5 py-3 bg-[rgba(0,0,0,0.8)]`}>
-                                                                <h2 className="font-bold text-white text-xl">{focus.name}</h2>
-                                                                <div className={`text-white gap-5 items-center choose-workout-card_info`}>
-                                                                    <a className="w-12" onClick={() => setStage(stages.creatingRoutine)} >
+                                                        <div className="w-full relative rounded-xl overflow-hidden choose-workout-card">
+                                                            <div className="w-full h-52 overflow-hidden flex justify-center">
+                                                                <img className="w-full object-cover" src={focus.image} alt={focus.name} />
+                                                            </div>
+                                                            <div onClick={() => handleFocus(focus.id)} className={`flex w-full choose-workout-card_hover cursor-pointer flex-col justify-center rounded-xl absolute bottom-0 right-0 left-0 px-5 py-3 bg-[rgba(163,100,219,0.8)]`}>
+                                                                <h2 className="text-white text-md text-center">{focus.name}</h2>
+                                                                <div className={`text-white gap-5 justify-center items-center choose-workout-card_info`}>
+                                                                    <a className="w-12 mt-5" onClick={() => setStage(stages.creatingRoutine)} >
                                                                         <FaCirclePlay className="text-white text-5xl cursor-pointer" />
                                                                     </a>
-                                                                    <div>{focus.description}</div>
                                                                 </div>
                                                             </div>
                                                         </div>
