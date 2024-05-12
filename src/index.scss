@@ -145,6 +145,31 @@ li a{
     font-weight: bold;
 }
 
+.swiper {
+    width: 100%;
+    height: 150px;
+}
+  
+.swiper-slide {
+    text-align: center;
+    font-size: 18px;
+    border-radius: 15px;
+    display: flex;
+    justify-content: center;
+    height: 120px;
+    align-items: center;
+}
+  
+.swiper-slide img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.swiper-pagination{
+}
+
 //-----------------------------------Modificators-----------------------------------//
 
 .color-white {
@@ -677,16 +702,24 @@ body {
 }
 
 .choose-workout-card_info{
-    display: none;
+    display: flex;
 }
 
 .choose-workout-card_hover{
-    height: 20%;
+    height: 100%;
     transition: all 100ms ease-in-out;
 }
 
-.choose-workout-card:hover .choose-workout-card_info{
-    display: flex;
+.choose-workout-card_info a{
+    width: 0px;
+    visibility: hidden;
+    overflow: hidden;
+    transition: all 100ms ease-in-out;
+}
+
+.choose-workout-card:hover .choose-workout-card_info a{
+    width: 48px;
+    visibility: visible;
 }
 
 .choose-workout-card:hover .choose-workout-card_hover{

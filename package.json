@@ -30,6 +30,7 @@
     "react-toastify": "^10.0.5",
     "react-tooltip": "^5.26.4",
     "scss": "^0.2.4",
+    "swiper": "^11.1.1",
     "zustand": "^4.5.2"
   },
   "devDependencies": {

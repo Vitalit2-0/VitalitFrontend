@@ -54,7 +54,7 @@ function Workout() {
     
     async function CreateWorkoutRoutine(focus: string) {
         
-        showFullScreenLoader(true);
+        showFullScreenLoader(true, "Regálanos un momento. Estamos creando la rutina perfecta para ti.");
         const survey: any = await getSurveyResults(user.id, user.token);
         const workout = await CreateWorkoutPlan(survey.data ? survey.data : null, place, recomendations, focus, user.token);
 
@@ -62,13 +62,13 @@ function Workout() {
         {
             showNotification("¡Lo sentimos! Ha ocurrido un error al cargar tu entrenamiento, por favor intenta de nuevo en un minuto.", "error");
             setError(true);
-            showFullScreenLoader(false);
+            showFullScreenLoader(false, "");
             return;
         }
 
         setWorkoutPlan(workout.data);
         setStage(stages.routineReady);
-        showFullScreenLoader(false);
+        showFullScreenLoader(false, "");
     }
 
     function handleFocus(focusId: number) {
@@ -84,7 +84,7 @@ function Workout() {
     }
 
     return (
-        <div className="flex base-gray">
+        <div className="flex base-gray min-h-screen">
             <div className="w-full pb-10 ps-28 pe-10">
                 <div className="flex items-start gap-5 relative">
                     {stage !== stages.choosingFocus &&<div className={`w-1/3 p-4 bg-white rounded-3xl shadow-md mt-8 sticky top-8 transition-all`}>
@@ -103,17 +103,17 @@ function Workout() {
                             </div>
                         </div>
                     </div>}
-                    <div id="workout-section" className={`${stage !== stages.choosingFocus ? 'w-2/3' : 'w-full'}  bg-white rounded-3xl shadow-md mt-8 sticky top-0 min-h-[90vh] flex items-center`}>
+                    <div id="workout-section" className={`${stage !== stages.choosingFocus ? 'w-2/3' : 'w-full'} sticky top-0 min-h-[90vh] flex items-center`}>
                         {stage === stages.choosingFocus &&
-                            <div className='w-full h-full px-10 py-10 flex justify-start items-start'>
-                                <div className="w-1/3 pr-10">
+                            <div className='w-full h-full gap-5 flex justify-start items-start'>
+                                <div className="w-1/3 p-5 bg-white rounded-3xl shadow-md">
                                     <p className="color-purple font-bold text-center bg-purple-200 p-3 mb-5 rounded-xl">Recuerda que la constancia es la clave para lograr tus objetivos.</p>
                                     <h1 className="font-bold text-2xl mb-8 text-left color-dark-cyan">Hoy entrenaré:</h1>
                                     <MultipleChoiceButton options={["En casa", "En el gimnasio"]} onChange={handlePlaceChange} />
-                                    <h3 className="mb-8 text-left color-dark-cyan mt-10">¿Alguna recomendación especifica antes de crear tu rutina?</h3>
+                                    <h3 className="mb-8 text-left color-dark-cyan mt-10"><span className="color-purple">¿Alguna recomendación especifica antes de crear tu rutina?</span>Ten en cuenta que tus respuestas a la encuesta serán tenidas en cuenta</h3>
                                     <TextareaAutosize onChange={handleRecomendations} className="w-full p-3 rounded-xl" placeholder="Escribe aquí tus recomendaciones" />
                                 </div>
-                                <div className="w-2/3 px-10">
+                                <div className="w-2/3 p-5 bg-white rounded-3xl shadow-md">
                                     <h1 className="font-bold text-2xl mb-4 text-left color-dark-cyan">¿Que te gustaría entrenar hoy?</h1>
                                     <p className="mb-4">Has click en el enfoque que quieres tener hoy para iniciar tu rutina!</p>
                                     <div className="w-full grid grid-cols-3 gap-5">
@@ -125,7 +125,7 @@ function Workout() {
                                                             <div className="w-full h-52 overflow-hidden flex justify-center">
                                                                 <img className="w-full object-cover" src={focus.image} alt={focus.name} />
                                                             </div>
-                                                            <div onClick={() => handleFocus(focus.id)} className={`flex w-full choose-workout-card_hover cursor-pointer flex-col justify-center rounded-xl absolute bottom-0 right-0 left-0 px-5 py-3 bg-[rgba(163,100,219,0.8)]`}>
+                                                            <div onClick={() => handleFocus(focus.id)} className={`flex w-full font-bold choose-workout-card_hover cursor-pointer flex-col justify-center rounded-xl absolute bottom-0 right-0 left-0 px-5 py-3 bg-[rgba(0,0,0,0.6)]`}>
                                                                 <h2 className="text-white text-md text-center">{focus.name}</h2>
                                                                 <div className={`text-white gap-5 justify-center items-center choose-workout-card_info`}>
                                                                     <a className="w-12 mt-5" onClick={() => setStage(stages.creatingRoutine)} >
