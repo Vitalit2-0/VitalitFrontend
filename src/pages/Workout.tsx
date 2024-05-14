@@ -85,7 +85,7 @@ function Workout() {
 
     return (
         <div className="flex base-gray min-h-screen">
-            <div className="w-full pb-10 p-10 md:ps-28">
+            <div className="w-full md:p-10 md:ps-28">
                 <div className="flex flex-col lg:flex-row items-start gap-5 relative">
                     {stage !== stages.choosingFocus &&<div className={`w-full lg:w-1/3 p-4 bg-white rounded-3xl shadow-md lg:sticky top-8 transition-all`}>
                         <div>

@@ -29,13 +29,13 @@ function UserDataField({ title, value, handleValueChange, type, disabled, field 
     return (
         <div className="w-full relative mt-2">
             <div className={`pt-1 pb-1 ps-2 pe-2 w-full flex mb-2 items-center rounded-xl ${field.includes("name") ? "" : "justify-between"}`}>
-                <p className="text-lg font-bold">{title}</p>
-                <div className={field.includes("name") ? "w-full" : ""}>
+                <p className={`${title ? "w-1/2" : ""}  text-lg font-bold`}>{title}</p>
+                <div className={field.includes("name") ? "w-auto lg:w-full" : "w-1/2"}>
                     {type === "date" && 
-                    <div style={{width: "196px"}}>
-                        {!disabled ? <DatePickerHelper onChange={handleDateChange} className={"ms-3 w-36"} /> :
+                    <div className="">
+                        {!disabled ? <DatePickerHelper onChange={handleDateChange} className={"ms-3 lg:w-full"} /> :
                         <input 
-                            className="bg-white rounded-none border-none text-right p-0 focus:border-none focus:outline-none" 
+                            className="bg-white w-full rounded-none border-none text-right p-0 focus:border-none focus:outline-none" 
                             style={{ height: "56px" }}
                             type={"text"}
                             disabled={disabled}
@@ -46,7 +46,7 @@ function UserDataField({ title, value, handleValueChange, type, disabled, field 
                     {type !== "date" && 
                     <div>
                         <input 
-                            className={`bg-white w-56 rounded-md p-2 mr-1 ${!disabled ? "border border-gray-300" : "border-none focus:border-none focus:outline-none"} ${field.includes("name") ? "w-full text-left" : "text-right"} ${field === "username" ? "color-purple" : ""} ${field === "name" ? "font-bold text-xl" : ""}`} 
+                            className={`bg-white rounded-md p-2 mr-1 w-full ${!disabled ? "border border-gray-300" : "border-none focus:border-none focus:outline-none"} ${field.includes("name") ? "w-full text-left" : "text-right"} ${field === "username" ? "color-purple" : ""} ${field === "name" ? "font-bold text-xl" : ""}`} 
                             type={type || "text"}
                             disabled={disabled}
                             value={defaultValue}

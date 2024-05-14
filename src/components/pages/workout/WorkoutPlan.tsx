@@ -92,14 +92,15 @@ function WorkoutPlan({workoutPlan, stage, setStage}: any) {
     }
 
     return (
-        <div className='w-full h-full flex flex-col justify-start bg-white rounded-3xl shadow-md'>
+        <div className='w-full h-screen md:h-full flex flex-col justify-start bg-white rounded-3xl shadow-md'>
             <StatusBar title={resting.isResting ? "Descansa" : "¡Comienza!"} seconds={resting.seconds} />
             <ProgressBar percentage={percentage}/>
-            <div className='px-5 flex flex-col sm:flex-row items-center gap-5 justify-start my-5'>
-                <div className='p-2 bg-purple-200 color-purple rounded-lg'>{currentExercise.type}</div>
-                <h2 className="font-bold text-xl text-left">Inicia con {currentExercise.repetitions} {currentExercise.exerciseName}</h2>
-            </div>
             {currentExercise ?
+            <div className=''>
+                <div className='px-5 flex flex-col sm:flex-row items-center gap-5 justify-start my-5'>
+                    <div className='p-2 bg-purple-200 color-purple rounded-lg'>{currentExercise.type}</div>
+                    <h2 className="font-bold text-xl text-left">Inicia con {currentExercise.repetitions} {currentExercise.exerciseName}</h2>
+                </div>
                 <div className='flex w-full p-5 pb-2'>
                     <div className='w-16 flex items-center justify-center rounded-xl cursor-pointer hover:bg-gray-200' onClick={previousExercise} >
                         <IoIosArrowBack className='text-black text-2xl cursor-pointer'/>
@@ -138,8 +139,9 @@ function WorkoutPlan({workoutPlan, stage, setStage}: any) {
                         <IoIosArrowForward className='text-black text-2xl cursor-pointer'/>
                     </div>
                 </div>
+            </div>
             : 
-                <div>
+                <div className='px-10'>
                     {!currentExercise && <WorkoutLoader workoutStarted={stage === stages.workoutStarted}/>}
                 </div>
             }

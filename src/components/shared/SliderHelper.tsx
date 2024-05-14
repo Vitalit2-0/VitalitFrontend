@@ -6,13 +6,32 @@ import 'swiper/css/pagination';
 
 import { Pagination } from 'swiper/modules';
 import { FaCirclePlay } from 'react-icons/fa6';
-import VideoThumbnail from './VideoThumbnail';
+import { useEffect, useState } from 'react';
 
 export default function SliderHelper({ items } : { items: any[] }) {
+    const [slidesPerPage, setSlidesPerPage] = useState(2);
+    
+    useEffect(() => {
+        const handleResize = () => {
+            if (window.innerWidth < 1280) {
+                setSlidesPerPage(1);
+            }
+            else {
+                setSlidesPerPage(2);
+            }
+        };
+
+        window.addEventListener('resize', handleResize);
+
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
+
     return (
         <>
         <Swiper
-            slidesPerView={2}
+            slidesPerView={slidesPerPage}
             spaceBetween={30}
             pagination={{
                 clickable: true,

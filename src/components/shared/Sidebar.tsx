@@ -29,7 +29,7 @@ function Sidebar() {
     }
 
     return (
-        <div className={`fixed bottom-0 md:top-0 p-2 right-0 md:left-0 w-20 md:h-screen md:z-50 transition-all ${open ? "h-[600px]" : "h-0"}`}>
+        <div className={`fixed bottom-0 md:top-0 p-2 right-0 md:left-0 w-20 md:h-screen z-50 md:z-0 transition-all ${open ? "h-[600px]" : "h-0"}`}>
             <div className={`${open ? "hidden" : "block md:hidden"} w-[64px] h-[64px] rounded-lg base-gradient absolute bottom-2 right-2 flex items-center justify-center bg-white shadow-xl`} onClick={handleOpenMenu}>
                 <IoIosArrowUp className="text-3xl color-white base-icons cursor-pointer"/>
             </div>

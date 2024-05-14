@@ -6,7 +6,7 @@ export default function DatePickerHelper({ onChange, className }: { onChange: an
     return (
         <div className="w-full">
             <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DatePicker className={`w-48 ${className}`} onChange={onChange} />
+                <DatePicker className={`max-w-48 ${className}`} onChange={onChange} />
             </LocalizationProvider>
         </div>
     );

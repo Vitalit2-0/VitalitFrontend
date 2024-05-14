@@ -37,10 +37,10 @@ function Nutrition() {
     }   
 
     return (
-        <div className="flex flex-col gap-2 justify-center items-center base-gray p-10 pl-28">
+        <div className="flex flex-col gap-2 justify-center items-center base-gray md:p-10 md:pl-28">
             <div className={`w-full`}>
-                <div className="flex gap-5 items-start">
-                    <div className="w-1/3 bg-white rounded-3xl shadow-md sticky top-10 p-5">
+                <div className="flex flex-col md:flex-row gap-5 items-start">
+                    <div className="w-full md:w-1/2 lg:w-1/3 bg-white rounded-3xl shadow-md md:sticky top-10 p-5">
                         <p className="color-purple font-bold text-center bg-purple-200 p-3 rounded-xl">La nutrición es la base del bienestar. Cada bocado es una oportunidad para nutrir tu cuerpo y fortalecer tu salud.</p>
                         <h1 className="font-bold text-2xl mb-8 text-left color-dark-cyan mt-10">Voy a preparar:</h1>
                         <MultipleChoiceButton options={["Desayuno", "Almuerzo", "Cena"]} onChange={handleFoodChange} />
@@ -48,13 +48,13 @@ function Nutrition() {
                         <TextareaAutosize onChange={handleRecomendations} className="w-full p-3 rounded-xl mb-5" placeholder="Escribe aquí tus recomendaciones" />
                         <GradientButton className="w-full base-gradient" text="Crear Receta" onClick={() => handleCreateRecipe()} />
                     </div>
-                    <div className="w-2/3 px-10 bg-white rounded-3xl shadow-md p-5">
+                    <div className="w-full md:w-1/2 lg:w-2/3 px-10 bg-white rounded-3xl shadow-md p-5">
                         {recipe &&
                             <div>
                                 <h1 className="font-bold text-2xl mb-10 text-left color-dark-cyan">Aquí tienes tu receta</h1>
                                 <div className="w-full">
-                                    <div className="flex items-start gap-10">
-                                        <div className="w-1/2">
+                                    <div className="flex flex-col lg:flex-row items-start gap-10">
+                                        <div className="lg:w-1/2">
                                             <h1 className="text-xl color-purple mb-3">{recipe.title}</h1>
                                             <p>{recipe.description}</p>
                                             <h1 className="text-xl color-purple mt-5 mb-3">Ingredientes</h1>
@@ -71,7 +71,7 @@ function Nutrition() {
                                                 })}
                                             </ul>
                                         </div>
-                                        <div className="w-1/2">
+                                        <div className="w-full lg:w-1/2">
                                             <div className="flex flex-col items-center border border-purple-300 p-5 rounded-lg">
                                                 <div className="w-full flex justify-between mb-3 mt-4">
                                                     <p className="color-purple">Tiempo de preparación:</p>
