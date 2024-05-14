@@ -95,8 +95,9 @@ function Login({ transition } : { transition: string }) {
                         justifyContent="center"
                         alignItems="center"
                         maxW="480px"
+                        padding="10px"
                     >
-                        <Image className="w-2/3" src="assets/images/logoVitalitBlanco.png" onClick={() => NavigationManager.navigateTo("/")} alt="Logo Vitalit"/>
+                        <Image className="w-2/3" src="assets/images/logoVitalitBlanco.png" onClick={() => {NavigationManager.navigateTo("/"); window.location.reload()}} alt="Logo Vitalit"/>
                         <h3 className="bg-text-login text-center mb-5">Accede a Vitalit y cambia por completo tu vida!</h3>
                         <Box minW={{ base: "90%", md: "468px"}}>
                             <form onSubmit={handleLogin}>

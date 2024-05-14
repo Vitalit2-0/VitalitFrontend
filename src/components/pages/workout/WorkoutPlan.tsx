@@ -92,21 +92,22 @@ function WorkoutPlan({workoutPlan, stage, setStage}: any) {
     }
 
     return (
-        <div className='w-full h-full flex flex-col justify-start'>
+        <div className='w-full h-screen md:h-full flex flex-col justify-start bg-white rounded-3xl shadow-md'>
+            <StatusBar title={resting.isResting ? "Descansa" : "¡Comienza!"} seconds={resting.seconds} />
+            <ProgressBar percentage={percentage}/>
             {currentExercise ?
+            <div className=''>
+                <div className='px-5 flex flex-col sm:flex-row items-center gap-5 justify-start my-5'>
+                    <div className='p-2 bg-purple-200 color-purple rounded-lg'>{currentExercise.type}</div>
+                    <h2 className="font-bold text-xl text-left">Inicia con {currentExercise.repetitions} {currentExercise.exerciseName}</h2>
+                </div>
                 <div className='flex w-full p-5 pb-2'>
-                    <div className='w-1/12 flex items-center justify-center rounded-xl cursor-pointer hover:bg-gray-200' onClick={previousExercise} >
+                    <div className='w-16 flex items-center justify-center rounded-xl cursor-pointer hover:bg-gray-200' onClick={previousExercise} >
                         <IoIosArrowBack className='text-black text-2xl cursor-pointer'/>
                     </div>
                     <div className='w-10/12 p-3 py-0'>
-                        <StatusBar title={resting.isResting ? "Descansa" : "¡Comienza!"} seconds={resting.seconds} />
-                        <ProgressBar percentage={percentage}/>
-                        <div className='flex items-center gap-5 justify-start my-5'>
-                            <div className='p-2 bg-purple-200 color-purple rounded-lg'>{currentExercise.type}</div>
-                            <h2 className="font-bold text-xl text-center">Inicia con {currentExercise.repetitions} {currentExercise.exerciseName}</h2>
-                        </div>
-                        <div className='relative flex mt-5'>
-                            <div className="w-72 flex flex-col items-center">
+                        <div className='relative flex flex-col gap-5 xl:flex-row mt-5'>
+                            <div className="xl:w-72 flex flex-col items-center">
                                 <ExerciseContainer exerciseId={currentExercise.exerciseId} />
                             </div>
                             <div className='w-full flex flex-col '>
@@ -134,22 +135,23 @@ function WorkoutPlan({workoutPlan, stage, setStage}: any) {
                             </div>
                         </div>
                     </div>
-                    <div className='w-1/12 flex items-center justify-center p-5 rounded-xl cursor-pointer hover:bg-gray-200' onClick={() => nextExercise(Number(currentExercise.rest))} >
+                    <div className='w-16 flex items-center justify-center rounded-xl cursor-pointer hover:bg-gray-200' onClick={() => nextExercise(Number(currentExercise.rest))} >
                         <IoIosArrowForward className='text-black text-2xl cursor-pointer'/>
                     </div>
                 </div>
+            </div>
             : 
-                <div>
+                <div className='px-10'>
                     {!currentExercise && <WorkoutLoader workoutStarted={stage === stages.workoutStarted}/>}
                 </div>
             }
-            <div className='ps-24 pe-24'>
+            <div className='lg:mt-10'>
                 {Array.from(workoutPlan)
                     .filter((w: any) => workoutPlan.indexOf(w) == currentExercise?.index + 1)
                     .map((workout: any, index: number) => {
                         return (
-                            <div key={index} className='bg-purple-200 w-full flex justify-between items-center mb-5 py-5 px-10 rounded-xl color-purple'>
-                                <p>Siguiente ejercicio</p>
+                            <div key={index} className='bg-purple-200 w-full flex flex-col xl:flex-row justify-between items-center py-5 px-10 rounded-xl color-purple'>
+                                <p className='mb-10 xl:mb-0 font-bold'>Siguiente ejercicio</p>
                                 <div className='flex items-center gap-5'>
                                     <p>{workout.exerciseName}</p>
                                     <ExerciseContainer exerciseId={workout.exerciseId} next={true} />

@@ -27,6 +27,7 @@ function RecoverPass() {
                     justifyContent="center"
                     alignItems="center"
                     maxW="480px"
+                    padding="10px"
                 >
                     <Image className="w-2/3" src="assets/images/logoVitalitBlanco.png" onClick={() => NavigationManager.navigateTo("/")} alt="Logo Vitalit"/>
                     <h3 className="bg-text-login text-center mb-5">Enviaremos un link a tu correo electrónico para cabiar tu contraseña</h3>

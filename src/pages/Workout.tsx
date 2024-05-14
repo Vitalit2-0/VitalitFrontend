@@ -85,9 +85,9 @@ function Workout() {
 
     return (
         <div className="flex base-gray min-h-screen">
-            <div className="w-full pb-10 ps-28 pe-10">
-                <div className="flex items-start gap-5 relative">
-                    {stage !== stages.choosingFocus &&<div className={`w-1/3 p-4 bg-white rounded-3xl shadow-md mt-8 sticky top-8 transition-all`}>
+            <div className="w-full md:p-10 md:ps-28">
+                <div className="flex flex-col lg:flex-row items-start gap-5 relative">
+                    {stage !== stages.choosingFocus &&<div className={`w-full lg:w-1/3 p-4 bg-white rounded-3xl shadow-md lg:sticky top-8 transition-all`}>
                         <div>
                             <p className="color-purple font-bold text-center bg-purple-200 p-3 rounded-xl">Recuerda que la constancia es la clave para lograr tus objetivos.</p>
                             <div className="mt-3 relative h-64 overflow-hidden rounded-xl">
@@ -103,20 +103,20 @@ function Workout() {
                             </div>
                         </div>
                     </div>}
-                    <div id="workout-section" className={`${stage !== stages.choosingFocus ? 'w-2/3' : 'w-full'} sticky top-0 min-h-[90vh] flex items-center`}>
+                    <div id="workout-section" className={`${stage !== stages.choosingFocus ? 'w-full lg:w-2/3' : 'w-full'} sticky top-0 min-h-[90vh] flex items-start`}>
                         {stage === stages.choosingFocus &&
-                            <div className='w-full h-full gap-5 flex justify-start items-start'>
-                                <div className="w-1/3 p-5 bg-white rounded-3xl shadow-md">
+                            <div className='w-full h-full gap-5 flex flex-col md:flex-row justify-start items-start'>
+                                <div className="md:w-1/2 lg:w-1/3 p-5 bg-white rounded-3xl shadow-md">
                                     <p className="color-purple font-bold text-center bg-purple-200 p-3 mb-5 rounded-xl">Recuerda que la constancia es la clave para lograr tus objetivos.</p>
                                     <h1 className="font-bold text-2xl mb-8 text-left color-dark-cyan">Hoy entrenaré:</h1>
                                     <MultipleChoiceButton options={["En casa", "En el gimnasio"]} onChange={handlePlaceChange} />
                                     <h3 className="mb-8 text-left color-dark-cyan mt-10"><span className="color-purple">¿Alguna recomendación especifica antes de crear tu rutina?</span>Ten en cuenta que tus respuestas a la encuesta serán tenidas en cuenta</h3>
                                     <TextareaAutosize onChange={handleRecomendations} className="w-full p-3 rounded-xl" placeholder="Escribe aquí tus recomendaciones" />
                                 </div>
-                                <div className="w-2/3 p-5 bg-white rounded-3xl shadow-md">
+                                <div className="w-full md:w-1/2 lg:w-2/3 p-5 bg-white rounded-3xl shadow-md">
                                     <h1 className="font-bold text-2xl mb-4 text-left color-dark-cyan">¿Que te gustaría entrenar hoy?</h1>
                                     <p className="mb-4">Has click en el enfoque que quieres tener hoy para iniciar tu rutina!</p>
-                                    <div className="w-full grid grid-cols-3 gap-5">
+                                    <div className="w-full grid lg:grid-cols-2 xl:grid-cols-3 gap-5">
                                         {
                                             Array.from(focusOptions).map((focus: any) => {
                                                 return (
@@ -143,10 +143,10 @@ function Workout() {
                             </div>
                         }
                         {stage === stages.routineReady &&
-                            <div className='h-full flex items-center'>
-                                <div className='p-32 flex flex-col justify-center'>
-                                    <div className='flex items-center'>
-                                        <img className='w-4/12 mr-10' src="assets/images/ready-start.webp" alt="" />
+                            <div className='h-full flex items-center bg-white rounded-3xl shadow-md'>
+                                <div className='p-10 lg:p-32 flex flex-col justify-center'>
+                                    <div className='flex gap-10 flex-col lg:flex-row items-center'>
+                                        <img className='w-1/2 lg:w-1/3' src="assets/images/ready-start.webp" alt="" />
                                         <div>
                                             <h1 className="text-2xl font-bold color-dark-cyan">Aqui está tu plan de entrenamiento de hoy!</h1>
                                             <p className="mt-3 mb-3 pt-3 pb-3 rounded-xl">

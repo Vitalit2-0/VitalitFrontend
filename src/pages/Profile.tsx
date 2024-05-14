@@ -117,9 +117,9 @@ function Profile() {
     }
 
     return (
-        <div className="base-gray pt-10">
-            <div className="ml-16 flex ps-10 pe-10 gap-5">
-                <div className="w-1/3">
+        <div className="base-gray min-h-screen sm:pt-5 lg:pt-10">
+            <div className="md:ml-16 flex flex-col md:flex-row sm:p-5 lg:px-10 gap-5">
+                <div className="md:w-1/2 xl:w-1/3">
                     <div className="bg-white h-[660px] w-full rounded-3xl shadow-md sticky top-10">
                         <div className="w-full p-10 pt-5 flex flex-col items-center sticky">
                             <div className="flex">
@@ -211,21 +211,21 @@ function Profile() {
                         </div>
                     </div>
                 </div>
-                <div className="w-2/3 flex flex-col">
-                    <div className="w-full flex flex-wrap">
-                        <div className="w-1/3 pr-2">
+                <div className="md:w-1/2 xl:w-2/3 flex flex-col">
+                    <div className="w-full flex flex-col lg:flex-row gap-2">
+                        <div className="lg:w-1/3">
                             <div className="bg-white shadow-md rounded-3xl p-5">
                                 <p className="color-purple text-6xl">5</p>
                                 <p className="mt-2">Objetivos establecidos</p>
                             </div>
                         </div>
-                        <div className="w-1/3 pr-2">
+                        <div className="lg:w-1/3">
                             <div className="bg-white shadow-md rounded-3xl p-5">
                                 <p className="color-purple text-6xl">5</p>
                                 <p className="mt-2">Objetivos establecidos</p>
                             </div>
                         </div>
-                        <div className="w-1/3">
+                        <div className="lg:w-1/3">
                             <div className="bg-white shadow-md rounded-3xl p-5">
                                 <p className="color-purple text-6xl">5</p>
                                 <p className="mt-2">Objetivos establecidos</p>
@@ -235,7 +235,7 @@ function Profile() {
                     <div className="bg-white shadow-md rounded-3xl p-5 mt-5 h-full">
                         <h2 className="text-xl color-purple">Historial de actividad</h2>
                         <hr className="mt-5"/>
-                        <div className="flex justify-center items-center h-full">No hay actividad hasta el momento</div>
+                        <div className="flex justify-center items-center min-h-16 h-full">No hay actividad hasta el momento</div>
                     </div>
                 </div>
             </div>
