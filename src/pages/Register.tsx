@@ -92,7 +92,7 @@ function Register() {
                 className="base-gradient"
                 flexDirection="column"
                 width="100vw"
-                height="100vh"
+                minHeight="100vh"
                 justifyContent="center"
                 alignItems="center"
             >
@@ -102,13 +102,14 @@ function Register() {
                     justifyContent="center"
                     alignItems="center"
                     maxW="480px"
+                    padding="30px 10px"
                 >
                     <Image className="w-2/3" src="assets/images/logoVitalitBlanco.png" onClick={() => NavigationManager.navigateTo("/")} alt="Logo Vitalit"/>
                     <h3 className="bg-text-login text-center mb-5">Accede a Vitalit y cambia por completo tu vida!</h3>
                     <Box minW={{ base: "90%", md: "468px"}}>
                         <form onSubmit={handleRegister}>
                             <Stack
-                                className="base-gradient rounded-2xl"
+                                className="base-gradient rounded-2xl w-full"
                                 spacing={4}
                                 p="1rem"
                                 boxShadow="md"
@@ -202,15 +203,15 @@ function Register() {
                             </Stack>
                         </form>
                     </Box>
+                    <p className='text-white mt-5'>
+                        ¿Ya tienes una cuenta?{" "}
+                        <a className='color-white text-center' onClick={() => NavigationManager.navigateTo("/login")}>Iniciar sesión</a>
+                    </p>
+                    <p className="text-white text-center mt-3">
+                        Recopilaremos algunos datos para una excelente experiencia.{" "}
+                        <a className="color-white text-center" href="/#">Saber más.</a>
+                    </p>
                 </Stack>
-                <p className='text-white mt-5'>
-                    ¿Ya tienes una cuenta?{" "}
-                    <a className='color-white text-center' onClick={() => NavigationManager.navigateTo("/login")}>Iniciar sesión</a>
-                </p>
-                <p className="text-white mt-3">
-                    Recopilaremos algunos datos para una excelente experiencia.{" "}
-                    <a className="color-white text-center" href="/#">Saber más.</a>
-                </p>
             </Flex>
         </ChakraProvider>
     )

@@ -70,8 +70,8 @@ function Settings() {
     }
 
     return (
-        <div className="flex flex-col h-screen gap-2 justify-center items-center base-gray">
-            <div className="bg-white w-1/3 h-full p-10 m-10 rounded-3xl shadow-md">
+        <div className="flex flex-col h-screen justify-center items-center base-gray px-10 md:p-0">
+            <div className="bg-white w-full md:w-2/3 lg:w-1/2 xl:w-1/3 h-full p-10 m-10 rounded-3xl shadow-md">
                 <p className="text-2xl color-purple font-bold">Ajustes</p>
                 <div>
                     <div className="text-xl mt-5 mb-3 color-purple">Privacidad y seguridad</div>

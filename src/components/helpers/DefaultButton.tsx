@@ -1,10 +1,15 @@
 
-function DefaultButton({ text, className, id, onclick, submit } : { text : string, className?: string, id?: string, onclick?: () => void, submit?: boolean }) {
+function DefaultButton({ text, className, onclick, submit } : { text : string, className?: string, onclick?: () => void, submit?: boolean }) {
+    
+    function handleClick(e:any) {
+        e.preventDefault();
+        onclick && onclick();
+    }
+    
     return (
         <a 
             className={`btn btn-main ${className}`} 
-            href={id}
-            onClick={onclick}
+            onClick={handleClick}
             type={submit ? "submit" : "button"}
         >
             {text}

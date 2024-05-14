@@ -4,13 +4,13 @@ function FeatureCard({ emoji, text, paragraph } : { emoji: string, text: string,
     
     return (
         <FadeRightComponent>
-            <div className={`flex content-center feature-card flex-wrap p-5`} >
+            <div className={`flex content-center gap-10 feature-card p-5`} >
                 <div>
                     <div className="features-circular purple-transparent">
                         <span role="img" aria-label="brain">{emoji}</span>
                     </div>
                 </div>
-                <div className="flex flex-col justify-center ml-10">
+                <div className="flex flex-col justify-center">
                     <h3 className="font-bold">{text}</h3>
                     <p>{paragraph}</p>
                 </div>

@@ -19,7 +19,7 @@ function ExerciseContainer( { exerciseId, next } : { exerciseId: string, next?: 
     }
 
     return (
-        <div className={`${next ? "w-16 h-16" : "w-64"} overflow-hidden relative mr-5`}>
+        <div className={`${next ? "w-16 h-16" : "w-64"} overflow-hidden relative`}>
             <ExerciseImg src={img} />
         </div>
     )

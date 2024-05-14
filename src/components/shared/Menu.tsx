@@ -1,23 +1,33 @@
 import GradientButton from '../helpers/GradientButton'
+import NavigationManager from '../../services/NavigationManager'
 
-function Menu({setTransition, color} : {setTransition: any, color?: string}) {
+function Menu({setTransition, color, responsive, open} : {setTransition: any, open?:boolean, color?: string, responsive?: boolean }) {
+    
+    function handleScroll(e: any, section: string) {
+        e.preventDefault();
+        NavigationManager.scrollTo(section);
+    }
+    
     return (
-        <div>
+        <div className={`${responsive ? "block fixed h-screen right-0 top-0 shadow-2xl bg-white transition-all" : "lg:block hidden"} ${responsive && open ? "w-[290px] md:w-[340px]" : (responsive ? "w-0" : "")}`}>
             <nav className='h-full'>
-                <ul className='flex flex-wrap content-center h-full'>
-                    <li className='mr-10 flex flex-wrap content-center'>
-                        <a href="#" className={color}>Inicio</a>
+                <ul className={`flex ${responsive ? "flex-col justify-start p-10 pt-7" : "items-center"} gap-10 flex-wrap h-full'`}>
+                    {responsive && <li className=''>
+                        <GradientButton text="Iniciar Sesión" onClick={setTransition} className='base-gradient'/>
+                    </li>}
+                    <li className='flex flex-wrap content-center'>
+                        <a onClick={(e) => handleScroll(e, "inicio")} className={color}>Inicio</a>
                     </li>
-                    <li className='mr-10 flex flex-wrap content-center'>
-                        <a href="#vitalit" className={color}>Vitalit</a>
+                    <li className='flex flex-wrap content-center'>
+                        <a onClick={(e) => handleScroll(e, "vitalit")} className={color}>Vitalit</a>
                     </li>
-                    <li className='mr-10 flex flex-wrap content-center'>
-                        <a href="#mission-vision" className={color}>Misión y vision</a>
+                    <li className='flex flex-wrap content-center'>
+                        <a onClick={(e) => handleScroll(e, "mission-vision")} className={color}>Misión y vision</a>
                     </li>
-                    <li className='mr-10 flex flex-wrap content-center'>
-                        <a href="#unete" className={color}>Únete</a>
+                    <li className='flex flex-wrap content-center'>
+                        <a onClick={(e) => handleScroll(e, "unete")} className={color}>Únete</a>
                     </li>
-                    <li className='mr-10 flex flex-wrap content-center'>
+                    <li className='flex flex-wrap content-center'>
                         <a href="#" className={color}>Nosotros</a>
                         <ul className="sub-menu" style={{display: "none"}}>
                             <li><a href="#">¿Quienes somos?</a></li>
@@ -26,9 +36,9 @@ function Menu({setTransition, color} : {setTransition: any, color?: string}) {
                             <li><a href="#">Política de privacidad</a></li>
                         </ul>
                     </li>
-                    <li className=''>
+                    {!responsive && <li className=''>
                         <GradientButton text="Iniciar Sesión" onClick={setTransition} className='base-gradient'/>
-                    </li>
+                    </li>}
                 </ul>
             </nav>
         </div>
