@@ -15,7 +15,7 @@ function PopupAlert() {
 
     const [notification, setNotification] = useState({ text: '', type: 'success' }); 
     const [modal, setModal] = useState({ open: false, title: '', description: '' });
-    const [loading, setLoading] = useState(false);
+    const [loadingData, setLoadingData] = useState({ loading: false, message: '' });
     const [resolver, setResolver] = useState<(value: boolean | PromiseLike<boolean>) => void>();
 
     const openModal = (title: string, description: string) => {
@@ -40,9 +40,8 @@ function PopupAlert() {
         }, 100);
     }
 
-    const showFullScreenLoader = (show: boolean) => {
-        console.log(show);
-        setLoading(show);
+    const showFullScreenLoader = (show: boolean, message: string) => {
+        setLoadingData({ loading: show, message: message });
     }
 
     return(
@@ -74,7 +73,7 @@ function PopupAlert() {
                         color: '#fff',
                     }}
                 />
-                <FullScreenLoader loading={loading}/>
+                <FullScreenLoader loadingData={loadingData}/>
                 <Outlet/>
             </ModalContext.Provider>
         </div>
