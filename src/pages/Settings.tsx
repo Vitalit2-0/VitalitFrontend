@@ -98,25 +98,25 @@ function Settings() {
                         <div className="mt-3 pl-5">
                             <div className="flex justify-between items-center mb-3">
                                 <p>Actividad Física</p>
-                                <IconButton color="secondary" aria-label="add an alarm" onClick={() => handleOpen("Actividad Física")}>
+                                <IconButton color="secondary" aria-label="add an alarm" onClick={() => handleOpen("Salud Fisica")}>
                                     <AlarmIcon />
                                 </IconButton>
                             </div>
                             <div className="flex justify-between items-center mb-3">
                                 <p>Salud mental</p>
-                                <IconButton color="secondary" aria-label="add an alarm" onClick={() => handleOpen("Salud mental")}>
+                                <IconButton color="secondary" aria-label="add an alarm" onClick={() => handleOpen("Salud Mental")}>
                                     <AlarmIcon />
                                 </IconButton>
                             </div>
                             <div className="flex justify-between items-center mb-3">
                                 <p>Nutrición</p>
-                                <IconButton color="secondary" aria-label="add an alarm" onClick={() => handleOpen("Nutrición")}>
+                                <IconButton color="secondary" aria-label="add an alarm" onClick={() => handleOpen("Nutricion")}>
                                     <AlarmIcon />
                                 </IconButton>
                             </div>
                             <div className="flex justify-between items-center mb-3">
                                 <p>Generales</p>
-                                <IconButton color="secondary" aria-label="add an alarm" onClick={() => handleOpen("Generales")}>
+                                <IconButton color="secondary" aria-label="add an alarm" onClick={() => handleOpen("General")}>
                                     <AlarmIcon />
                                 </IconButton>
                             </div>

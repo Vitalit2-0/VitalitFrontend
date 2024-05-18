@@ -1,5 +1,6 @@
 export interface Notification {
-    section: string;
-    title: string;
-    message: string;
+    notification_description: string;
+    notification_id: string;
+    notification_title: string;
+    notification_type: string;
 }

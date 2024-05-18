@@ -9,10 +9,14 @@ import { TimeClock } from '@mui/x-date-pickers/TimeClock';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 import { NotificationChecker } from '../services/NotificationChecker';
+import { NotificationService } from '../services/NotificationDataProvider';
+import useAuthStore from '../stores/AuthStore';
 
 function ModalNotification({ openDate, setOpenDate, style, section } : { openDate: boolean, setOpenDate: any, style: any, section: string}) {
 
     const [selectedData, setSelectedData] = useState<{ [key: string]: { days: string[], time: string } }>({});
+    const user: any = useAuthStore((state: any) => state.user);
+    const checker = new NotificationChecker();
 
     const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const days = selectedData[section]?.days || [];
@@ -31,10 +35,11 @@ function ModalNotification({ openDate, setOpenDate, style, section } : { openDat
         setSelectedData({ ...selectedData, [section]: { ...selectedData[section], time: formattedTime } });
     };
 
-    const handleSaveChanges = () => {
+    const handleSaveChanges = async () => {
 
         const selectedDays = selectedData[section]?.days || [];
         const selectedTime = selectedData[section]?.time || "";
+        let is_active = 0;
 
         if (selectedDays.length === 0 && !selectedTime) {
             toast.info(`No recibirás notificaciones para la sección ${section}.`);
@@ -51,16 +56,33 @@ function ModalNotification({ openDate, setOpenDate, style, section } : { openDat
             return;
         }
 
+        if (selectedDays.length > 0 && selectedTime) {
+            is_active = 1;
+        }    
+
         let message = 'Cambios guardados correctamente!';
 
         if (selectedDays.length > 0 && selectedTime) {
+            const notificaions = await NotificationService.getNotifications(user.token);
+            const matchingNotification = notificaions.data.find((n: any) => n.notification_type === section);
+            if (matchingNotification) {
+                const notification = {
+                    notification_list: [
+                        {
+                            notification_id: matchingNotification.notification_id,
+                            notification_is_active: is_active,
+                            days: selectedDays,
+                            hour: selectedTime,
+                        }
+                    ]
+                }
+                await NotificationService.saveNotification(user.token, notification);
+            }
             message += ` Recibiras notificaciones los días: ${selectedDays.join(', ')}.`;
             message += ` A la hora: ${selectedTime}.`;
             toast.success(message);
+            checker.checkNotification({ day: selectedDays, time: selectedTime, section }, user.token);
         }
-
-        const checker = new NotificationChecker();
-        checker.checkNotification({ day: selectedDays, time: selectedTime, section });
     };
 
     return (
