@@ -8,9 +8,9 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { TimeClock } from '@mui/x-date-pickers/TimeClock';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
-import { NotificationChecker } from '../services/NotificationChecker';
-import { NotificationService } from '../services/NotificationDataProvider';
-import useAuthStore from '../stores/AuthStore';
+import { NotificationChecker } from '../../services/NotificationChecker';
+import useAuthStore from '../../stores/AuthStore';
+import { NotificationService } from '../../services/NotificationDataProvider';
 
 function ModalNotification({ openDate, setOpenDate, style, section } : { openDate: boolean, setOpenDate: any, style: any, section: string}) {
 

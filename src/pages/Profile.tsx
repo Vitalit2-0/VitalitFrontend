@@ -11,6 +11,7 @@ import { FaUser } from "react-icons/fa";
 import { IoIosFemale, IoIosMale } from "react-icons/io";
 import { GetActivityHistory } from "../services/ActivitiesServiceProvider";
 import { Create } from "../services/OpenAIService";
+import { NotificationService } from "../services/NotificationDataProvider";
 
 function Profile() {
     const { showNotification, openAddModal } = useModal()

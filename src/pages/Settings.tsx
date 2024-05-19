@@ -7,6 +7,7 @@ import ModalQr from "../components/shared/Modal2fa";
 import IconButton from '@mui/material/IconButton';
 import AlarmIcon from '@mui/icons-material/Alarm';
 import ModalNotification from "../components/shared/ModalNotification"
+import { NotificationService } from "../services/NotificationDataProvider";
 
 function Settings() {
     const { openModal } = useModal();
@@ -46,6 +47,10 @@ function Settings() {
         setValue2fa(user.ft_login === true);
     }, [])
 
+    useEffect(() => {
+        GetNotificationsConfig();
+    }, [])
+
     const handleConfirm = async() => {
         let confirm = await openModal('Doble factor de autenticación', `¿Estás seguro de que deseas ${value2fa ? "des" : ""}activar el doble factor de autenticación?`)
         
@@ -66,6 +71,12 @@ function Settings() {
             setValue2fa(true);
         }
 
+    }
+
+    const GetNotificationsConfig = async() => {
+        const notificationConfig = JSON.parse(localStorage.getItem('notificationConfig') || '[]');
+        console.log(notificationConfig)
+        //TODO: Fetch notifications config from API
     }
 
     return (
