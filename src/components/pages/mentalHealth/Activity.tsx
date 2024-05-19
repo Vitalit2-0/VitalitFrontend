@@ -6,8 +6,9 @@ import CurrentActivity from "./CurrentActivity";
 import useAuthStore from "../../../stores/AuthStore";
 import { Create } from "../../../services/OpenAIService";
 import { TextareaAutosize } from "@mui/material";
+import NavigationManager from "../../../services/NavigationManager";
 
-function Activity({ activity, handleActivity, active=false } : { activity:any, handleActivity:any, active?:boolean }) {
+function Activity({ activity, handleActivity, active=false } : { activity:any, handleActivity?:any, active?:boolean }) {
     
     const [stage, setStage] = useState(0);
     const [hidden, setHidden] = useState(true);
@@ -106,9 +107,17 @@ function Activity({ activity, handleActivity, active=false } : { activity:any, h
         setRecomendations(e.target.value);
     }
     
+    function handleShowActivity(id: number) {
+        if(handleActivity){
+            handleActivity(id);
+            return;
+        }
+        NavigationManager.navigateTo("/mental-health");
+    }
+
     return (
         <div className={`${active ? ((hidden) ? "invisible p-0" : "visible") : "w-full"}`}>
-            {stage !== stages.activityStarted && <div className={`overflow-hidden transition-all`} onClick={() => handleActivity(activity.id)}>
+            {stage !== stages.activityStarted && <div className={`overflow-hidden transition-all`} onClick={() => handleShowActivity(activity.id)}>
                 <div className={`overflow-hidden flex  ${active ? 'flex-col lg:flex-row' : 'flex-col'}`}>
                     {activity.video && <video className={`${active ? 'w-full lg:w-1/2' : 'w-full'} sm:rounded-lg mb-5 md:my-5 overflow-hidden transition-all ${(opacity && active || !active) ? "opacity-100" : "opacity-0"} transition-all duration-500`} loop autoPlay>
                         <source src={activity.video} type="video/mp4" />

@@ -9,18 +9,29 @@ import { calculateAge, calculateIMC } from "../services/FitCalcProvider";
 import { getProfile, updateProfile } from "../services/ProfileController";
 import { FaUser } from "react-icons/fa";
 import { IoIosFemale, IoIosMale } from "react-icons/io";
+import { GetActivityHistory } from "../services/ActivitiesServiceProvider";
+import { Create } from "../services/OpenAIService";
 
 function Profile() {
-    const { showNotification } = useModal()
+    const { showNotification, openAddModal } = useModal()
     const user = useAuthStore((state:any) => state.user)
     
     const [editProfile, setEditProfile] = useState({disabled: true, text: "Editar perfil"})
     const [userData, setUserData] = useState<User>(user)
+    const [goals, setGoals] = useState<any[]>([])
 
     const [lastUserData, setLastUserData] = useState(userData)
 
     useEffect(() => {
         getProfileData();
+    }, [])
+
+    useEffect(() => {
+        getActivityHistory();
+    }, [])
+
+    useEffect(() => {
+        getGoals();
     }, [])
 
     const getProfileData = async() => {
@@ -36,6 +47,16 @@ function Profile() {
         
         setUserData({...user, ...data})
         setLastUserData({...user, ...data});
+    }
+
+    const getGoals = () => {
+        const goals = JSON.parse(localStorage.getItem("goals") || "[]");
+        setGoals(goals);
+    }
+
+    const getActivityHistory = async() => {
+        const response = await GetActivityHistory(user.token);
+        console.log(response);
     }
 
     const handleEditProfile = () => {
@@ -114,6 +135,30 @@ function Profile() {
                 setUserData({...userData, photo: reader.result as string});
             }
         })
+    }
+
+    const handleAdd = async(type: string) => {
+        const response = await openAddModal(type);
+        
+        if(response.confirm) {
+            const createGoal = {
+                type: "goal",
+                description: response.description
+            }
+            
+            console.log(createGoal);
+            const goal = await Create(createGoal, user);
+
+            //TODO: Add goal to user in service. Service not implemented yet
+            if(goal.data)
+            {
+                const goals = JSON.parse(localStorage.getItem("goals") || "[]");
+                goals.push(goal.data);
+                localStorage.setItem("goals", JSON.stringify(goals));
+            }
+
+            showNotification("Objetivo añadido correctamente", "success");
+        }
     }
 
     return (
@@ -213,10 +258,11 @@ function Profile() {
                 </div>
                 <div className="md:w-1/2 xl:w-2/3 flex flex-col">
                     <div className="w-full flex flex-col lg:flex-row gap-2">
-                        <div className="lg:w-1/3">
+                        <div className="lg:w-1/3 relative">
+                        <div className="w-8 h-8 flex items-center justify-center absolute top-5 right-5 base-gradient text-white rounded-lg font-bold text-2xl cursor-pointer" onClick={() => handleAdd("objetivo")}>+</div>
                             <div className="bg-white shadow-md rounded-3xl p-5">
-                                <p className="color-purple text-6xl">5</p>
-                                <p className="mt-2">Objetivos establecidos</p>
+                                <p className="color-purple text-6xl">{goals.length}</p>
+                                <p className="mt-2">Objetivo{goals.length > 1 ? "s" : ""} establecido{goals.length > 1 ? "s" : ""}</p>
                             </div>
                         </div>
                         <div className="lg:w-1/3">

@@ -6,6 +6,7 @@ export class AiRequests {
 
     surveyAnswers: SurveyDto = {} as any;
     recomendations: string = "";
+    description: string = "";
     exerciseList: any[] = [];
     yogaPoses: any[] = [];
     place: string = "";
@@ -36,6 +37,9 @@ export class AiRequests {
                 return this.GetPrompts().yoga;
             case "meditation":
                 return this.GetPrompts().meditation;
+            case "goal":
+                this.description = params.description;
+                return this.GetPrompts().goal;
         }
     }
 
@@ -122,7 +126,8 @@ export class AiRequests {
                 - type (si es 'calentamiento', 'entrenamiento' o 'estiramiento')
                 - rest: int(tiempo en segundos). 
                 Es MUY importante que sigas el formato exacto para que pueda entenderlo.
-                Por último, el enfoque del plan de entrenamiento es ${this.focus}.`,
+                Por último, el enfoque del plan de entrenamiento es ${this.focus}.
+                Para fines de pruebas, por ahora por todos los rest en 0.`,
 
             yoga:
                 `Eres un instructor de yoga que se especializa en la creación de secuencias de yoga. Tu tarea es crear una secuencia de yoga de 5 posturas para mí.
@@ -142,6 +147,21 @@ export class AiRequests {
                     "instruction2" string (En español, detallada sobre la forma y el ritmo de la respiración, la postura y la actitud mental),
                     ...
                 ]
+                Es MUY importante que sigas el formato exacto para que pueda entenderlo.`,
+
+            goal:
+                `Crea un objetivo de bienestar para mí de acuerdo a la siguiente descripción:
+                ${JSON.stringify(this.description)} 
+                Debes crear un objetivo que sea específico, medible y alcanzable. 
+                Por favor, envíame el objetivo en el siguiente formato JSON, no envíes ninguna otra información: 
+                {
+                    "goal": string (En español, el título que consideres adecuado para el objetivo),
+                    "currently_achieved": int (Número que representa el progreso actual del objetivo),
+                    "target": int (Número que representa el objetivo final),
+                    "unit": string (Unidad de medida del objetivo. Puede ser 'minutos', 'veces', 'días', 'kilogramos', 'porcentaje', etc.),
+                    "deadline": string (Fecha límite para alcanzar el objetivo si la hay, en formato 'dd/mm/aaaa'),
+                    "repeat": string (Frecuencia con la que se debe realizar la acción para alcanzar el objetivo. Puede ser 'diariamente', 'semanalmente', 'mensualmente', etc.)
+                }
                 Es MUY importante que sigas el formato exacto para que pueda entenderlo.`
         })
     }
