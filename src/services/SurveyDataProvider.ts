@@ -36,14 +36,14 @@ export async function sendSurveyAnswers(answers: SurveyDto, token: string): Prom
     }
 }
 
-export async function getSurveyResults(id: string, token: string)
+export async function getSurveyResults(user: User)
 {
     try {
         
         const config = {
-            headers: { Authorization: `Bearer ${token}` }
+            headers: { Authorization: `Bearer ${user.token}` }
         };
-        const response = await axios.get(`https://app-wlimmpn7xa-uc.a.run.app/v1/survey/${id}`, config);
+        const response = await axios.get(`https://app-wlimmpn7xa-uc.a.run.app/v1/survey/${user.id}`, config);
         return response.data;
     } catch (error : any) {
         return { 

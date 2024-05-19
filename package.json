@@ -24,6 +24,7 @@
     "openai": "^4.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-full-screen": "^1.1.1",
     "react-icons": "^5.0.1",
     "react-qr-code": "^2.0.12",
     "react-router-dom": "^6.22.3",
@@ -31,6 +32,7 @@
     "react-tooltip": "^5.26.4",
     "scss": "^0.2.4",
     "swiper": "^11.1.1",
+    "wavesurfer.js": "^7.7.15",
     "zustand": "^4.5.2"
   },
   "devDependencies": {

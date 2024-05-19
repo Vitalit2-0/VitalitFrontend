@@ -80,14 +80,14 @@ function Landing() {
                                 <div className="base-white p-10 rounded-3xl shadow-card text-center">
                                     <img className="w-1/4 m-auto" src="assets/images/vision.png" alt="" />
                                     <h3 className="text-2xl color-purple font-bold mt-5 mb-5">Visión</h3>
-                                    <p className="leading-8">Para el año 2027, <span className="font-bold">Vitalit</span> busca ser el referente por excelencia en la promoción del cuidado personal, físico y mental, mediante un enfoque en la innovación continua, el apoyo mutuo y una experiencia enriquecedora.</p>
+                                    <p className="leading-8">Para el año 2027, <span className="font-bold">Vitalit</span> busca ser el referente por excelencia en Colombia en el cuidado físico y mental para aquellas personas que deseen tener una experiencia enriquecedora en su desarrollo personal y su bienestar.</p>
                                 </div>
                             </FadeLeftComponent>
                             <FadeRightComponent className="md:w-1/2">
                                 <div className="base-white p-10 rounded-3xl shadow-card text-center">
                                     <img className="w-1/4 m-auto" src="assets/images/mision.png" alt="" />
                                     <h3 className="text-2xl color-purple font-bold mt-5 mb-5">Misión</h3>
-                                    <p className="leading-8">Para el año 2027, <span className="font-bold">Vitalit</span> busca ser el referente por excelencia en la promoción del cuidado personal, físico y mental, mediante un enfoque en la innovación continua, el apoyo mutuo y una experiencia enriquecedora.</p>
+                                    <p className="leading-8">Brindar apoyo para la mejora de la salud mental y física de nuestros usuarios, a través de una plataforma integral que ofrece rutinas, ejercicios de respiración, yoga y meditación. Fomentando así, una gestión del bienestar personal sencilla y accesible.</p>
                                 </div>
                             </FadeRightComponent>
                         </div>
