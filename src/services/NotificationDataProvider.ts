@@ -6,7 +6,6 @@ export class NotificationService {
             headers: { Authorization: `Bearer ${token}` }
         };
         const response = await axios.get('https://app-wlimmpn7xa-uc.a.run.app/v1/notification', config);
-        console.log(response);
         return response.data;
     }
 
@@ -15,6 +14,6 @@ export class NotificationService {
             headers: { Authorization: `Bearer ${token}` }
         };
         const response = await axios.post('https://app-wlimmpn7xa-uc.a.run.app/v1/notification', notification, config);
-        console.log(response);
+        return response.data;
     }
 }   

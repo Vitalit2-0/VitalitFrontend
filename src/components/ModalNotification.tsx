@@ -76,12 +76,31 @@ function ModalNotification({ openDate, setOpenDate, style, section } : { openDat
                         }
                     ]
                 }
-                await NotificationService.saveNotification(user.token, notification);
+                const response: any = await NotificationService.saveNotification(user.token, notification);
+                console.log("r:",response);
+                if(response.data = 'ok') 
+                {
+                    message += ` Recibiras notificaciones los días: ${selectedDays.join(', ')}.`;
+                    message += ` A la hora: ${selectedTime}.`;
+                    toast.success(message);
+                    checker.checkNotification({ day: selectedDays, time: selectedTime, section }, user.token);
+                    setOpenDate(false);
+
+                    const notificationConfig = JSON.parse(localStorage.getItem('notificationConfig') || '[]');
+                    const newNotificationConfig = notificationConfig.filter((n: any) => n.section !== section);
+                    notificationConfig.push({
+                        section: section,
+                        days: selectedDays,
+                        time: selectedTime,
+                        is_active: is_active,
+                    });
+                    
+                    localStorage.setItem('notificationConfig', JSON.stringify(newNotificationConfig));
+                    return;
+                }
+
+                toast.error('Lo sentimos, ha ocurrido un error al guardar los cambios. Por favor intenta de nuevo');
             }
-            message += ` Recibiras notificaciones los días: ${selectedDays.join(', ')}.`;
-            message += ` A la hora: ${selectedTime}.`;
-            toast.success(message);
-            checker.checkNotification({ day: selectedDays, time: selectedTime, section }, user.token);
         }
     };
 

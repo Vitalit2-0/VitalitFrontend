@@ -16,6 +16,12 @@ function Sidebar() {
 
     function handleLogout() {
         auth.logout();
+
+        const notificationsListenerStarted = localStorage.getItem('notificationsListenerStarted');
+        if (notificationsListenerStarted) {
+            localStorage.removeItem('notificationsListenerStarted');
+        }
+        
         NavigationManager.navigateTo("/login");
     }
 
