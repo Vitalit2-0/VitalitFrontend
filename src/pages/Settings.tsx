@@ -7,6 +7,7 @@ import ModalQr from "../components/shared/Modal2fa";
 import IconButton from '@mui/material/IconButton';
 import AlarmIcon from '@mui/icons-material/Alarm';
 import ModalNotification from "../components/shared/ModalNotification"
+import { NotificationService } from "../services/NotificationDataProvider";
 
 function Settings() {
     const { openModal } = useModal();
@@ -38,13 +39,16 @@ function Settings() {
         transform: 'translate(-50%, -50%)',
         width: 400,
         bgcolor: 'background.paper',
-        border: '2px solid #000',
         boxShadow: 24,
         p: 4,
     };
 
     useEffect(() => {
         setValue2fa(user.ft_login === true);
+    }, [])
+
+    useEffect(() => {
+        GetNotificationsConfig();
     }, [])
 
     const handleConfirm = async() => {
@@ -67,6 +71,12 @@ function Settings() {
             setValue2fa(true);
         }
 
+    }
+
+    const GetNotificationsConfig = async() => {
+        const notificationConfig = JSON.parse(localStorage.getItem('notificationConfig') || '[]');
+        console.log(notificationConfig)
+        //TODO: Fetch notifications config from API
     }
 
     return (
@@ -96,28 +106,28 @@ function Settings() {
                             />
                     </div>
                     {isChecked && (
-                        <div className="mt-3">
+                        <div className="mt-3 pl-5">
                             <div className="flex justify-between items-center mb-3">
                                 <p>Actividad Física</p>
-                                <IconButton color="secondary" aria-label="add an alarm" onClick={() => handleOpen("Actividad Física")}>
+                                <IconButton color="secondary" aria-label="add an alarm" onClick={() => handleOpen("Salud Fisica")}>
                                     <AlarmIcon />
                                 </IconButton>
                             </div>
                             <div className="flex justify-between items-center mb-3">
                                 <p>Salud mental</p>
-                                <IconButton color="secondary" aria-label="add an alarm" onClick={() => handleOpen("Salud mental")}>
+                                <IconButton color="secondary" aria-label="add an alarm" onClick={() => handleOpen("Salud Mental")}>
                                     <AlarmIcon />
                                 </IconButton>
                             </div>
                             <div className="flex justify-between items-center mb-3">
                                 <p>Nutrición</p>
-                                <IconButton color="secondary" aria-label="add an alarm" onClick={() => handleOpen("Nutrición")}>
+                                <IconButton color="secondary" aria-label="add an alarm" onClick={() => handleOpen("Nutricion")}>
                                     <AlarmIcon />
                                 </IconButton>
                             </div>
                             <div className="flex justify-between items-center mb-3">
                                 <p>Generales</p>
-                                <IconButton color="secondary" aria-label="add an alarm" onClick={() => handleOpen("Generales")}>
+                                <IconButton color="secondary" aria-label="add an alarm" onClick={() => handleOpen("General")}>
                                     <AlarmIcon />
                                 </IconButton>
                             </div>

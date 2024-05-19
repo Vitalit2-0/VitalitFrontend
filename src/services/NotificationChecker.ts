@@ -1,9 +1,9 @@
 import { toast } from 'react-toastify';
-import { getNotificationContent } from './NotificationDataProvider';
+import { NotificationService } from '../services/NotificationDataProvider';
 
 export class NotificationChecker {
     private shownNotifications: { [key: string]: boolean } = {};
-    checkNotification(userParams: { day: string[], time: string, section: string }) {
+    checkNotification(userParams: { day: string[], time: string, section: string }, userToken: string) {
         // Run every 10 seconds
         setInterval(async () => {
             const now = new Date();
@@ -15,14 +15,11 @@ export class NotificationChecker {
                 // Check if the notification has already been shown today
                 const notificationKey = `${currentDay}-${userParams.section}`;
                 if (!this.shownNotifications[notificationKey]) {
-                    const notifications = await getNotificationContent();
-                    const notification = notifications.find(n => n.section === userParams.section);
-                    if (notification) {
-                        // Display notification using react-toastify
-                        toast(`${notification.title}: ${notification.message}`);
-                        //Mark the notification as shown
-                        this.shownNotifications[notificationKey] = true;
-                    }
+                    //const notifications = await getNotificationContent();
+                    const notifications = await NotificationService.getNotifications(userToken);
+                    const notification = notifications.data.find((n: any) => n.notification_type === userParams.section);
+                    toast(`${notification.notification_title}: ${notification.notification_description}`);
+                    this.shownNotifications[notificationKey] = true;
                 }
                 
             } else if (currentTime === '00:00') {
