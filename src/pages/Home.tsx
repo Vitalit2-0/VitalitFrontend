@@ -1,6 +1,7 @@
 import React from "react";
 import useAuthStore from "../stores/AuthStore";
 import NavigationManager from "../services/NavigationManager";
+import { NotificationChecker } from "../services/NotificationChecker";
 import Goal from "../components/pages/dashboard/Goal";
 import UserNotes from "../components/shared/UserNotes";
 import WorkoutShortcut from "../components/pages/workout/WorkoutShortcut";
@@ -10,6 +11,7 @@ import { activities } from "../constants/mentalHealth";
 function Home() {
 
     const auth = useAuthStore((state: any) => state);
+    const checker = new NotificationChecker();
 
     const [goals, setGoals] = React.useState([]);
 
@@ -28,6 +30,21 @@ function Home() {
         const goals = JSON.parse(localStorage.getItem("goals") || "[]");
         setGoals(goals);
         console.log(goals)
+
+        const notificationsListenerStarted = localStorage.getItem('notificationsListenerStarted');
+
+        if (!notificationsListenerStarted) {
+            localStorage.setItem('notificationsListenerStarted', 'true');
+            console.log('Starting notifications listener');
+            const notificationConfig = JSON.parse(localStorage.getItem('notificationConfig') || '[]');
+            
+            Array.from(notificationConfig).forEach((n: any) => {
+                if (n.is_active === 1) {
+                    checker.checkNotification({ day: n.days, time: n.time, section: n.section }, auth.user.token);
+                }
+            });
+        }
+
     }, [])
 
     return (

@@ -38,7 +38,6 @@ function Settings() {
         transform: 'translate(-50%, -50%)',
         width: 400,
         bgcolor: 'background.paper',
-        border: '2px solid #000',
         boxShadow: 24,
         p: 4,
     };
@@ -96,28 +95,28 @@ function Settings() {
                             />
                     </div>
                     {isChecked && (
-                        <div className="mt-3">
+                        <div className="mt-3 pl-5">
                             <div className="flex justify-between items-center mb-3">
                                 <p>Actividad Física</p>
-                                <IconButton color="secondary" aria-label="add an alarm" onClick={() => handleOpen("Actividad Física")}>
+                                <IconButton color="secondary" aria-label="add an alarm" onClick={() => handleOpen("Salud Fisica")}>
                                     <AlarmIcon />
                                 </IconButton>
                             </div>
                             <div className="flex justify-between items-center mb-3">
                                 <p>Salud mental</p>
-                                <IconButton color="secondary" aria-label="add an alarm" onClick={() => handleOpen("Salud mental")}>
+                                <IconButton color="secondary" aria-label="add an alarm" onClick={() => handleOpen("Salud Mental")}>
                                     <AlarmIcon />
                                 </IconButton>
                             </div>
                             <div className="flex justify-between items-center mb-3">
                                 <p>Nutrición</p>
-                                <IconButton color="secondary" aria-label="add an alarm" onClick={() => handleOpen("Nutrición")}>
+                                <IconButton color="secondary" aria-label="add an alarm" onClick={() => handleOpen("Nutricion")}>
                                     <AlarmIcon />
                                 </IconButton>
                             </div>
                             <div className="flex justify-between items-center mb-3">
                                 <p>Generales</p>
-                                <IconButton color="secondary" aria-label="add an alarm" onClick={() => handleOpen("Generales")}>
+                                <IconButton color="secondary" aria-label="add an alarm" onClick={() => handleOpen("General")}>
                                     <AlarmIcon />
                                 </IconButton>
                             </div>
