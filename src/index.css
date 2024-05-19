@@ -668,6 +668,46 @@ body {
     transform: rotate(0.5turn);
   }
 }
+#countdown {
+  position: relative;
+  height: 120px;
+  width: 120px;
+  text-align: center;
+}
+
+#countdown-number {
+  color: #a364db;
+  display: inline-block;
+  line-height: 120px;
+}
+
+#countdown svg {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 120px !important;
+  height: 120px !important;
+  transform: rotateY(-180deg) rotateZ(-90deg);
+}
+
+#countdown svg circle {
+  stroke-dasharray: 226px;
+  stroke-dashoffset: 0px;
+  stroke-linecap: round;
+  stroke-width: 2px;
+  stroke: #1a1a1a;
+  fill: none;
+  animation: countdown 600s linear infinite forwards;
+}
+
+@keyframes countdown {
+  from {
+    stroke-dashoffset: 0px;
+  }
+  to {
+    stroke-dashoffset: 226px;
+  }
+}
 #burguer-menu svg {
   height: 80px;
   position: absolute;

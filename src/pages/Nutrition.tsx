@@ -4,10 +4,10 @@ import { useState } from "react";
 import GradientButton from "../components/helpers/GradientButton";
 import SliderHelper from "../components/shared/SliderHelper";
 import { videos } from "../constants/nutrition";
-import { CreateRecipe } from "../services/OpenAIService";
 import { getSurveyResults } from "../services/SurveyDataProvider";
 import useAuthStore from "../stores/AuthStore";
 import { useModal } from "../components/shared/PopupAlert";
+import { Create } from "../services/OpenAIService";
 
 function Nutrition() {
 
@@ -29,9 +29,14 @@ function Nutrition() {
 
     async function handleCreateRecipe(){
         showFullScreenLoader(true, "Regálanos un momento. Estamos creando una receta deliciosa para ti.");
-        const survey: any = await getSurveyResults(user.id, user.token);
+        
+        const createRecipe = {
+            type: "recipe",
+            food: food,
+            recomendations: recomendations
+        }
 
-        const recipe = await CreateRecipe(survey.data ? survey.data : null, food, recomendations);   
+        const recipe = await Create(createRecipe, user);   
         setRecipe(recipe.data);
         showFullScreenLoader(false, "");
     }   

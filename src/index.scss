@@ -747,6 +747,49 @@ background: linear-gradient(90deg, rgba(255,255,255,1) 33%, rgba(255,255,255,0.7
   }
   @keyframes l7 {to{transform: rotate(.5turn)}}
 
+//----------------------------------Countdown----------------------------------//
+
+#countdown {
+    position: relative;
+    height: 120px;
+    width: 120px;
+    text-align: center;
+  }
+  
+  #countdown-number {
+    color: $base-deep-purple;
+    display: inline-block;
+    line-height: 120px;
+  }
+  
+  #countdown svg {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 120px !important;
+    height: 120px !important;
+    transform: rotateY(-180deg) rotateZ(-90deg);
+  }
+  
+  #countdown svg circle {
+    stroke-dasharray: 226px;
+    stroke-dashoffset: 0px;
+    stroke-linecap: round;
+    stroke-width: 2px;
+    stroke: $base-black;
+    fill: none;
+    animation: countdown 600s linear infinite forwards;
+  }
+  
+  @keyframes countdown {
+    from {
+      stroke-dashoffset: 0px;
+    }
+    to {
+      stroke-dashoffset: 226px;
+    }
+  }
+
 //----------------------------------Burguer menu----------------------------------//
 
 #burguer-menu svg {

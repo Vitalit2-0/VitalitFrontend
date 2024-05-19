@@ -4,8 +4,7 @@ import { Tooltip } from 'react-tooltip'
 import { useEffect, useState } from "react";
 import useAuthStore from "../stores/AuthStore";
 import GradientButton from "../components/helpers/GradientButton";
-import { getSurveyResults } from "../services/SurveyDataProvider";
-import { CreateWorkoutPlan } from "../services/OpenAIService";
+import { Create } from "../services/OpenAIService";
 import WorkoutPlan from "../components/pages/workout/WorkoutPlan";
 import { useModal } from "../components/shared/PopupAlert";
 import { focusOptions, stages } from "../constants/workout";
@@ -55,8 +54,15 @@ function Workout() {
     async function CreateWorkoutRoutine(focus: string) {
         
         showFullScreenLoader(true, "Regálanos un momento. Estamos creando la rutina perfecta para ti.");
-        const survey: any = await getSurveyResults(user.id, user.token);
-        const workout = await CreateWorkoutPlan(survey.data ? survey.data : null, place, recomendations, focus, user.token);
+
+        const createWorkoutPlan = {
+            type: "workout",
+            place: place,
+            recomendations: recomendations,
+            focus: focus
+        }
+
+        const workout = await Create(createWorkoutPlan, user);
 
         if(!workout.data)
         {
@@ -94,7 +100,7 @@ function Workout() {
                                 <img className="w-full rounded-xl" src="assets/images/workout.webp" alt="" />
                                 <div className="w-full h-full flex flex-col justify-between rounded-xl absolute top-0 right-0 left-0 bg-[rgba(0,0,0,0.4)]">
                                     <h2 className="font-bold text-white text-xl mt-5 ms-5">Entrenamiento de hoy</h2>
-                                    <a className="w-12 mb-5 ms-5" onClick={() => startWorkout(stage === stages.workoutStarted ? false : true)} data-tooltip-id="start-tooltip" data-tooltip-variant="success" data-tooltip-content="Empecemos!">
+                                    <a className="w-12 mb-5 ms-5" onClick={() => startWorkout(stage === stages.workoutStarted ? false : true)} data-tooltip-id="start-tooltip" data-tooltip-variant="success" data-tooltip-content={stage === stages.workoutStarted ? "Terminar" : "Empecemos!"}>
                                         {stage !== stages.workoutStarted ? <FaCirclePlay className="text-white text-5xl cursor-pointer" /> :
                                         <FaStopCircle className="text-white text-5xl cursor-pointer" />}
                                     </a>
