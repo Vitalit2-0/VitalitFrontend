@@ -1,6 +1,4 @@
 import { FaCirclePlay } from "react-icons/fa6";
-import { FaStopCircle } from "react-icons/fa";
-import { Tooltip } from 'react-tooltip'
 import { useEffect, useState } from "react";
 import useAuthStore from "../stores/AuthStore";
 import GradientButton from "../components/helpers/GradientButton";
@@ -10,6 +8,7 @@ import { useModal } from "../components/shared/PopupAlert";
 import { focusOptions, stages } from "../constants/workout";
 import MultipleChoiceButton from "../components/helpers/MultipleChoiceButton";
 import { TextareaAutosize } from "@mui/material";
+import WorkoutShortcut from "../components/pages/workout/WorkoutShortcut";
 
 function Workout() {
     const [stage, setStage] = useState<number>(stages.choosingFocus);
@@ -22,7 +21,7 @@ function Workout() {
 
     useEffect(() => {
         const workoutAlreadyCompleted = localStorage.getItem("workoutComplete");
-        //TODO: Add workout to user history. Service is not implemented yet.
+
         if(workoutAlreadyCompleted)
         {
             setStage(stages.workoutFinished);
@@ -94,20 +93,7 @@ function Workout() {
             <div className="w-full md:p-10 md:ps-28">
                 <div className="flex flex-col lg:flex-row items-start gap-5 relative">
                     {stage !== stages.choosingFocus &&<div className={`w-full lg:w-1/3 p-4 bg-white rounded-3xl shadow-md lg:sticky top-8 transition-all`}>
-                        <div>
-                            <p className="color-purple font-bold text-center bg-purple-200 p-3 rounded-xl">Recuerda que la constancia es la clave para lograr tus objetivos.</p>
-                            <div className="mt-3 relative h-64 overflow-hidden rounded-xl">
-                                <img className="w-full rounded-xl" src="assets/images/workout.webp" alt="" />
-                                <div className="w-full h-full flex flex-col justify-between rounded-xl absolute top-0 right-0 left-0 bg-[rgba(0,0,0,0.4)]">
-                                    <h2 className="font-bold text-white text-xl mt-5 ms-5">Entrenamiento de hoy</h2>
-                                    <a className="w-12 mb-5 ms-5" onClick={() => startWorkout(stage === stages.workoutStarted ? false : true)} data-tooltip-id="start-tooltip" data-tooltip-variant="success" data-tooltip-content={stage === stages.workoutStarted ? "Terminar" : "Empecemos!"}>
-                                        {stage !== stages.workoutStarted ? <FaCirclePlay className="text-white text-5xl cursor-pointer" /> :
-                                        <FaStopCircle className="text-white text-5xl cursor-pointer" />}
-                                    </a>
-                                    <Tooltip id="start-tooltip" place={"right"} />
-                                </div>
-                            </div>
-                        </div>
+                        <WorkoutShortcut startWorkout={startWorkout} stage={stage} />
                     </div>}
                     <div id="workout-section" className={`${stage !== stages.choosingFocus ? 'w-full lg:w-2/3' : 'w-full'} sticky top-0 min-h-[90vh] flex items-start`}>
                         {stage === stages.choosingFocus &&
@@ -168,10 +154,10 @@ function Workout() {
                             </div>
                         }
                         {stage === stages.workoutStarted &&
-                            <WorkoutPlan workoutPlan={workoutPlan} stage={stage} setStage={setStage} />
+                            <WorkoutPlan workoutPlan={workoutPlan} stage={stage} setStage={setStage} focus={focus} />
                         }
                         {stage === stages.workoutFinished &&
-                            <div className="flex h-full items-center">
+                            <div className="flex h-full items-center bg-white rounded-3xl shadow-md">
                                 <div className='p-10 ps-32 pe-32 flex flex-col justify-center'>
                                     <div className='text-center'>
                                         <h1 className="text-2xl font-bold text-[#374151]">¡Felicitaciones!</h1>

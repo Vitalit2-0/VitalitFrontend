@@ -6,9 +6,13 @@ import { useModal } from '../../shared/PopupAlert';
 import StatusBar from './StatusBar';
 import { stages } from '../../../constants/workout';
 import ExerciseContainer from './ExerciseContainer';
+import { toast } from 'react-toastify';
+import { RegisterActivity } from '../../../services/ActivitiesServiceProvider';
+import useAuthStore from '../../../stores/AuthStore';
 
-function WorkoutPlan({workoutPlan, stage, setStage}: any) {
+function WorkoutPlan({workoutPlan, stage, setStage, focus}: any) {
 
+    const user = useAuthStore((state:any) => state.user);
     const [currentExercise, setCurrentExercise] = React.useState<any>(null);
     const [percentage, setPercentage] = useState(0);
     const [resting, setResting] = useState({isResting: false, seconds: 0});
@@ -87,7 +91,18 @@ function WorkoutPlan({workoutPlan, stage, setStage}: any) {
             if(workoutPlan[currentExercise.index + 1] || currentExercise.completedSeries < (currentExercise.sets - 1)) return;
             
             localStorage.setItem("workoutComplete", "true");
+
+            const register: ActivityDto = {
+                activity_type: "entrenamiento",
+                activity_date: new Date().toLocaleDateString('en-GB'),
+                activity_hour: new Date().toLocaleTimeString('en-GB', {hour: '2-digit', minute: '2-digit'}),
+                activity_detail: `Entrenamiento con enfoque en ${focus} completado. ¡Felicidades!`
+            }
+
+            toast.success(`Entrenamiento con enfoque en ${focus} completado. ¡Felicidades! 🎉`)
             setStage(stages.workoutFinished);
+            
+            RegisterActivity(user.token, register);
         }, intervalTime * 100);
     }
 
