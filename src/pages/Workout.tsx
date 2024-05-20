@@ -12,6 +12,7 @@ import WorkoutShortcut from "../components/pages/workout/WorkoutShortcut";
 
 function Workout() {
     const [stage, setStage] = useState<number>(stages.choosingFocus);
+    const [focus, setFocus] = useState<string>("");
     const [place, setPlace] = useState<string>("En casa");
     const [recomendations, setRecomendations] = useState("");
     const [workoutPlan, setWorkoutPlan] = useState<any>([]);
@@ -71,6 +72,7 @@ function Workout() {
             return;
         }
 
+        setFocus(focus);
         setWorkoutPlan(workout.data);
         setStage(stages.routineReady);
         showFullScreenLoader(false, "");

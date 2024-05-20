@@ -8,12 +8,16 @@ import GradientButton from '../../helpers/GradientButton';
 import { useEffect, useState } from 'react';
 import VideoFile from './VideoFile';
 import AudioFile from './AudioFile';
+import { toast } from 'react-toastify';
+import { RegisterActivity } from '../../../services/ActivitiesServiceProvider';
+import useAuthStore from '../../../stores/AuthStore';
 
 function CurrentActivity({ activity, handleFinishActivity, setStage }: { activity:any, handleFinishActivity:any, setStage:any }) {
 
     const [currentPose, setCurrentPose] = useState(0);
     const [currentInstruction, setCurrentInstruction] = useState(0);
     const handle = useFullScreenHandle();
+    const user = useAuthStore((state:any) => state.user);
 
     useEffect(() => {
         console.log(activity);
@@ -37,6 +41,7 @@ function CurrentActivity({ activity, handleFinishActivity, setStage }: { activit
                 {
                     clearInterval(interval);
                     setStage(stages.activityFinished);
+                    registerActivityFinished("Has completado tu meditación guiada");
                 }
             }, 120000);
 
@@ -62,7 +67,21 @@ function CurrentActivity({ activity, handleFinishActivity, setStage }: { activit
         else
         {
             setStage(stages.activityFinished);
+            registerActivityFinished("Tu rutina de yoga completada");
         }
+    }
+
+    const registerActivityFinished = (message:string) => {
+        const register: ActivityDto = {
+            activity_type: "activity",
+            activity_date: new Date().toLocaleDateString('en-GB'),
+            activity_hour: new Date().toLocaleTimeString('en-GB', {hour: '2-digit', minute: '2-digit'}),
+            activity_detail: `Entrenamiento con enfoque en ${focus} completado. ¡Felicidades!`
+        }
+
+        toast.success(`${message}. ¡Felicidades! 🎉`)
+        
+        RegisterActivity(user.token, register);
     }
 
     return (

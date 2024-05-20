@@ -269,7 +269,7 @@ function Profile() {
                         <div className="lg:w-1/3">
                             <div className="bg-white shadow-md rounded-3xl p-5">
                                 <p className="color-purple text-6xl">5</p>
-                                <p className="mt-2">Objetivos establecidos</p>
+                                <p className="mt-2">Actividades completadas</p>
                             </div>
                         </div>
                         <div className="lg:w-1/3">
