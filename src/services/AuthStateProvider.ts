@@ -20,9 +20,10 @@ export async function loginUser(user : LoginDto): Promise<ResponseDto>
         
         return { code: "200", string: "", data: response.data.data } as ResponseDto;
     } catch (error : any) {
+        console.log(error);
         return { 
-            code: error.response.data.code, 
-            string: error.response.data.string,
+            code: "500",
+            string: "",
             data: null 
         } as ResponseDto;
     }

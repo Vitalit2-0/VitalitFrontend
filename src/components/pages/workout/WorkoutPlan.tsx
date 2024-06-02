@@ -93,7 +93,7 @@ function WorkoutPlan({workoutPlan, stage, setStage, focus}: any) {
             localStorage.setItem("workoutComplete", "true");
 
             const register: ActivityDto = {
-                activity_type: "entrenamiento",
+                activity_type: "activity",
                 activity_date: new Date().toLocaleDateString('en-GB'),
                 activity_hour: new Date().toLocaleTimeString('en-GB', {hour: '2-digit', minute: '2-digit'}),
                 activity_detail: `Entrenamiento con enfoque en ${focus} completado. ¡Felicidades!`
@@ -114,7 +114,7 @@ function WorkoutPlan({workoutPlan, stage, setStage, focus}: any) {
             <div className=''>
                 <div className='px-5 flex flex-col sm:flex-row items-center gap-5 justify-start my-5'>
                     <div className='p-2 bg-purple-200 color-purple rounded-lg'>{currentExercise.type}</div>
-                    <h2 className="font-bold text-xl text-left">Inicia con {currentExercise.repetitions} {currentExercise.exerciseName}</h2>
+                    <h2 className="font-bold text-xl text-left">Inicia con {currentExercise.exerciseName}</h2>
                 </div>
                 <div className='flex w-full p-5 pb-2'>
                     <div className='w-16 flex items-center justify-center rounded-xl cursor-pointer hover:bg-gray-200' onClick={previousExercise} >
@@ -135,6 +135,11 @@ function WorkoutPlan({workoutPlan, stage, setStage, focus}: any) {
                                     <div className='flex justify-between pt-2 pb-2'>
                                         <p className='color-purple'>Descanso:</p>
                                         <p>{currentExercise.rest} segundos</p>
+                                    </div>
+                                    <hr />
+                                    <div className='flex justify-between pt-2 pb-2'>
+                                        <p className='color-purple'>Repeticiones:</p>
+                                        <p>{currentExercise.repetitions}</p>
                                     </div>
                                     <hr />
                                     <div className='mt-4'>

@@ -2,49 +2,70 @@ import { Checkbox } from "@mui/material";
 import { useEffect, useState } from "react"
 import GoalProgressBar from "./GoalProgressBar";
 import { toast } from "react-toastify";
+import { GetUserGoal, UpdateGoal } from "../../../services/GoalsServiceProvider";
+import useAuthStore from "../../../stores/AuthStore";
 
 function Goal({goal, id}: any) {
 
     const [percentage, setPercentage] = useState(0);
     const [checks, setChecks] = useState<boolean[]>([]);
+    const user = useAuthStore((state: any) => state.user);
 
     useEffect(() => {
-        const goals = JSON.parse(localStorage.getItem("goals") || "[]");
-        
-        if(goals[id].repeat === "diariamente")
-        {
-            compareDays(new Date(goals[id].last_modified));
-        }
-
-        setPercentage((goal.currently_achieved / goal.target) * 100)
-
-        if(goal.target <= 12 && goal.target > 0)
-        {
-            setChecks(Array.from({length: goal.target}, (_, i) => i < goal.currently_achieved));
-        }   
+        GetCurrentGoal();
     }, [])
 
     useEffect(() => {
-        const goals = JSON.parse(localStorage.getItem("goals") || "[]");
-        
-        goals[id].currently_achieved = checks.filter((check) => check).length;
-        goals[id].last_modified = new Date();
-
-        localStorage.setItem("goals", JSON.stringify(goals));
+        CheckGoal();
     }, [percentage])
 
-    const compareDays = (date: Date) => {
-        const today = new Date();
-        const diffTime = Math.abs(today.getTime() - date.getTime());
-        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
-
-        if(diffDays >= 1)
+    const CheckGoal = async() => {
+        const response = await GetUserGoal(user.token, user.id);
+        
+        if(response.data) 
         {
-            let newChecks = [...checks];
-            newChecks = newChecks.map((_) => false);
-            setChecks(newChecks);
+            const goals = response.data.data;
+            
+            goals[id].goal_achieved = checks.filter((check) => check).length;
+            goals[id].last_modified = new Date();
+            
+            const updateGoal = await UpdateGoal(user.token, goals[id], user.id, goals[id].goal_id);
         }
     }
+
+    const GetCurrentGoal = async () => {
+        const response = await GetUserGoal(user.token, user.id);
+        
+        if(response.data) 
+        {
+            const goals = response.data.data;
+            
+            if(goals[id].goal_repeat === "diariamente")
+            {
+                //compareDays(new Date(goals[id].last_modified));
+            }
+            console.log("g:",goal);
+            setPercentage((goal.goal_achieved / goal.goal_target) * 100)
+    
+            if(goal.goal_target <= 12 && goal.goal_target > 0)
+            {
+                setChecks(Array.from({length: goal.goal_target}, (_, i) => i < goal.goal_achieved));
+            }   
+        }
+    }
+
+    // const compareDays = (date: Date) => {
+    //     const today = new Date();
+    //     const diffTime = Math.abs(today.getTime() - date.getTime());
+    //     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
+
+    //     if(diffDays >= 1)
+    //     {
+    //         let newChecks = [...checks];
+    //         newChecks = newChecks.map((_) => false);
+    //         setChecks(newChecks);
+    //     }
+    // }
 
     const handleProgress = (i:number) => {
         let newChecks = [...checks];
@@ -53,9 +74,9 @@ function Goal({goal, id}: any) {
 
         let currentlyAchieved = newChecks.filter((check) => check).length;
 
-        setPercentage((currentlyAchieved / goal.target) * 100)
+        setPercentage((currentlyAchieved / goal.goal_target) * 100)
 
-        if((currentlyAchieved / goal.target) * 100 >= 100)
+        if((currentlyAchieved / goal.goal_target) * 100 >= 100)
         {
             toast.success("¡Objetivo completado!");
         }
@@ -64,10 +85,10 @@ function Goal({goal, id}: any) {
     return (
         <div className="flex flex-col gap-3 items-center p-5 border border-solid rounded-xl my-3">
             <div className="w-full flex gap-5 justify-between items-center">
-                <p>{goal.goal}</p>
+                <p>{goal.goal_name}</p>
                 <GoalProgressBar percentage={percentage}/>
             </div>
-            <div className={`w-full grid ${goal.target <= 12 && goal.target > 0 ? `grid-cols-[${goal.target}]` : "hidden"}`}>
+            <div className={`w-full grid ${goal.goal_target <= 12 && goal.goal_target > 0 ? `grid-cols-[${goal.goal_target}]` : "hidden"}`}>
                 <div className="w-full flex gap-1 items-center justify-start">
                     <span className="color-purple">Conteo:</span>
                     {

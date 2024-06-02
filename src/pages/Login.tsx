@@ -69,7 +69,7 @@ function Login({ transition } : { transition: string }) {
             }
 
             user.login(response.data);
-            NavigationManager.navigateTo("/dashboard");
+            NavigationManager.navigateTo("/dashboard", "", { login: true });
             return;
         }
 

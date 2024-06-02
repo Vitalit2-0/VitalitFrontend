@@ -4,7 +4,6 @@ import { useState } from "react";
 import GradientButton from "../components/helpers/GradientButton";
 import SliderHelper from "../components/shared/SliderHelper";
 import { videos } from "../constants/nutrition";
-import { getSurveyResults } from "../services/SurveyDataProvider";
 import useAuthStore from "../stores/AuthStore";
 import { useModal } from "../components/shared/PopupAlert";
 import { Create } from "../services/OpenAIService";

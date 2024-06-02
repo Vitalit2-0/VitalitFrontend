@@ -7,6 +7,8 @@ import useAuthStore from "../../../stores/AuthStore";
 import { Create } from "../../../services/OpenAIService";
 import { TextareaAutosize } from "@mui/material";
 import NavigationManager from "../../../services/NavigationManager";
+import { toast } from "react-toastify";
+import { RegisterActivity } from "../../../services/ActivitiesServiceProvider";
 
 function Activity({ activity, handleActivity, active=false } : { activity:any, handleActivity?:any, active?:boolean }) {
     
@@ -45,6 +47,7 @@ function Activity({ activity, handleActivity, active=false } : { activity:any, h
                 {
                     clearInterval(interval);
                     restoreDefaultState(stages.activityFinished);
+                    registerActivityFinished("Has completado tu meditación basada en imágenes");
                 }
             }, 1000);
     
@@ -53,6 +56,19 @@ function Activity({ activity, handleActivity, active=false } : { activity:any, h
             };
         }
     }, [stage, countDown]);
+
+    const registerActivityFinished = (message:string) => {
+        const register: ActivityDto = {
+            activity_type: "activity",
+            activity_date: new Date().toLocaleDateString('en-GB'),
+            activity_hour: new Date().toLocaleTimeString('en-GB', {hour: '2-digit', minute: '2-digit'}),
+            activity_detail: `${message}. ¡Felicidades!`
+        }
+
+        toast.success(`${message}. ¡Felicidades! 🎉`)
+        
+        RegisterActivity(user.token, register);
+    }
 
     const handleStartActivity = async(id: number) => {
         showFullScreenLoader(true, "Regálanos un momento. ¡Estamos creando una actividad genial!");

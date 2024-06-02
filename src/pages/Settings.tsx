@@ -18,12 +18,19 @@ function Settings() {
     const [qr, setQr] = React.useState("");
     const [value2fa, setValue2fa] = React.useState(false);
     const [open, setOpen] = React.useState(false);
+    const [notificationsConfig, setNotificationsConfig] = React.useState([] as any);
+    const [currentNotification, setCurrentNotification] = React.useState({} as any);
 
     const [isChecked, setIsChecked] = React.useState(false);
 
     const [openDate, setOpenDate] = React.useState(false);
     const [activeSection, setActiveSection] = useState('');
+
     const handleOpen = (section: string) => {
+        const notification = notificationsConfig.find((notification: any) => notification.notification_type === section);
+
+        setCurrentNotification(notification);
+
         setActiveSection(section);
         setOpenDate(true);
     };
@@ -74,9 +81,13 @@ function Settings() {
     }
 
     const GetNotificationsConfig = async() => {
-        const notificationConfig = JSON.parse(localStorage.getItem('notificationConfig') || '[]');
-        console.log(notificationConfig)
-        //TODO: Fetch notifications config from API
+        const notificationConfig = await NotificationService.getNotificationConfig(user.id, user.token);
+        
+        if(notificationConfig.data.length > 0) {
+            setIsChecked(true);
+            console.log(notificationConfig.data);
+            setNotificationsConfig(notificationConfig.data);
+        }
     }
 
     return (
@@ -133,7 +144,7 @@ function Settings() {
                             </div>
                         </div>
                     )}
-                    <ModalNotification openDate={openDate} setOpenDate={setOpenDate} style={style} section={activeSection} />
+                    <ModalNotification openDate={openDate} setOpenDate={setOpenDate} style={style} section={activeSection} notifications={notificationsConfig} />
                 </div>
             </div>
         </div>

@@ -1,7 +1,7 @@
 import GradientButton from '../helpers/GradientButton'
 import NavigationManager from '../../services/NavigationManager'
 
-function Menu({setTransition, color, responsive, open} : {setTransition: any, open?:boolean, color?: string, responsive?: boolean }) {
+function Menu({setTransition, color, responsive, open, setPrivacy} : {setTransition: any, open?:boolean, color?: string, responsive?: boolean, setPrivacy: any}) {
     
     function handleScroll(e: any, section: string) {
         e.preventDefault();
@@ -16,25 +16,19 @@ function Menu({setTransition, color, responsive, open} : {setTransition: any, op
                         <GradientButton text="Iniciar Sesión" onClick={setTransition} className='base-gradient'/>
                     </li>}
                     <li className='flex flex-wrap content-center'>
-                        <a onClick={(e) => handleScroll(e, "inicio")} className={color}>Inicio</a>
+                        <a onClick={(e) => {setPrivacy(false); handleScroll(e, "inicio")}} className={color}>Inicio</a>
                     </li>
                     <li className='flex flex-wrap content-center'>
-                        <a onClick={(e) => handleScroll(e, "vitalit")} className={color}>Vitalit</a>
+                        <a onClick={(e) => {setPrivacy(false); handleScroll(e, "vitalit")}} className={color}>Vitalit</a>
                     </li>
                     <li className='flex flex-wrap content-center'>
-                        <a onClick={(e) => handleScroll(e, "mission-vision")} className={color}>Misión y vision</a>
+                        <a onClick={(e) => {setPrivacy(false); handleScroll(e, "mission-vision")}} className={color}>Misión y vision</a>
                     </li>
                     <li className='flex flex-wrap content-center'>
-                        <a onClick={(e) => handleScroll(e, "unete")} className={color}>Únete</a>
+                        <a onClick={(e) => {setPrivacy(false); handleScroll(e, "unete")}} className={color}>Únete</a>
                     </li>
-                    <li className='flex flex-wrap content-center'>
-                        <a href="#" className={color}>Nosotros</a>
-                        <ul className="sub-menu" style={{display: "none"}}>
-                            <li><a href="#">¿Quienes somos?</a></li>
-                            <li><a href="#">Contáctenos</a></li>
-                            <li><a href="#">PQRS</a></li>
-                            <li><a href="#">Política de privacidad</a></li>
-                        </ul>
+                    <li onClick={() => setPrivacy(true)} className='flex flex-wrap content-center cursor-pointer'>
+                        <a className={color}>Política de privacidad</a>
                     </li>
                     {!responsive && <li className=''>
                         <GradientButton text="Iniciar Sesión" onClick={setTransition} className='base-gradient'/>
