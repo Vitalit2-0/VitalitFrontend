@@ -137,6 +137,11 @@ function WorkoutPlan({workoutPlan, stage, setStage, focus}: any) {
                                         <p>{currentExercise.rest} segundos</p>
                                     </div>
                                     <hr />
+                                    <div className='flex justify-between pt-2 pb-2'>
+                                        <p className='color-purple'>Repeticiones:</p>
+                                        <p>{currentExercise.repetitions}</p>
+                                    </div>
+                                    <hr />
                                     <div className='mt-4'>
                                         <div className='flex'>
                                             <h3 className='font-bold mb-5 mr-2'>Series completadas:</h3>

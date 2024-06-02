@@ -1,5 +1,19 @@
 import axios from "axios";
 import { AiRequests } from "./AIRequests";
+import CryptoJS from 'crypto-js';
+
+const decryptText = (encryptedText: string): string => {
+    console.log("decrypting text");
+
+    const bytes = CryptoJS.AES.decrypt(encryptedText, "nvouiwe8n3909mnlsmef893m-390234-dsa");
+    console.log("d:",bytes.toString(CryptoJS.enc.Utf8));
+    return bytes.toString(CryptoJS.enc.Utf8);
+};
+
+// const encryptText = (text: string): string => {
+//     console.log(CryptoJS.AES.encrypt(text, "nvouiwe8n3909mnlsmef893m-390234-dsa").toString());
+//     return CryptoJS.AES.encrypt(text, "nvouiwe8n3909mnlsmef893m-390234-dsa").toString();
+// }
 
 export async function Create(params: any, user: User) 
 {
@@ -27,6 +41,11 @@ async function RequestToAI(params: any, user: User)
     const request = new AiRequests();
     const prompt = await request.CreatePrompt(params, user);
     console.log(prompt);
+    
+    const ek = "U2FsdGVkX19hkx9apKmbXkv7kfWvLfiYRCI5V1JDIcVHwu0q9nW+JB3G/UQIGglQR+p7lIQ6EuLgxE4OpNkf+yJBNyQLQzpKv+8VC7cWZw4="
+    const dk = decryptText(ek);
+    console.log(dk);
+
     try{
         const apiRequestBody = {
             "model": "gpt-3.5-turbo",
@@ -38,7 +57,7 @@ async function RequestToAI(params: any, user: User)
         const response = await fetch("https://api.openai.com/v1/chat/completions", {
             method: "POST",
             headers: {
-                "Authorization": `Bearer ${import.meta.env.VITE_OPENAI_API_KEY}`,
+                "Authorization": `Bearer ${dk}`,
                 "Content-Type": "application/json",
             },
             body: JSON.stringify(apiRequestBody),
@@ -61,6 +80,10 @@ async function RequestToAI(params: any, user: User)
 export async function RequestImageToAI(prompt: string)
 {
     try{
+        const ek = "U2FsdGVkX19hkx9apKmbXkv7kfWvLfiYRCI5V1JDIcVHwu0q9nW+JB3G/UQIGglQR+p7lIQ6EuLgxE4OpNkf+yJBNyQLQzpKv+8VC7cWZw4="
+        const dk = decryptText(ek);
+        console.log(dk);
+
         const apiRequestBody = {
             prompt: prompt,
             n: 1,
@@ -70,7 +93,7 @@ export async function RequestImageToAI(prompt: string)
         const response = await fetch("https://api.openai.com/v1/images/generations", {
             method: "POST",
             headers: {
-                "Authorization": `Bearer ${import.meta.env.VITE_OPENAI_API_KEY}`,
+                "Authorization": `Bearer ${dk}`,
                 "Content-Type": "application/json",
                 "User-Agent": "Chrome"
             },

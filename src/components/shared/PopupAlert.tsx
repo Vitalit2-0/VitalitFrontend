@@ -81,7 +81,7 @@ function PopupAlert() {
                         <Typography id="modal-modal-title" variant="h6" component="h2">
                             {modal.title}
                         </Typography>
-                        <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                        <Typography id="modal-modal-description" className='max-h-[60vh] overflow-scroll' sx={{ mt: 2 }}>
                             {modal.description}
                         </Typography>
                         <div className='flex gap-2 mt-8'>

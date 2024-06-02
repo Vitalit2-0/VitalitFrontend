@@ -23,7 +23,7 @@ export async function GetActivityHistory(token: string): Promise<ResponseDto>
         const config = {
             headers: { Authorization: `Bearer ${token}` }
         };
-        const response = await axios.get('https://app-wlimmpn7xa-uc.a.run.app/v1/activity/entrenamiento ', config);
+        const response = await axios.get('https://app-wlimmpn7xa-uc.a.run.app/v1/activity/activity ', config);
         return { code: "200", string: "", data: response.data } as ResponseDto;
     } catch (error : any) {
         return { 

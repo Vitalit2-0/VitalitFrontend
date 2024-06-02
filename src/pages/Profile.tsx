@@ -11,7 +11,8 @@ import { FaUser } from "react-icons/fa";
 import { IoIosFemale, IoIosMale } from "react-icons/io";
 import { GetActivityHistory } from "../services/ActivitiesServiceProvider";
 import { Create } from "../services/OpenAIService";
-import { NotificationService } from "../services/NotificationDataProvider";
+import { toast } from "react-toastify";
+import { RegisterGoal } from "../services/GoalsServiceProvider";
 
 function Profile() {
     const { showNotification, openAddModal } = useModal()
@@ -20,6 +21,7 @@ function Profile() {
     const [editProfile, setEditProfile] = useState({disabled: true, text: "Editar perfil"})
     const [userData, setUserData] = useState<User>(user)
     const [goals, setGoals] = useState<any[]>([])
+    const [activityHistory, setActivityHistory] = useState<any[]>([])
 
     const [lastUserData, setLastUserData] = useState(userData)
 
@@ -57,7 +59,18 @@ function Profile() {
 
     const getActivityHistory = async() => {
         const response = await GetActivityHistory(user.token);
-        console.log(response);
+        
+        if(response.code !== "200")
+        {
+            toast.error(response.string);
+            return;
+        }
+        
+        setActivityHistory(response.data.data.sort((a:any, b:any) => {
+            const dateA = new Date(a.activity_date.split('/').reverse().join('/'));
+            const dateB = new Date(b.activity_date.split('/').reverse().join('/'));
+            return dateA.getTime() - dateB.getTime();
+        }));
     }
 
     const handleEditProfile = () => {
@@ -153,9 +166,15 @@ function Profile() {
             //TODO: Add goal to user in service. Service not implemented yet
             if(goal.data)
             {
-                const goals = JSON.parse(localStorage.getItem("goals") || "[]");
-                goals.push(goal.data);
-                localStorage.setItem("goals", JSON.stringify(goals));
+                const response = await RegisterGoal(user.token, goal.data);
+                
+                if(response.code === "200")
+                {
+                    toast.success("Objetivo añadido correctamente");
+                    return;
+                }
+
+                toast.error("Error al añadir el objetivo");
             }
 
             showNotification("Objetivo añadido correctamente", "success");
@@ -163,7 +182,7 @@ function Profile() {
     }
 
     return (
-        <div className="base-gray min-h-screen sm:pt-5 lg:pt-10">
+        <div className="base-gray min-h-screen sm:pt-5 ">
             <div className="md:ml-16 flex flex-col md:flex-row sm:p-5 lg:px-10 gap-5">
                 <div className="md:w-1/2 xl:w-1/3">
                     <div className="bg-white h-[660px] w-full rounded-3xl shadow-md sticky top-10">
@@ -259,30 +278,44 @@ function Profile() {
                 </div>
                 <div className="md:w-1/2 xl:w-2/3 flex flex-col">
                     <div className="w-full flex flex-col lg:flex-row gap-2">
-                        <div className="lg:w-1/3 relative">
+                        <div className="lg:w-1/2 relative">
                         <div className="w-8 h-8 flex items-center justify-center absolute top-5 right-5 base-gradient text-white rounded-lg font-bold text-2xl cursor-pointer" onClick={() => handleAdd("objetivo")}>+</div>
                             <div className="bg-white shadow-md rounded-3xl p-5">
                                 <p className="color-purple text-6xl">{goals.length}</p>
                                 <p className="mt-2">Objetivo{goals.length > 1 ? "s" : ""} establecido{goals.length > 1 ? "s" : ""}</p>
                             </div>
                         </div>
-                        <div className="lg:w-1/3">
+                        <div className="lg:w-1/2">
                             <div className="bg-white shadow-md rounded-3xl p-5">
-                                <p className="color-purple text-6xl">5</p>
+                                <p className="color-purple text-6xl">{activityHistory.length}</p>
                                 <p className="mt-2">Actividades completadas</p>
                             </div>
                         </div>
-                        <div className="lg:w-1/3">
+                        {/* <div className="lg:w-1/3">
                             <div className="bg-white shadow-md rounded-3xl p-5">
                                 <p className="color-purple text-6xl">5</p>
                                 <p className="mt-2">Objetivos establecidos</p>
                             </div>
-                        </div>
+                        </div> */}
                     </div>
-                    <div className="bg-white shadow-md rounded-3xl p-5 mt-5 h-full">
+                    <div className="bg-white shadow-md rounded-3xl p-5 mt-5 h-full overflow-y-auto">
                         <h2 className="text-xl color-purple">Historial de actividad</h2>
                         <hr className="mt-5"/>
-                        <div className="flex justify-center items-center min-h-16 h-full">No hay actividad hasta el momento</div>
+                        {activityHistory.length === 0 ? <div className="flex justify-center items-center min-h-16 h-full">No hay actividad hasta el momento</div> :
+                            <div>
+                                {
+                                    Array.from(activityHistory).reverse().map((activity: any, i:number) => {
+                                        return (
+                                            <div className={`flex items-center min-h-16 gap-3 px-5 py-2 ${i%2===0 ? "bg-gray-100" : "bg-white"}`}>
+                                                <p className="w-32 text-left">{activity.activity_date}</p>
+                                                <p className="text-left w-full">{activity.activity_detail}</p>
+                                                <p className="w-16 text-right">{activity.activity_hour}</p>
+                                            </div>
+                                        )
+                                    })
+                                }
+                            </div>
+                        }
                     </div>
                 </div>
             </div>

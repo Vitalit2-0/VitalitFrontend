@@ -17,6 +17,8 @@ import Profile from './pages/Profile'
 import Settings from './pages/Settings'
 import PopupAlert from './components/shared/PopupAlert'
 import 'react-toastify/dist/ReactToastify.css';
+import PrivacyPolicy from './pages/PrivacyPolicy'
+import Restore from './pages/Restore'
 
 const THEME = createTheme({
     typography: {
@@ -38,6 +40,8 @@ function App() {
                         <Route path="/login/:message?" element={<Login transition='expand-animate'/>}/>
                         <Route path="/register" element={<Register/>}/>
                         <Route path="/recover" element={<RecoverPass/>}/>
+                        <Route path="/restore" element={<Restore/>}/>
+                        <Route path="/privacy-policy" element={<PrivacyPolicy/>}/>
                         <Route path="/" element={<ProtectedRoute/>}>
                             <Route element={<Layout/>}>
                                 <Route path="/dashboard" element={<Home/>}/>

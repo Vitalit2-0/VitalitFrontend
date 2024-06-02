@@ -67,7 +67,7 @@ function OtpValidator({ numberOfDigits, username, setOpen, isRegister, setValue2
         {
             console.log(response);
             user.login({...response.data, ft_login: true})
-            NavigationManager.navigateTo("/dashboard");
+            NavigationManager.navigateTo("/dashboard", "", { login: true });
         }
 
         if(isRegister) setValue2fa(true);
@@ -78,6 +78,8 @@ function OtpValidator({ numberOfDigits, username, setOpen, isRegister, setValue2
         {otp.map((digit, index)=>(
             <input key={index} value={digit} maxLength={1}  
                 onChange={(e:any)=> handleChange(e.target.value, index)}
+                type='number'
+                inputMode='numeric'
                 onKeyUp={(e)=> handleBackspaceAndEnter(e, index)}
                 ref={(reference) => (otpBoxReference.current[index] = reference)}
                 className={`border border-purple-500 w-12 h-auto text-center text-black p-3 rounded-md block base-white focus:border-2 focus:outline-none appearance-none`}

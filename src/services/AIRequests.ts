@@ -126,8 +126,7 @@ export class AiRequests {
                 - type (si es 'calentamiento', 'entrenamiento' o 'estiramiento')
                 - rest: int(tiempo en segundos). 
                 Es MUY importante que sigas el formato exacto para que pueda entenderlo.
-                Por último, el enfoque del plan de entrenamiento es ${this.focus}.
-                Para fines de pruebas, por ahora por todos los rest en 0.`,
+                Por último, el enfoque del plan de entrenamiento es ${this.focus}.`,
 
             yoga:
                 `Eres un instructor de yoga que se especializa en la creación de secuencias de yoga. Tu tarea es crear una secuencia de yoga de 5 posturas para mí.
@@ -155,12 +154,12 @@ export class AiRequests {
                 Debes crear un objetivo que sea específico, medible y alcanzable. 
                 Por favor, envíame el objetivo en el siguiente formato JSON, no envíes ninguna otra información: 
                 {
-                    "goal": string (En español, el título que consideres adecuado para el objetivo),
-                    "currently_achieved": int (Número que representa el progreso actual del objetivo),
-                    "target": int (Número que representa el objetivo final),
-                    "unit": string (Unidad de medida del objetivo. Puede ser 'minutos', 'veces', 'días', 'kilogramos', 'porcentaje', etc.),
-                    "deadline": string (Fecha límite para alcanzar el objetivo si la hay, en formato 'dd/mm/aaaa'),
-                    "repeat": string (Frecuencia con la que se debe realizar la acción para alcanzar el objetivo. Puede ser 'diariamente', 'semanalmente', 'mensualmente', etc.)
+                    "goal_name": string (En español, el título que consideres adecuado para el objetivo),
+                    "goal_achieved": int (Número que representa el progreso actual del objetivo),
+                    "goal_target": int (Número que representa el objetivo final),
+                    "goal_unit": string (Unidad de medida del objetivo. Puede ser 'minutos', 'veces', 'días', 'kilogramos', 'porcentaje', etc.),
+                    "goal_deadline": string (Fecha límite para alcanzar el objetivo si la hay, en formato 'dd/mm/aaaa'),
+                    "goal_repeat": string (Frecuencia con la que se debe realizar la acción para alcanzar el objetivo. Puede ser 'diariamente', 'semanalmente', 'mensualmente', etc.)
                 }
                 Es MUY importante que sigas el formato exacto para que pueda entenderlo.`
         })

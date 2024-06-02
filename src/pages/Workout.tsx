@@ -94,7 +94,7 @@ function Workout() {
         <div className="flex base-gray min-h-screen">
             <div className="w-full md:p-10 md:ps-28">
                 <div className="flex flex-col lg:flex-row items-start gap-5 relative">
-                    {stage !== stages.choosingFocus &&<div className={`w-full lg:w-1/3 p-4 bg-white rounded-3xl shadow-md lg:sticky top-8 transition-all`}>
+                    {stage !== stages.choosingFocus && <div className={`w-full lg:w-1/3 p-4 bg-white rounded-3xl shadow-md lg:sticky top-8 transition-all`}>
                         <WorkoutShortcut startWorkout={startWorkout} stage={stage} />
                     </div>}
                     <div id="workout-section" className={`${stage !== stages.choosingFocus ? 'w-full lg:w-2/3' : 'w-full'} sticky top-0 min-h-[90vh] flex items-start`}>
@@ -135,7 +135,7 @@ function Workout() {
                                     </div>
                                 </div>
                             </div>
-                        }
+                        } 
                         {stage === stages.routineReady &&
                             <div className='h-full flex items-center bg-white rounded-3xl shadow-md'>
                                 <div className='p-10 lg:p-32 flex flex-col justify-center'>
@@ -158,9 +158,9 @@ function Workout() {
                         {stage === stages.workoutStarted &&
                             <WorkoutPlan workoutPlan={workoutPlan} stage={stage} setStage={setStage} focus={focus} />
                         }
-                        {stage === stages.workoutFinished &&
-                            <div className="flex h-full items-center bg-white rounded-3xl shadow-md">
-                                <div className='p-10 ps-32 pe-32 flex flex-col justify-center'>
+                        {stage === stages.workoutFinished && 
+                            <div className="w-full flex h-full items-center bg-white rounded-3xl shadow-md">
+                                <div className='p-10 md:ps-32 md:pe-32 flex flex-col justify-center'>
                                     <div className='text-center'>
                                         <h1 className="text-2xl font-bold text-[#374151]">¡Felicitaciones!</h1>
                                         <img className='mx-auto w-2/5' src="assets/images/train-success.webp" alt="" />

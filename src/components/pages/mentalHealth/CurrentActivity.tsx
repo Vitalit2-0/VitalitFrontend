@@ -76,7 +76,7 @@ function CurrentActivity({ activity, handleFinishActivity, setStage }: { activit
             activity_type: "activity",
             activity_date: new Date().toLocaleDateString('en-GB'),
             activity_hour: new Date().toLocaleTimeString('en-GB', {hour: '2-digit', minute: '2-digit'}),
-            activity_detail: `Entrenamiento con enfoque en ${focus} completado. ¡Felicidades!`
+            activity_detail: `${message}. ¡Felicidades!`
         }
 
         toast.success(`${message}. ¡Felicidades! 🎉`)

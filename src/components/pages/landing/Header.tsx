@@ -2,7 +2,7 @@ import React from "react";
 import Menu from "../../shared/Menu"
 import HamburguerMenu from "../../shared/HamburguerMenu";
 
-function Header({ setTransition } : { setTransition: any }) {
+function Header({ setTransition, setPrivacy } : { setTransition: any, setPrivacy: any }) {
 
     const [open, setOpen] = React.useState(false);
 
@@ -21,9 +21,9 @@ function Header({ setTransition } : { setTransition: any }) {
             <div className='flex content-center flex-wrap ml-1'>
                 <img className="w-36" src="assets/images/logoVitalit.png" alt="" />
             </div>
-            <Menu setTransition={setTransition}/>
+            <Menu setTransition={setTransition} setPrivacy={setPrivacy}/>
             <HamburguerMenu onClick={handleOpenMobileMenu} open={open}/>
-            <Menu setTransition={setTransition} responsive={true} open={open}/>
+            <Menu setTransition={setTransition} setPrivacy={setPrivacy} responsive={true} open={open}/>
         </div>
     )
 }

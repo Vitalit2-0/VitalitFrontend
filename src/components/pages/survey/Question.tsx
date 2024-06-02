@@ -139,7 +139,7 @@ function Question({ flag, setPercentage }: any) {
 
             auth.setSurveyAnswered(auth.user, true);
 
-            NavigationManager.navigateTo("/dashboard");
+            NavigationManager.navigateTo("/dashboard", "", { login: true });
         }
     }
 
@@ -163,7 +163,7 @@ function Question({ flag, setPercentage }: any) {
         setSurveyData(null);
         setQuestionsData({questions: [], question: null, index: -1, answer: [], error: false});
         localStorage.setItem("skipSurvey", "true");
-        NavigationManager.navigateTo("/dashboard");
+        NavigationManager.navigateTo("/dashboard", "", { login: true });
     }
 
     function handleDateChange(e: any)

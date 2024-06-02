@@ -4,7 +4,7 @@ import { RiInstagramFill } from "react-icons/ri";
 import { IoLogoLinkedin } from "react-icons/io5";
 import { MdOutlineMail } from "react-icons/md";
 
-function Footer({ setTransition } : { setTransition: any }) {
+function Footer({ setTransition, setPrivacy } : { setTransition: any, setPrivacy: any }) {
     return (
         <div className="rounded-t-3xl" style={{background: "#2d0653"}}>
             <div className="w-full flex justify-around p-10 flex-wrap content-center">
@@ -20,7 +20,7 @@ function Footer({ setTransition } : { setTransition: any }) {
                     </a>
                 </div>
                 <div>
-                    <Menu setTransition={setTransition} color={"color-white"}/>
+                    <Menu setTransition={setTransition} color={"color-white"} setPrivacy={setPrivacy}/>
                 </div>
                 <div className="flex flex-wrap content-center gap-1">
                     <MdOutlineMail className="text-4xl color-white"/>
