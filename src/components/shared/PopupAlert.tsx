@@ -15,7 +15,6 @@ function PopupAlert() {
 
     const [addModal, setAddModal] = useState({ open: false, type: '' });
     const [description, setDescription] = useState('');
-    const [notification] = useState({ text: '' }); 
     const [modal, setModal] = useState({ open: false, title: '', description: '' });
     const [loadingData, setLoadingData] = useState({ loading: false, message: '' });
     const [resolver, setResolver] = useState<(value: boolean | PromiseLike<boolean>) => void>();

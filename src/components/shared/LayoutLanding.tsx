@@ -9,7 +9,6 @@ import NavigationManager from '../../services/NavigationManager';
 import PopupAlert from './PopupAlert';
 import Register from '../../pages/Register';
 import RecoverPass from '../../pages/RecoverPass';
-import Restore from '../../pages/Restore';
 import PrivacyPolicy from '../../pages/PrivacyPolicy';
 import ProtectedRoute from './ProtectedRoute';
 import Layout from './Layout';
@@ -44,13 +43,13 @@ function LayoutLanding() {
     return (
         <HashRouter>
             <div className="relative w-full">
-                <Login transition={transition} />
                 <div className="relative">
                     <Routes>
                         <Route element={<PopupAlert />}>
                             <Route path="/" element={
                                 <>
                                     <Header setTransition={handleLogin} >
+                                        <Login transition={transition} />
                                         <Landing setTransition={setTransition} />
                                     </Header>
                                     <Footer setTransition={handleLogin} />
@@ -58,10 +57,7 @@ function LayoutLanding() {
                             } />
                             <Route path="/login/:message?" element={
                                 <>
-                                    <Header setTransition={handleLogin} >
-                                        <Login transition='expand-animate' />
-                                    </Header>
-                                    <Footer setTransition={handleLogin} />
+                                    <Login transition='expand-animate' />
                                 </>
                             } />
                             <Route path="/register" element={<Register />} />
