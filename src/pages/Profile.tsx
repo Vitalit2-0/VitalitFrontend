@@ -9,13 +9,13 @@ import { calculateAge, calculateIMC } from "../services/FitCalcProvider";
 import { getProfile, updateProfile } from "../services/ProfileController";
 import { FaUser } from "react-icons/fa";
 import { IoIosFemale, IoIosMale } from "react-icons/io";
-import { GetActivityHistory } from "../services/ActivitiesServiceProvider";
+import { CreateNotification, GetActivityHistory } from "../services/ActivitiesServiceProvider";
 import { Create } from "../services/OpenAIService";
 import { toast } from "react-toastify";
-import { RegisterGoal } from "../services/GoalsServiceProvider";
+import { GetUserGoal, RegisterGoal } from "../services/GoalsServiceProvider";
 
 function Profile() {
-    const { showNotification, openAddModal } = useModal()
+    const { openAddModal } = useModal()
     const user = useAuthStore((state:any) => state.user)
     
     const [editProfile, setEditProfile] = useState({disabled: true, text: "Editar perfil"})
@@ -42,7 +42,7 @@ function Profile() {
 
         if(response.code !== "200")
         {
-            showNotification(response.string, "error");
+            toast.error(response.string);
             return;
         }
         
@@ -52,9 +52,9 @@ function Profile() {
         setLastUserData({...user, ...data});
     }
 
-    const getGoals = () => {
-        const goals = JSON.parse(localStorage.getItem("goals") || "[]");
-        setGoals(goals);
+    const getGoals = async() => {
+        const goals = await GetUserGoal(user.token, user.id);
+        setGoals(goals.data.data);
     }
 
     const getActivityHistory = async() => {
@@ -66,10 +66,14 @@ function Profile() {
             return;
         }
         
-        setActivityHistory(response.data.data.sort((a:any, b:any) => {
+        setActivityHistory(response.data.sort((a:any, b:any) => {
             const dateA = new Date(a.activity_date.split('/').reverse().join('/'));
             const dateB = new Date(b.activity_date.split('/').reverse().join('/'));
-            return dateA.getTime() - dateB.getTime();
+            const timeA = new Date(`1970/01/01 ${a.activity_hour}`);
+            const timeB = new Date(`1970/01/01 ${b.activity_hour}`);
+            const dateTimeA = new Date(dateA.getFullYear(), dateA.getMonth(), dateA.getDate(), timeA.getHours(), timeA.getMinutes());
+            const dateTimeB = new Date(dateB.getFullYear(), dateB.getMonth(), dateB.getDate(), timeB.getHours(), timeB.getMinutes());
+            return dateTimeB.getTime() - dateTimeA.getTime();
         }));
     }
 
@@ -104,11 +108,12 @@ function Profile() {
 
         if(reponse.code !== "200")
         {
-            showNotification(reponse.string, "error");
+            toast.error(reponse.string);
             return;
         }
 
-        showNotification("Perfil actualizado correctamente", "success");
+        toast.success("Perfil actualizado correctamente");
+        CreateNotification(user.token, "Perfil actualizado correctamente");
         setUserData({...user, ...data})
         setLastUserData({...user, ...data});
     }
@@ -121,7 +126,7 @@ function Profile() {
             const isValid = FieldsValidator.validateField(field[0], field[1] as string);
 
             if (!isValid) {
-                showNotification(`El campo ${translations[field[0] as keyof typeof translations]} no es válido${field[0] === "bornDate" ? ", debes ser mayor de edad" : ""}`, "error");
+                toast.error(`El campo ${translations[field[0] as keyof typeof translations]} no es válido${field[0] === "bornDate" ? ", debes ser mayor de edad" : ""}`);
                 return false;
             }
         }
@@ -171,19 +176,23 @@ function Profile() {
                 if(response.code === "200")
                 {
                     toast.success("Objetivo añadido correctamente");
+                    CreateNotification(user.token, "Objetivo añadido correctamente");
                     return;
                 }
 
                 toast.error("Error al añadir el objetivo");
+                CreateNotification(user.token, "Error al añadir el objetivo");
             }
 
-            showNotification("Objetivo añadido correctamente", "success");
+            toast.success("Objetivo añadido correctamente");
+            CreateNotification(user.token, "Objetivo añadido correctamente");
         }
     }
 
     return (
-        <div className="base-gray min-h-screen sm:pt-5 ">
-            <div className="md:ml-16 flex flex-col md:flex-row sm:p-5 lg:px-10 gap-5">
+        <div className="base-gray min-h-screen">
+            <h1 className="font-bold w-full base-gray color-dark-cyan text-4xl pl-5 sm:pl-10 pb-10 md:pl-28 pt-10 sm:pb-10">Perfil</h1>
+            <div className="md:ml-16 flex flex-col md:flex-row sm:px-5 pb-5 lg:px-10 gap-5">
                 <div className="md:w-1/2 xl:w-1/3">
                     <div className="bg-white h-[660px] w-full rounded-3xl shadow-md sticky top-10">
                         <div className="w-full p-10 pt-5 flex flex-col items-center sticky">

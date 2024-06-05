@@ -790,6 +790,32 @@ background: linear-gradient(90deg, rgba(255,255,255,1) 33%, rgba(255,255,255,0.7
     }
   }
 
+//------------------------------------Toast ------------------------------------//
+
+.Toastify__toast-container {
+    width: 320px;
+  }
+  .Toastify__toast--default {
+      background: #fff;
+      color: #fff;
+   }
+    .Toastify__toast--info {
+      background: #3498db;
+      color: #fff;
+   }
+    .Toastify__toast--success {
+      background: #07bc0c;
+      color: #fff;
+   }
+    .Toastify__toast--warning {
+      background: #f1c40f;
+      color: #fff;
+   }
+    .Toastify__toast--error {
+      background: #e74c3c;
+      color: #fff;
+   }
+
 //----------------------------------Burguer menu----------------------------------//
 
 #burguer-menu svg {

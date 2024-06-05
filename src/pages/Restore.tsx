@@ -9,10 +9,12 @@ import {Flex,
     FormControl,
     InputRightElement,
 } from "@chakra-ui/react";
+import { useRef, useState } from "react";
+import { RestorePass } from "../services/AuthStateProvider";
+import { toast } from "react-toastify";
 import NavigationManager from "../services/NavigationManager";
-import { useEffect, useRef, useState } from "react";
 
-function Restore() {
+function Restore( {token} : {token: string} ) {
 
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -25,6 +27,23 @@ function Restore() {
 
     const handleShowConfirmPass = () =>{
         setShowConfirmPassword(!showConfirmPassword);
+    }
+
+    async function handleRestorePass(e:any) {
+        e.preventDefault();
+        const response = await RestorePass(token, passwordRef.current?.value || "");
+
+        console.log(response)
+        if(response.data === 'ok')
+        {
+            toast.success("Contraseña actualizada correctamente, redirigiendo a la página de inicio de sesión.");
+            setTimeout(() => {
+                NavigationManager.navigateTo("/login");
+            }, 2000);
+            return;
+        }
+
+        toast.error("Error al actualizar la contraseña. Por favor, intenta de nuevo.");
     }
 
     return (
@@ -96,6 +115,7 @@ function Restore() {
                                     variant="solid"
                                     colorScheme="gray"
                                     width="full"
+                                    onClick={handleRestorePass}
                                 >
                                     Reestablecer contraseña
                                 </Button>

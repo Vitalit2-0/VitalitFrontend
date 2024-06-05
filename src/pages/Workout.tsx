@@ -9,6 +9,8 @@ import { focusOptions, stages } from "../constants/workout";
 import MultipleChoiceButton from "../components/helpers/MultipleChoiceButton";
 import { TextareaAutosize } from "@mui/material";
 import WorkoutShortcut from "../components/pages/workout/WorkoutShortcut";
+import { toast } from "react-toastify";
+import { CreateNotification } from "../services/ActivitiesServiceProvider";
 
 function Workout() {
     const [stage, setStage] = useState<number>(stages.choosingFocus);
@@ -17,7 +19,7 @@ function Workout() {
     const [recomendations, setRecomendations] = useState("");
     const [workoutPlan, setWorkoutPlan] = useState<any>([]);
     const [error, setError] = useState<boolean>(false);
-    const { openModal, showNotification, showFullScreenLoader } = useModal();
+    const { openModal, showFullScreenLoader } = useModal();
     const user = useAuthStore((state: any) => state.user)
 
     useEffect(() => {
@@ -66,7 +68,8 @@ function Workout() {
 
         if(!workout.data)
         {
-            showNotification("¡Lo sentimos! Ha ocurrido un error al cargar tu entrenamiento, por favor intenta de nuevo en un minuto.", "error");
+            toast.error("¡Lo sentimos! Ha ocurrido un error al cargar tu entrenamiento, por favor intenta de nuevo en un minuto.");
+            CreateNotification(user.token, "¡Lo sentimos! Ha ocurrido un error al cargar tu entrenamiento, por favor intenta de nuevo en un minuto.");
             setError(true);
             showFullScreenLoader(false, "");
             return;
@@ -91,7 +94,8 @@ function Workout() {
     }
 
     return (
-        <div className="flex base-gray min-h-screen">
+        <div className="base-gray min-h-screen">
+            <h1 className="font-bold w-full base-gray color-dark-cyan text-4xl pl-5 sm:pl-10 pb-10 md:pl-28 pt-10 sm:pb-0">Salud Física</h1>
             <div className="w-full md:p-10 md:ps-28">
                 <div className="flex flex-col lg:flex-row items-start gap-5 relative">
                     {stage !== stages.choosingFocus && <div className={`w-full lg:w-1/3 p-4 bg-white rounded-3xl shadow-md lg:sticky top-8 transition-all`}>

@@ -1,7 +1,5 @@
 import { Box, Button, Modal, Typography } from '@mui/material'
-import Checkbox from '@mui/material/Checkbox';
 import FormGroup from '@mui/material/FormGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -11,6 +9,8 @@ import { toast } from 'react-toastify';
 import { NotificationChecker } from '../../services/NotificationChecker';
 import useAuthStore from '../../stores/AuthStore';
 import { NotificationService } from '../../services/NotificationDataProvider';
+import DayCheck from '../pages/settings.tsx/DayCheck';
+import { CreateNotification } from '../../services/ActivitiesServiceProvider';
 
 function ModalNotification({ openDate, setOpenDate, style, section, notifications } : { openDate: boolean, setOpenDate: any, style: any, section: string, notifications: NotificationModel[] }) {
 
@@ -19,10 +19,7 @@ function ModalNotification({ openDate, setOpenDate, style, section, notification
     const checker = new NotificationChecker();
 
     useEffect(() => {
-        console.log(notifications);
-        console.log(section);
         const notification = notifications.find((notification: any) => notification.notification_type === section) || {notification_days: []};
-        console.log(notification);
         setSelectedData({ ...selectedData, [section]: { ...selectedData[section], days: notification?.notification_days } });
     }, [notifications, section]);
 
@@ -96,6 +93,7 @@ function ModalNotification({ openDate, setOpenDate, style, section, notification
                     message += ` A la hora: ${selectedTime}.`;
 
                     toast.success(message);
+                    CreateNotification(user.token, message);
 
                     checker.checkNotification(user);
                     setOpenDate(false);
@@ -103,6 +101,7 @@ function ModalNotification({ openDate, setOpenDate, style, section, notification
                 }
 
                 toast.error('Lo sentimos, ha ocurrido un error al guardar los cambios. Por favor intenta de nuevo');
+                CreateNotification(user.token, 'Lo sentimos, ha ocurrido un error al guardar los cambios. Por favor intenta de nuevo');
             }
         }
     };
@@ -123,61 +122,47 @@ function ModalNotification({ openDate, setOpenDate, style, section, notification
 
                 <FormControl component="fieldset">
                     <FormGroup aria-label="position" row>
-                        <FormControlLabel
-                            value="Lunes"
-                            control={<Checkbox onChange={handleCheckboxChange} style={{ padding: 3 }}/>}
-                            label="L"
-                            labelPlacement="top"
-                            style={{ marginRight: 0 }} 
-                            checked={selectedData[section]?.days?.includes('Lunes')}
+                        <DayCheck  
+                            selectedData={selectedData} 
+                            section={section} 
+                            handleCheckboxChange={handleCheckboxChange}
+                            day="Lunes"
                         />
-                        <FormControlLabel
-                            value="Martes"
-                            control={<Checkbox onChange={handleCheckboxChange} style={{ padding: 3 }}/>}
-                            label="M"
-                            labelPlacement="top"
-                            style={{ marginRight: 0 }} 
-                            checked={selectedData[section]?.days?.includes('Martes')}
+                        <DayCheck  
+                            selectedData={selectedData} 
+                            section={section} 
+                            handleCheckboxChange={handleCheckboxChange}
+                            day="Martes"
                         />
-                        <FormControlLabel
-                            value="Miércoles"
-                            control={<Checkbox onChange={handleCheckboxChange} style={{ padding: 3 }}/>}
-                            label="M"
-                            labelPlacement="top"
-                            style={{ marginRight: 0 }} 
-                            checked={selectedData[section]?.days?.includes('Miércoles')}
+                        <DayCheck  
+                            selectedData={selectedData} 
+                            section={section} 
+                            handleCheckboxChange={handleCheckboxChange}
+                            day="Miércoles"
                         />
-                        <FormControlLabel
-                            value="Jueves"
-                            control={<Checkbox onChange={handleCheckboxChange} style={{ padding: 3 }}/>}
-                            label="J"
-                            labelPlacement="top"
-                            style={{ marginRight: 0 }} 
-                            checked={selectedData[section]?.days?.includes('Jueves')}
+                        <DayCheck
+                            selectedData={selectedData} 
+                            section={section} 
+                            handleCheckboxChange={handleCheckboxChange}
+                            day="Jueves"
                         />
-                        <FormControlLabel
-                            value="Viernes"
-                            control={<Checkbox onChange={handleCheckboxChange} style={{ padding: 3 }}/>}
-                            label="V"
-                            labelPlacement="top"
-                            style={{ marginRight: 0 }} 
-                            checked={selectedData[section]?.days?.includes('Viernes')}
+                        <DayCheck
+                            selectedData={selectedData} 
+                            section={section} 
+                            handleCheckboxChange={handleCheckboxChange}
+                            day="Viernes"
                         />
-                        <FormControlLabel
-                            value="Sábado"
-                            control={<Checkbox onChange={handleCheckboxChange} style={{ padding: 3 }}/>}
-                            label="S"
-                            labelPlacement="top"
-                            style={{ marginRight: 0 }} 
-                            checked={selectedData[section]?.days?.includes('Sábado')}
+                        <DayCheck
+                            selectedData={selectedData} 
+                            section={section} 
+                            handleCheckboxChange={handleCheckboxChange}
+                            day="Sábado"
                         />
-                        <FormControlLabel
-                            value="Domingo"
-                            control={<Checkbox onChange={handleCheckboxChange} style={{ padding: 3 }}/>}
-                            label="D"
-                            labelPlacement="top"
-                            style={{ marginRight: 0 }} 
-                            checked={selectedData[section]?.days?.includes('Domingo')}
+                        <DayCheck
+                            selectedData={selectedData} 
+                            section={section} 
+                            handleCheckboxChange={handleCheckboxChange}
+                            day="Domingo"
                         />
                     </FormGroup>
                 </FormControl>
