@@ -2,12 +2,11 @@ import React, { useEffect, useState } from 'react'
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import ProgressBar from '../../shared/ProgressBar';
 import WorkoutLoader from './WorkoutLoader';
-import { useModal } from '../../shared/PopupAlert';
 import StatusBar from './StatusBar';
 import { stages } from '../../../constants/workout';
 import ExerciseContainer from './ExerciseContainer';
 import { toast } from 'react-toastify';
-import { RegisterActivity } from '../../../services/ActivitiesServiceProvider';
+import { CreateNotification, RegisterActivity } from '../../../services/ActivitiesServiceProvider';
 import useAuthStore from '../../../stores/AuthStore';
 
 function WorkoutPlan({workoutPlan, stage, setStage, focus}: any) {
@@ -16,7 +15,6 @@ function WorkoutPlan({workoutPlan, stage, setStage, focus}: any) {
     const [currentExercise, setCurrentExercise] = React.useState<any>(null);
     const [percentage, setPercentage] = useState(0);
     const [resting, setResting] = useState({isResting: false, seconds: 0});
-    const { showNotification } = useModal();
 
     useEffect(() => {
         if(stage === stages.workoutStarted)
@@ -31,7 +29,7 @@ function WorkoutPlan({workoutPlan, stage, setStage, focus}: any) {
     function previousExercise() {
         if(resting.isResting)
         {
-            showNotification("¡Espera a que termine tu descanso para iniciar otro ejercicio!", "error");
+            toast.error("¡Espera a que termine tu descanso para iniciar otro ejercicio!");
             return;
         }
 
@@ -51,7 +49,7 @@ function WorkoutPlan({workoutPlan, stage, setStage, focus}: any) {
     function nextExercise(seconds: number) {
         if(resting.isResting)
         {
-            showNotification("¡Espera a que termine tu descanso para iniciar el siguiente ejercicio!", "error");
+            toast.error("¡Espera a que termine tu descanso para iniciar el siguiente ejercicio!");
             return;
         } 
         if(currentExercise.completedSeries === currentExercise.sets && currentExercise.index === workoutPlan.length - 1) return;
@@ -93,13 +91,14 @@ function WorkoutPlan({workoutPlan, stage, setStage, focus}: any) {
             localStorage.setItem("workoutComplete", "true");
 
             const register: ActivityDto = {
-                activity_type: "activity",
+                activity_type: "sf",
                 activity_date: new Date().toLocaleDateString('en-GB'),
                 activity_hour: new Date().toLocaleTimeString('en-GB', {hour: '2-digit', minute: '2-digit'}),
                 activity_detail: `Entrenamiento con enfoque en ${focus} completado. ¡Felicidades!`
             }
 
             toast.success(`Entrenamiento con enfoque en ${focus} completado. ¡Felicidades! 🎉`)
+            CreateNotification(user.token, `Entrenamiento con enfoque en ${focus} completado. ¡Felicidades! 🎉`);
             setStage(stages.workoutFinished);
             
             RegisterActivity(user.token, register);

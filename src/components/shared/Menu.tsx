@@ -1,7 +1,8 @@
 import GradientButton from '../helpers/GradientButton'
 import NavigationManager from '../../services/NavigationManager'
+import { Link } from 'react-router-dom';
 
-function Menu({setTransition, color, responsive, open, setPrivacy} : {setTransition: any, open?:boolean, color?: string, responsive?: boolean, setPrivacy: any}) {
+function Menu({setTransition, color, responsive, open} : {setTransition: any, open?:boolean, color?: string, responsive?: boolean}) {
     
     function handleScroll(e: any, section: string) {
         e.preventDefault();
@@ -16,20 +17,20 @@ function Menu({setTransition, color, responsive, open, setPrivacy} : {setTransit
                         <GradientButton text="Iniciar Sesión" onClick={setTransition} className='base-gradient'/>
                     </li>}
                     <li className='flex flex-wrap content-center'>
-                        <a onClick={(e) => {setPrivacy(false); handleScroll(e, "inicio")}} className={color}>Inicio</a>
+                        <a onClick={() => {NavigationManager.navigateTo("/")}} className={color}>Inicio</a>
                     </li>
                     <li className='flex flex-wrap content-center'>
-                        <a onClick={(e) => {setPrivacy(false); handleScroll(e, "vitalit")}} className={color}>Vitalit</a>
+                        <a onClick={(e) => {handleScroll(e, "vitalit")}} className={color}>Vitalit</a>
                     </li>
                     <li className='flex flex-wrap content-center'>
-                        <a onClick={(e) => {setPrivacy(false); handleScroll(e, "mission-vision")}} className={color}>Misión y vision</a>
+                        <a onClick={(e) => {handleScroll(e, "mission-vision")}} className={color}>Misión y vision</a>
                     </li>
                     <li className='flex flex-wrap content-center'>
-                        <a onClick={(e) => {setPrivacy(false); handleScroll(e, "unete")}} className={color}>Únete</a>
+                        <a onClick={(e) => {handleScroll(e, "unete")}} className={color}>Únete</a>
                     </li>
-                    <li onClick={() => setPrivacy(true)} className='flex flex-wrap content-center cursor-pointer'>
+                    <Link to={"/privacy-policy"} className='flex flex-wrap content-center cursor-pointer'>
                         <a className={color}>Política de privacidad</a>
-                    </li>
+                    </Link>
                     {!responsive && <li className=''>
                         <GradientButton text="Iniciar Sesión" onClick={setTransition} className='base-gradient'/>
                     </li>}

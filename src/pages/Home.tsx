@@ -11,9 +11,10 @@ import GradientButton from "../components/helpers/GradientButton";
 import { useModal } from "../components/shared/PopupAlert";
 import { Create } from "../services/OpenAIService";
 import { toast } from "react-toastify";
-import { NotificationService } from "../services/NotificationDataProvider";
 import { GetUserGoal, RegisterGoal } from "../services/GoalsServiceProvider";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
+import MonthGraph from "../components/pages/insights/MonthGraph";
+import { CreateNotification } from "../services/ActivitiesServiceProvider";
 
 function Home() {
 
@@ -21,7 +22,6 @@ function Home() {
     const checker = new NotificationChecker();
     const { openAddModal } = useModal();
     
-    let history = useNavigate();
     const [queryParameters] = useSearchParams()
     const [goals, setGoals] = React.useState([]);
 
@@ -81,18 +81,24 @@ function Home() {
                 if(response.code === "200")
                 {
                     toast.success("Objetivo añadido correctamente");
+                    CreateNotification(auth.user.token, "Objetivo añadido correctamente");
                     return;
                 }
 
                 toast.error("Ocurrió un error, por favor intenta de nuevo");
+                CreateNotification(auth.user.token, "Ocurrió un error, por favor intenta de nuevo");
             }
 
         }
     }
 
     return (
-        <div>
-            <div className="flex flex-col lg:flex-row min-h-screen gap-5 justify-center items-start base-gray md:ps-28 sm:p-10">
+        <div className="pb-10 base-gray">
+            <h1 className="font-bold base-gray color-dark-cyan text-4xl pl-5 sm:pl-10 pb-10 md:pl-28 pt-10 sm:pb-0">Dashboard</h1>
+            <div className="base-gray sm:p-10 md:ps-28 ">
+                <MonthGraph dashboard={true} />
+            </div>
+            <div className="flex flex-col lg:flex-row min-h-screen gap-5 justify-center items-start base-gray md:ps-28 sm:px-10">
                 <div className="w-full lg:w-1/2 flex flex-col gap-5">
                     <div className="bg-white rounded-3xl shadow-md p-5">
                         <h1 className="color-purple text-2xl">Tus objetivos</h1>

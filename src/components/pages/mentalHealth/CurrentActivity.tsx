@@ -9,7 +9,7 @@ import { useEffect, useState } from 'react';
 import VideoFile from './VideoFile';
 import AudioFile from './AudioFile';
 import { toast } from 'react-toastify';
-import { RegisterActivity } from '../../../services/ActivitiesServiceProvider';
+import { CreateNotification, RegisterActivity } from '../../../services/ActivitiesServiceProvider';
 import useAuthStore from '../../../stores/AuthStore';
 
 function CurrentActivity({ activity, handleFinishActivity, setStage }: { activity:any, handleFinishActivity:any, setStage:any }) {
@@ -73,7 +73,7 @@ function CurrentActivity({ activity, handleFinishActivity, setStage }: { activit
 
     const registerActivityFinished = (message:string) => {
         const register: ActivityDto = {
-            activity_type: "activity",
+            activity_type: "sm",
             activity_date: new Date().toLocaleDateString('en-GB'),
             activity_hour: new Date().toLocaleTimeString('en-GB', {hour: '2-digit', minute: '2-digit'}),
             activity_detail: `${message}. ¡Felicidades!`
@@ -82,6 +82,7 @@ function CurrentActivity({ activity, handleFinishActivity, setStage }: { activit
         toast.success(`${message}. ¡Felicidades! 🎉`)
         
         RegisterActivity(user.token, register);
+        CreateNotification(user.token, `${message}. ¡Felicidades! 🎉`);
     }
 
     return (

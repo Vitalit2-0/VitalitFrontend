@@ -41,7 +41,8 @@ function Nutrition() {
     }   
 
     return (
-        <div className="flex flex-col gap-2 justify-center items-center base-gray md:p-10 md:pl-28">
+        <div className="flex flex-col gap-2 justify-center items-center base-gray md:px-10 md:pl-28">
+            <h1 className="font-bold w-full base-gray color-dark-cyan text-4xl pl-5 sm:pl-5 md:pl-0 pb-10 pt-10 sm:pb-10">Nutrición</h1>
             <div className={`w-full`}>
                 <div className="flex flex-col md:flex-row gap-5 items-start">
                     <div className="w-full md:w-1/2 lg:w-1/3 bg-white rounded-3xl shadow-md md:sticky top-10 p-5">

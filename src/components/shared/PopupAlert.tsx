@@ -2,7 +2,7 @@ import { Box, Modal, TextField, Typography } from '@mui/material';
 import { Outlet } from 'react-router-dom';
 import { createContext, useContext, useState } from 'react';
 import DefaultButton from '../helpers/DefaultButton';
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import FullScreenLoader from './FullScreenLoader';
 
 const ModalContext = createContext<any>(null)
@@ -15,7 +15,7 @@ function PopupAlert() {
 
     const [addModal, setAddModal] = useState({ open: false, type: '' });
     const [description, setDescription] = useState('');
-    const [notification, setNotification] = useState({ text: '', type: 'success' }); 
+    const [notification] = useState({ text: '' }); 
     const [modal, setModal] = useState({ open: false, title: '', description: '' });
     const [loadingData, setLoadingData] = useState({ loading: false, message: '' });
     const [resolver, setResolver] = useState<(value: boolean | PromiseLike<boolean>) => void>();
@@ -56,20 +56,13 @@ function PopupAlert() {
         setDescription(event.target.value);
     }
 
-    const showNotification = (message: string, type: string) => {
-        setNotification({ text: message, type: type });
-        setTimeout(() => {
-            toast(message);
-        }, 100);
-    }
-
     const showFullScreenLoader = (show: boolean, message: string) => {
         setLoadingData({ loading: show, message: message });
     }
 
     return(
         <div className='global-actions-container'>
-            <ModalContext.Provider value={{ ...modal, openModal, closeModal, showNotification, showFullScreenLoader, openAddModal }}>
+            <ModalContext.Provider value={{ ...modal, openModal, closeModal, showFullScreenLoader, openAddModal }}>
                 <Modal
                     open={modal.open}
                     onClose={() => closeModal(false)}
@@ -119,10 +112,7 @@ function PopupAlert() {
                     </Box>
                 </Modal>
                 <ToastContainer
-                    toastStyle={{
-                        backgroundColor: notification.type === 'error' ? 'crimson' : 'green',
-                        color: '#fff',
-                    }}
+                    onClick={(e) => console.log(e)}
                 />
                 <FullScreenLoader loadingData={loadingData}/>
                 <Outlet/>

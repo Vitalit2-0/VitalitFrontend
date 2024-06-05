@@ -46,4 +46,8 @@ export class NotificationChecker {
         }, 10000); // 10 seconds in milliseconds
         
     }
+
+    stopCheckingNotifications() {
+        clearInterval(this.notificationsInterval);
+    }
 }

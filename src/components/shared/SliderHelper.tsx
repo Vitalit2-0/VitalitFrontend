@@ -22,6 +22,7 @@ export default function SliderHelper({ items } : { items: any[] }) {
         };
 
         window.addEventListener('resize', handleResize);
+        window.addEventListener('load', handleResize);
 
         return () => {
             window.removeEventListener('resize', handleResize);

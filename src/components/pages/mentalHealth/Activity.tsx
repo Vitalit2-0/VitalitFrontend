@@ -8,7 +8,7 @@ import { Create } from "../../../services/OpenAIService";
 import { TextareaAutosize } from "@mui/material";
 import NavigationManager from "../../../services/NavigationManager";
 import { toast } from "react-toastify";
-import { RegisterActivity } from "../../../services/ActivitiesServiceProvider";
+import { CreateNotification, RegisterActivity } from "../../../services/ActivitiesServiceProvider";
 
 function Activity({ activity, handleActivity, active=false } : { activity:any, handleActivity?:any, active?:boolean }) {
     
@@ -59,7 +59,7 @@ function Activity({ activity, handleActivity, active=false } : { activity:any, h
 
     const registerActivityFinished = (message:string) => {
         const register: ActivityDto = {
-            activity_type: "activity",
+            activity_type: "sm",
             activity_date: new Date().toLocaleDateString('en-GB'),
             activity_hour: new Date().toLocaleTimeString('en-GB', {hour: '2-digit', minute: '2-digit'}),
             activity_detail: `${message}. ¡Felicidades!`
@@ -68,6 +68,7 @@ function Activity({ activity, handleActivity, active=false } : { activity:any, h
         toast.success(`${message}. ¡Felicidades! 🎉`)
         
         RegisterActivity(user.token, register);
+        CreateNotification(user.token, `${message}. ¡Felicidades! 🎉`);
     }
 
     const handleStartActivity = async(id: number) => {

@@ -28,6 +28,7 @@ function MentalHealth() {
 
     return (
         <div className="flex flex-col min-h-screen gap-2 justify-start items-center base-gray">
+            <h1 className="font-bold w-full base-gray color-dark-cyan text-4xl pl-5 sm:pl-10 pb-10 md:pl-28 pt-10 sm:pb-0">Salud Mental</h1>
             <div className="w-full p-0 sm:p-10 md:ps-28">
                 <div className={`${sortedActivities.currentActivity.title ? "w-full h-auto" : "w-0 h-0"} overflow-hidden bg-white sm:rounded-3xl shadow-md transition-all duration-1000`}>
                     <Activity key={sortedActivities.activities.findIndex(act => act.active)} active={true} activity={sortedActivities.currentActivity} handleActivity={handleActivity} />

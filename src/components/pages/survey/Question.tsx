@@ -10,6 +10,8 @@ import { useModal } from "../../shared/PopupAlert";
 import DatePickerHelper from "../../helpers/DatePickerHelper";
 import GenderSelectHelper from "../../helpers/GenderSelectHelper";
 import UserDataInputHelper from "../../helpers/UserDataInputHelper";
+import { toast } from "react-toastify";
+import { CreateNotification } from "../../../services/ActivitiesServiceProvider";
 
 function Question({ flag, setPercentage }: any) {
 
@@ -35,7 +37,6 @@ function Question({ flag, setPercentage }: any) {
     const auth = useAuthStore((state: any) => state);
     const setSurveyData = useSurveyStore((state: any) => state.setSurveyData);
     const { openModal } = useModal();
-    const { showNotification } = useModal();
 
     React.useEffect(() => {
         getQuestions();
@@ -130,7 +131,8 @@ function Question({ flag, setPercentage }: any) {
             console.log("response", response);
             if(response.code !== "200")
             {
-                showNotification("Ocurrió un error, por favor recarga la página e intenta de nuevo", "error");
+                toast.error("Ocurrió un error, por favor recarga la página e intenta de nuevo");
+                CreateNotification(auth.user.token, "Ocurrió un error, por favor recarga la página e intenta de nuevo");
                 return;
             }
 

@@ -16,12 +16,14 @@ import NavigationManager from '../services/NavigationManager';
 import useAuthStore from '../stores/AuthStore';
 import { loginUser, validateUser } from '../services/AuthStateProvider';
 import ModalQr from '../components/shared/Modal2fa';
+import { toast } from 'react-toastify';
 
 function Login({ transition } : { transition: string }) {
 
     const [showError, setShowError] = useState("");
     const [showPassword, setShowPassword] = useState(false);
     const [open, setOpen] = useState(false);
+    const [show, setShow] = React.useState(true);
     const [faUsername, setfaUsername] = useState("")
     
     const user: any = useAuthStore(state => state)
@@ -54,7 +56,8 @@ function Login({ transition } : { transition: string }) {
     
         if(!response.data)
         {
-            setShowError(response.string);
+            console.log(response);
+            toast.error(response.string);
             return;
         }
         
@@ -69,6 +72,7 @@ function Login({ transition } : { transition: string }) {
             }
 
             user.login(response.data);
+            setShow(false);
             NavigationManager.navigateTo("/dashboard", "", { login: true });
             return;
         }
@@ -80,7 +84,7 @@ function Login({ transition } : { transition: string }) {
     return (
         <ChakraProvider>
             <ModalQr isRegister={false} open={open} setOpen={setOpen} username={faUsername} />
-            <div className={`expandable-element ${transition} absolute top-0 right-0 flex h-screen flex-col justify-center items-center gap-2 base-gradient z-50`} transition-style={(transition == "animate") ? "in:circle:bottom-left": ""}>
+            {show && <div className={`expandable-element ${transition} absolute top-0 right-0 flex h-screen flex-col justify-center items-center gap-2 base-gradient z-50`} transition-style={(transition == "animate") ? "in:circle:bottom-left": ""}>
                 <Flex
                     className="base-gradient"
                     flexDirection="column"
@@ -159,7 +163,7 @@ function Login({ transition } : { transition: string }) {
                         </a>
                     </p>
                 </Flex>
-            </div>
+            </div>}
         </ChakraProvider>
     )
 }

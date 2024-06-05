@@ -4,6 +4,7 @@ import GoalProgressBar from "./GoalProgressBar";
 import { toast } from "react-toastify";
 import { GetUserGoal, UpdateGoal } from "../../../services/GoalsServiceProvider";
 import useAuthStore from "../../../stores/AuthStore";
+import { CreateNotification } from "../../../services/ActivitiesServiceProvider";
 
 function Goal({goal, id}: any) {
 
@@ -29,7 +30,7 @@ function Goal({goal, id}: any) {
             goals[id].goal_achieved = checks.filter((check) => check).length;
             goals[id].last_modified = new Date();
             
-            const updateGoal = await UpdateGoal(user.token, goals[id], user.id, goals[id].goal_id);
+            await UpdateGoal(user.token, goals[id], user.id, goals[id].goal_id);
         }
     }
 
@@ -79,6 +80,7 @@ function Goal({goal, id}: any) {
         if((currentlyAchieved / goal.goal_target) * 100 >= 100)
         {
             toast.success("¡Objetivo completado!");
+            CreateNotification(user.token, "¡Objetivo completado!");
         }
     }
 

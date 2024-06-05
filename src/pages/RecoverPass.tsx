@@ -9,8 +9,28 @@ import {Flex,
         FormControl,
 } from "@chakra-ui/react";
 import NavigationManager from "../services/NavigationManager";
+import { SendRecoverMail } from "../services/AuthStateProvider";
+import { useRef } from "react";
+import { toast } from "react-toastify";
 
 function RecoverPass() {
+
+    const emailRef = useRef<HTMLInputElement>(null)
+
+    async function handleSendMail(e:any) {
+        e.preventDefault();
+        const response = await SendRecoverMail(emailRef.current?.value || "");
+
+        console.log(response)
+        if(!response.data) {
+            toast.error("No se encontró el correo electronico. ¿Si estás registrado?");
+            return;
+        }
+
+        toast.success("Correo enviado! Revisa tu bandeja de entraday spam para continuar con el proceso de recuperación de contraseña.");
+
+    }
+
     return (
         <ChakraProvider>
             <Flex
@@ -41,7 +61,12 @@ function RecoverPass() {
                             >
                                 <FormControl>
                                     <InputGroup className="bg-input-login" borderRadius={100}>
-                                        <Input type="email" placeholder='Correo Electrónico' _placeholder={{color: "purple"}}/>
+                                        <Input 
+                                            type="email" 
+                                            placeholder='Correo Electrónico' 
+                                            _placeholder={{color: "purple"}}
+                                            ref={emailRef}
+                                        />
                                     </InputGroup>
                                 </FormControl>
                                 <Button
@@ -51,6 +76,7 @@ function RecoverPass() {
                                     variant="solid"
                                     colorScheme="gray"
                                     width="full"
+                                    onClick={handleSendMail}
                                 >
                                     Enviar correo
                                 </Button>
