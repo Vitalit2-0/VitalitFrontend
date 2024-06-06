@@ -66,6 +66,7 @@ function LayoutLanding() {
                             <Route path="/privacy-policy" element={
                                 <>
                                     <Header setTransition={handleLogin}>
+                                        <Login transition={transition} />
                                         <PrivacyPolicy />
                                     </Header>
                                     <Footer setTransition={handleLogin} />

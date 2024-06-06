@@ -17,8 +17,11 @@ import useAuthStore from '../stores/AuthStore';
 import { loginUser, validateUser } from '../services/AuthStateProvider';
 import ModalQr from '../components/shared/Modal2fa';
 import { toast } from 'react-toastify';
+import { useModal } from '../components/shared/PopupAlert';
 
 function Login({ transition } : { transition: string }) {
+
+    const {showFullScreenLoader} = useModal();
 
     const [showError, setShowError] = useState("");
     const [showPassword, setShowPassword] = useState(false);
@@ -46,6 +49,7 @@ function Login({ transition } : { transition: string }) {
 
     async function handleLogin(event: React.FormEvent) {
         event.preventDefault();
+        showFullScreenLoader(true, "Espera un momento...");
 
         const loginDto: LoginDto = {
             login: loginRef.current?.value || "",
@@ -58,6 +62,7 @@ function Login({ transition } : { transition: string }) {
         {
             console.log(response);
             toast.error(response.string);
+            showFullScreenLoader(false, "");
             return;
         }
         
@@ -68,6 +73,7 @@ function Login({ transition } : { transition: string }) {
             if(response.code !== "200")
             {
                 setShowError(response.string);
+                showFullScreenLoader(false, "");
                 return;
             }
 
@@ -77,6 +83,7 @@ function Login({ transition } : { transition: string }) {
             return;
         }
 
+        showFullScreenLoader(false, "");
         setfaUsername(response.data.username);
         setOpen(true);
     }

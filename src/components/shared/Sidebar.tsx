@@ -56,6 +56,7 @@ function Sidebar() {
                 {
                     toast.success("Objetivo añadido correctamente");
                     CreateNotification(auth.user.token, "Objetivo añadido correctamente");
+                    window.location.reload();
                     return;
                 }
 

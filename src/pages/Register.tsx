@@ -15,10 +15,11 @@ import { FieldsValidator } from "../services/FieldsValidator";
 import { registerUser } from '../services/AuthStateProvider';
 import { Modal, Typography } from '@mui/material';
 import DefaultButton from '../components/helpers/DefaultButton';
+import { useModal } from '../components/shared/PopupAlert';
 
 function Register() {
     const handleShowClick = () => setShowPassword(!showPassword)
-
+    const {showFullScreenLoader} = useModal();
     const [showPassword, setShowPassword] = useState(false);
     const [showError, setShowError] = useState("");
     const [openModal, setOpenModal] = useState(false);
@@ -40,7 +41,8 @@ function Register() {
             setShowError(validUser.message);
             return;
         }
-
+            
+        showFullScreenLoader(true, "Espera un momento...");
         setShowError("");
 
         const registerDto: RegisterDto = {
@@ -55,10 +57,12 @@ function Register() {
         
         if(!response.data)
         {
+            showFullScreenLoader(false, "");
             setShowError(response.string);
             return;
         }
         
+        showFullScreenLoader(false, "");
         NavigationManager.navigateTo('/login', "", {message: "Usuario registrado con éxito, por favor inicia sesión con  tus credenciales"});
     }
 

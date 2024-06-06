@@ -4,8 +4,11 @@ import NavigationManager from '../../services/NavigationManager';
 import useAuthStore from '../../stores/AuthStore';
 import { toast } from 'react-toastify';
 import { CreateNotification } from '../../services/ActivitiesServiceProvider';
+import { useModal } from './PopupAlert';
 
 function OtpValidator({ numberOfDigits, username, setOpen, isRegister, setValue2fa } : { numberOfDigits: number, username: string, setOpen: any, isRegister: boolean, setValue2fa?: any }) {
+    
+    const {showFullScreenLoader} = useModal();
     const user: any = useAuthStore(state => state)
     const [otp, setOtp] = useState(new Array(numberOfDigits).fill(""));
     const otpBoxReference = useRef<any>([]);
@@ -53,14 +56,17 @@ function OtpValidator({ numberOfDigits, username, setOpen, isRegister, setValue2
     }
 
     async function validateOtp() {
+        showFullScreenLoader(true, "Espera un momento...");
         const response = await validateUser({ code: otp.join(""), login: username });
 
         if(response.code !== "200")
         {
             toast.error(response.string);
+            showFullScreenLoader(false, "");
             return;
         }
 
+        showFullScreenLoader(false, "");
         toast.success("Código correcto, autenticación completa");
         CreateNotification(user.token, "Código correcto, autenticación completa");
         setOpen(false);

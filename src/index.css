@@ -708,10 +708,6 @@ body {
     stroke-dashoffset: 226px;
   }
 }
-.Toastify__toast-container {
-  width: 320px;
-}
-
 .Toastify__toast--default {
   background: #fff;
   color: #fff;

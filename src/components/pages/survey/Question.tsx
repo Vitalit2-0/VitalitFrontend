@@ -6,7 +6,7 @@ import NavigationManager from "../../../services/NavigationManager";
 import useAuthStore from "../../../stores/AuthStore";
 import Loader from "../../shared/Loader";
 import useSurveyStore from "../../../stores/surveyStore";
-import { useModal } from "../../shared/PopupAlert";
+//import { useModal } from "../../shared/PopupAlert";
 import DatePickerHelper from "../../helpers/DatePickerHelper";
 import GenderSelectHelper from "../../helpers/GenderSelectHelper";
 import UserDataInputHelper from "../../helpers/UserDataInputHelper";
@@ -36,7 +36,7 @@ function Question({ flag, setPercentage }: any) {
     const [userData, setUserData] = React.useState<{weight: number, height: number, imc: number, gender: string, bornDate: string | null}>({weight: 0, height: 0, imc: 0, gender: 'M', bornDate: null});
     const auth = useAuthStore((state: any) => state);
     const setSurveyData = useSurveyStore((state: any) => state.setSurveyData);
-    const { openModal } = useModal();
+    //const { openModal } = useModal();
 
     React.useEffect(() => {
         getQuestions();
@@ -141,7 +141,9 @@ function Question({ flag, setPercentage }: any) {
 
             auth.setSurveyAnswered(auth.user, true);
 
-            NavigationManager.navigateTo("/dashboard", "", { login: true });
+            setTimeout(() => {
+                NavigationManager.navigateTo("/dashboard", "", { login: true });
+            }, 2000);
         }
     }
 
@@ -156,17 +158,17 @@ function Question({ flag, setPercentage }: any) {
         setQuestionsData({...questionsData, answer: [...questionsData.answer, Number((event.target as HTMLInputElement).value)]});
     };
 
-    async function handleSkipSurvey()
-    {
-        let confirm = await openModal("¡Atención!", "¿Estás seguro de que deseas saltar la encuesta? No podrás acceder a tu plan personalizado sin completarla.");
+    // async function handleSkipSurvey()
+    // {
+    //     let confirm = await openModal("¡Atención!", "¿Estás seguro de que deseas saltar la encuesta? No podrás acceder a tu plan personalizado sin completarla.");
     
-        if(!confirm) return;
+    //     if(!confirm) return;
 
-        setSurveyData(null);
-        setQuestionsData({questions: [], question: null, index: -1, answer: [], error: false});
-        localStorage.setItem("skipSurvey", "true");
-        NavigationManager.navigateTo("/dashboard", "", { login: true });
-    }
+    //     setSurveyData(null);
+    //     setQuestionsData({questions: [], question: null, index: -1, answer: [], error: false});
+    //     localStorage.setItem("skipSurvey", "true");
+    //     NavigationManager.navigateTo("/dashboard", "", { login: true });
+    // }
 
     function handleDateChange(e: any)
     {
@@ -235,7 +237,7 @@ function Question({ flag, setPercentage }: any) {
                 <div className="flex justify-end items-center absolute bottom-5 right-10 mt-10"> 
                     <NextButtonHelper text="Siguiente" onclick={handleNextQuestion}/>
                 </div>
-                <div onClick={handleSkipSurvey} className="absolute bottom-10 left-10 underline text-gray-400 hover:cursor-pointer">Saltar encuesta</div>
+                {/* <div onClick={handleSkipSurvey} className="absolute bottom-10 left-10 underline text-gray-400 hover:cursor-pointer">Saltar encuesta</div> */}
             </div>}
             {!questionsData.question &&
                 <div>

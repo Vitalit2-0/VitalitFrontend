@@ -26,12 +26,8 @@ function Home() {
     const [goals, setGoals] = React.useState([]);
 
     React.useEffect(() => {
-        let skippedSurvey = localStorage.getItem("skipSurvey");
-
-        if(!auth.user.survey_answered && !skippedSurvey){
-            setTimeout(() => {
-                NavigationManager.navigateTo("/survey");
-            }, 3000);
+        if(!auth.user.survey_answered){
+            NavigationManager.navigateTo("/survey");
         }
     }, [])
 
@@ -58,7 +54,7 @@ function Home() {
         if(response.data) 
         {
             console.log("r:",response.data.data);
-            setGoals(response.data.data);
+            setGoals(response.data.data || []);
         }
     }
 
@@ -82,6 +78,7 @@ function Home() {
                 {
                     toast.success("Objetivo añadido correctamente");
                     CreateNotification(auth.user.token, "Objetivo añadido correctamente");
+                    window.location.reload();
                     return;
                 }
 
@@ -100,15 +97,15 @@ function Home() {
             </div>
             <div className="flex flex-col lg:flex-row min-h-screen gap-5 justify-center items-start base-gray md:ps-28 sm:px-10">
                 <div className="w-full lg:w-1/2 flex flex-col gap-5">
-                    <div className="bg-white rounded-3xl shadow-md p-5">
+                    <div className="bg-white rounded-3xl shadow-md p-5 mt-5 md:mt-0">
                         <h1 className="color-purple text-2xl">Tus objetivos</h1>
-                        {goals.length === 0 ? 
+                        {goals?.length === 0 ? 
                             <div className="flex justify-between items-center">
                                 <p className="color-purple">No tienes objetivos aún</p> 
                                 <GradientButton text="¡Crea uno!" className="base-gradient" onClick={() => handleCreateGoal()} />
                             </div>
                             : 
-                            goals.map((goal: any, index: number) => {
+                            goals?.map((goal: any, index: number) => {
                                 return (
                                     <Goal goal={goal} id={index} key={index}/>
                                 )

@@ -15,7 +15,7 @@ function Survey() {
 
     return (
         <div className="base-gradient w-screen h-screen flex flex-wrap items-center justify-center">
-            <div className={`relative container-card ${(flip) ? "container-flipped" : ""}`} style={{width: "80%", maxWidth:"540px"}}>
+            <div className={`relative container-card max-w-[540px] ${(flip) ? "container-flipped" : ""}`}>
                 <div className="card-inner h-full shadow-card">
                     <div className="card-front h-full inline-flex">
                         <picture className="absolute top-8 right-5 w-48 z-0">

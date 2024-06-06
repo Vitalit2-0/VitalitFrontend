@@ -54,7 +54,7 @@ function Profile() {
 
     const getGoals = async() => {
         const goals = await GetUserGoal(user.token, user.id);
-        setGoals(goals.data.data);
+        setGoals(goals?.data?.data || []);
     }
 
     const getActivityHistory = async() => {
@@ -168,7 +168,6 @@ function Profile() {
             console.log(createGoal);
             const goal = await Create(createGoal, user);
 
-            //TODO: Add goal to user in service. Service not implemented yet
             if(goal.data)
             {
                 const response = await RegisterGoal(user.token, goal.data);
@@ -177,6 +176,7 @@ function Profile() {
                 {
                     toast.success("Objetivo añadido correctamente");
                     CreateNotification(user.token, "Objetivo añadido correctamente");
+                    window.location.reload();
                     return;
                 }
 
@@ -290,8 +290,8 @@ function Profile() {
                         <div className="lg:w-1/2 relative">
                         <div className="w-8 h-8 flex items-center justify-center absolute top-5 right-5 base-gradient text-white rounded-lg font-bold text-2xl cursor-pointer" onClick={() => handleAdd("objetivo")}>+</div>
                             <div className="bg-white shadow-md rounded-3xl p-5">
-                                <p className="color-purple text-6xl">{goals.length}</p>
-                                <p className="mt-2">Objetivo{goals.length > 1 ? "s" : ""} establecido{goals.length > 1 ? "s" : ""}</p>
+                                <p className="color-purple text-6xl">{goals?.length}</p>
+                                <p className="mt-2">Objetivo{goals?.length !== 1 ? "s" : ""} establecido{goals?.length !== 1 ? "s" : ""}</p>
                             </div>
                         </div>
                         <div className="lg:w-1/2">

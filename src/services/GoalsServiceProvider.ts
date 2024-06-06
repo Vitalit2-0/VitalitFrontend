@@ -41,7 +41,7 @@ export async function GetUserGoal(token: string, id: string): Promise<ResponseDt
             headers: { Authorization: `Bearer ${token}` }
         };
         const response = await axios.get(`https://app-wlimmpn7xa-uc.a.run.app/v1/goals/${id}`, config);
-        return { code: "200", string: "", data: response.data } as ResponseDto;
+        return { code: "200", string: "", data: response.data || [] } as ResponseDto;
     } catch (error : any) {
         return { 
             code: error.response.data.code, 
