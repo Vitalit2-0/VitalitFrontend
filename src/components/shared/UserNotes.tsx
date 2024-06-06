@@ -1,41 +1,56 @@
 import { useEffect, useState } from 'react'
 import { IoIosAdd } from "react-icons/io";
 import Note from "../pages/mentalHealth/Note";
+import { DeleteUserNotes, GetUserNotes, SetUserNotes } from '../../services/NotesDataProvider';
+import useAuthStore from '../../stores/AuthStore';
 
 function UserNotes() {
 
     const [openNote, setOpenNote] = useState(-1);
-    const [notes, setNotes] = useState<any>([]);
+    const [notes, setNotes] = useState<Note[]>([] as Note[]);
+    const user = useAuthStore((state:any) => state.user);
 
     useEffect(() => {
-        const storedNotes = localStorage.getItem("notes");
-        if (storedNotes) {
-            setNotes(JSON.parse(storedNotes));
-        }
+        GetNotes();
     }, []);
 
-    const handleCreateNewNote = () => {
-        const newNote = {
-            backgroundColor: "#ffffff",
-            openColors: false,
-            title: "Mi Nota",
-            note: ""
+    async function GetNotes()
+    {
+        const response = await GetUserNotes(user.token, user.id);
+
+        if (response.data) {
+            setNotes(response.data);
+            return;
         }
-        setNotes([...notes, newNote]);
-        setOpenNote(notes.length);
+
+        setNotes([]);
     }
 
-    const handleDeleteNote = (index:number) => {
-        const storedNotes = localStorage.getItem("notes");
+    const handleDeleteNote = async(id:string) => {
+        const response = await DeleteUserNotes(user.token, id);
         
-        if (storedNotes) {
-            const notes = JSON.parse(storedNotes);
-            const updatedNotes = notes.filter((_:any, i:number) => i !== index);
-            
-            localStorage.setItem("notes", JSON.stringify(updatedNotes));
-            setNotes(updatedNotes);
+        if(response.data === 'ok')
+        {
+            const newNotes = notes.filter((note) => note.note_id !== id);
+            setNotes(newNotes);
         }
-        
+    }
+
+    const handleCreateNewNote = async() => {
+        const newNote: Note = {
+            note_background: "#ffffff",
+            open_colors: false,
+            note_title: "Mi Nota",
+            note_text: ""
+        }
+
+        const response = await SetUserNotes(user.token, newNote);
+
+        if(response.data)
+        {
+            setNotes([...notes, response.data]);
+            setOpenNote(notes.length);
+        }
     }
 
     return (
@@ -48,8 +63,8 @@ function UserNotes() {
                     </p>
                 </div>
                 {
-                    Array.from(notes).map((_, index) => {
-                        return <Note key={index} index={index} notes={notes} setOpenNote={setOpenNote} openNote={openNote} handleDeleteNote={handleDeleteNote} />
+                    Array.from(notes).map((note, index) => {
+                        return <Note key={index} index={index} note={note} setOpenNote={setOpenNote} openNote={openNote} handleDeleteNote={handleDeleteNote}/>
                     })
                 }
                 <div className="bg-gray-100 flex justify-center items-center flex-col rounded-lg p-10 cursor-pointer hover:bg-gray-200" onClick={handleCreateNewNote}>

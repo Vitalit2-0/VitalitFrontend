@@ -128,10 +128,9 @@ function Register() {
                         <p>Vitalit ofrece una plataforma integral que proporciona herramientas para la gestión del bienestar personal, incluyendo:</p>
                         <ul className='list-disc'>
                             <li>- Planes de entrenamiento personalizados.</li>
-                            <li>- Seguimiento nutricional.</li>
-                            <li>- Análisis del estado de ánimo.</li>
+                            <li>- Planes nutricionales.</li>
+                            <li>- Planes de Salud Mental</li>
                             <li>- Recordatorios y notificaciones personalizadas.</li>
-                            <li>- Comunidad y soporte social.</li>
                         </ul>
 
                         <h2 className='font-bold'>5. Registro de Usuario</h2>
@@ -140,7 +139,6 @@ function Register() {
                         <h2 className='font-bold'>6. Suscripciones y Pagos</h2>
                         <ul>
                             <li><strong className='color-purple font-bold'>Suscripciones de Pago:</strong> Los usuarios pueden suscribirse a planes premium para acceder a funcionalidades avanzadas. Los pagos son recurrentes mensualmente o anualmente según el plan seleccionado.</li>
-                            <li><strong className='color-purple font-bold'>Periodo de Prueba:</strong> Ofrecemos un periodo de prueba gratuito de un mes para nuevos usuarios. Al finalizar este periodo, el usuario puede optar por una suscripción de pago.</li>
                             <li><strong className='color-purple font-bold'>Cancelación:</strong> Los usuarios pueden cancelar su suscripción en cualquier momento, pero no se reembolsarán los pagos ya efectuados. La cancelación será efectiva al final del periodo de facturación actual.</li>
                         </ul>
 
