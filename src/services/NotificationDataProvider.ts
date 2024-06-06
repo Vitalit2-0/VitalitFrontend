@@ -1,26 +1,28 @@
-import { Notification } from '../entities/Notification';
+import axios from 'axios';
 
-export async function getNotificationContent(): Promise<Notification[]> {
-    return [
-        {
-            section: "Actividad Física",
-            title: "Notificación actividad física",
-            message: "Recuerda hacer actividad física",
-        },
-        {
-            section: "Salud mental",
-            title: "Notificación salud mental",
-            message: "Recuerda hacer actividad de salud mental",
-        },
-        {
-            section: "Nutrición",
-            title: "Notificación nutrición",
-            message: "Recuerda hacer actividad nutrición",
-        },
-        {
-            section: "Generales",
-            title: "Notificación generales",
-            message: "Recuerda hacer actividad generales",
-        },
-    ];
-}
+export class NotificationService {
+    static async getNotifications(token: string) {
+        const config = {
+            headers: { Authorization: `Bearer ${token}` }
+        };
+        const response = await axios.get('https://app-wlimmpn7xa-uc.a.run.app/v1/notification', config);
+        return response.data;
+    }
+
+    static async getNotificationConfig(id: string, token: string) {
+        const config = {
+            headers: { Authorization: `Bearer ${token}` }
+        };
+        const response = await axios.get(`https://app-wlimmpn7xa-uc.a.run.app/v1/notification/${id}`, config);
+        return response.data;
+    }
+
+    static async saveNotification(token: string, notification: any) {
+        console.log(notification);
+        const config = {
+            headers: { Authorization: `Bearer ${token}` }
+        };
+        const response = await axios.post('https://app-wlimmpn7xa-uc.a.run.app/v1/notification', notification, config);
+        return response.data;
+    }
+}   

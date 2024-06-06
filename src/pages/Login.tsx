@@ -15,13 +15,18 @@ import React from 'react';
 import NavigationManager from '../services/NavigationManager';
 import useAuthStore from '../stores/AuthStore';
 import { loginUser, validateUser } from '../services/AuthStateProvider';
-import ModalQr from '../components/ModalQr';
+import ModalQr from '../components/shared/Modal2fa';
+import { toast } from 'react-toastify';
+import { useModal } from '../components/shared/PopupAlert';
 
 function Login({ transition } : { transition: string }) {
+
+    const {showFullScreenLoader} = useModal();
 
     const [showError, setShowError] = useState("");
     const [showPassword, setShowPassword] = useState(false);
     const [open, setOpen] = useState(false);
+    const [show, setShow] = React.useState(true);
     const [faUsername, setfaUsername] = useState("")
     
     const user: any = useAuthStore(state => state)
@@ -44,6 +49,7 @@ function Login({ transition } : { transition: string }) {
 
     async function handleLogin(event: React.FormEvent) {
         event.preventDefault();
+        showFullScreenLoader(true, "Espera un momento...");
 
         const loginDto: LoginDto = {
             login: loginRef.current?.value || "",
@@ -54,7 +60,9 @@ function Login({ transition } : { transition: string }) {
     
         if(!response.data)
         {
-            setShowError(response.string);
+            console.log(response);
+            toast.error(response.string);
+            showFullScreenLoader(false, "");
             return;
         }
         
@@ -65,14 +73,17 @@ function Login({ transition } : { transition: string }) {
             if(response.code !== "200")
             {
                 setShowError(response.string);
+                showFullScreenLoader(false, "");
                 return;
             }
 
             user.login(response.data);
-            NavigationManager.navigateTo("/dashboard");
+            setShow(false);
+            NavigationManager.navigateTo("/dashboard", "", { login: true });
             return;
         }
 
+        showFullScreenLoader(false, "");
         setfaUsername(response.data.username);
         setOpen(true);
     }
@@ -80,7 +91,7 @@ function Login({ transition } : { transition: string }) {
     return (
         <ChakraProvider>
             <ModalQr isRegister={false} open={open} setOpen={setOpen} username={faUsername} />
-            <div className={`expandable-element ${transition} absolute top-0 right-0 flex h-screen flex-col justify-center items-center gap-2 base-gradient z-50`} transition-style={(transition == "animate") ? "in:circle:bottom-left": ""}>
+            {show && <div className={`expandable-element ${transition} absolute top-0 right-0 flex h-screen flex-col justify-center items-center gap-2 base-gradient z-50`} transition-style={(transition == "animate") ? "in:circle:bottom-left": ""}>
                 <Flex
                     className="base-gradient"
                     flexDirection="column"
@@ -95,8 +106,9 @@ function Login({ transition } : { transition: string }) {
                         justifyContent="center"
                         alignItems="center"
                         maxW="480px"
+                        padding="10px"
                     >
-                        <Image className="w-2/3" src="../assets/images/logoVitalitBlanco.png" onClick={() => NavigationManager.navigateTo("/")} alt="Logo Vitalit"/>
+                        <Image className="w-2/3" src="assets/images/logoVitalitBlanco.png" onClick={() => {NavigationManager.navigateTo("/"); window.location.reload()}} alt="Logo Vitalit"/>
                         <h3 className="bg-text-login text-center mb-5">Accede a Vitalit y cambia por completo tu vida!</h3>
                         <Box minW={{ base: "90%", md: "468px"}}>
                             <form onSubmit={handleLogin}>
@@ -153,12 +165,12 @@ function Login({ transition } : { transition: string }) {
                     </Stack>
                     <p className='text-white mt-5'>
                         No tienes cuenta?{" "}
-                        <a className='color-white text-center' href="/register" >
+                        <a className='color-white text-center' onClick={() => NavigationManager.navigateTo("/register")} >
                             Regístrate
                         </a>
                     </p>
                 </Flex>
-            </div>
+            </div>}
         </ChakraProvider>
     )
 }

@@ -1,34 +1,53 @@
 import { toast } from 'react-toastify';
-import { getNotificationContent } from './NotificationDataProvider';
+import { NotificationService } from '../services/NotificationDataProvider';
 
 export class NotificationChecker {
     private shownNotifications: { [key: string]: boolean } = {};
-    checkNotification(userParams: { day: string[], time: string, section: string }) {
-        // Run every 10 seconds
-        setInterval(async () => {
+    private notificationsInterval: any;
+
+    async checkNotification(user: User) {
+
+        if(this.notificationsInterval)
+        {
+            clearInterval(this.notificationsInterval);
+        }
+            
+        const config = await NotificationService.getNotificationConfig(user.id || "", user.token || "");
+
+        if(!config.data) return;
+        console.log("config:",config.data);
+        const notifications = config.data;
+
+        this.notificationsInterval = setInterval(async () => {
+            console.log('Checking notifications...');
             const now = new Date();
             const dayMapping = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
             const currentDay = dayMapping[now.getDay()];
             const currentTime = now.getHours().toString().padStart(2, '0') + ":" + now.getMinutes().toString().padStart(2, '0');
 
-            if (userParams.day.includes(currentDay) && userParams.time === currentTime) {
-                // Check if the notification has already been shown today
-                const notificationKey = `${currentDay}-${userParams.section}`;
-                if (!this.shownNotifications[notificationKey]) {
-                    const notifications = await getNotificationContent();
-                    const notification = notifications.find(n => n.section === userParams.section);
-                    if (notification) {
-                        // Display notification using react-toastify
-                        toast(`${notification.title}: ${notification.message}`);
-                        //Mark the notification as shown
-                        this.shownNotifications[notificationKey] = true;
-                    }
+            const currentNotification = notifications.find((n:NotificationModel) => n.notification_days.includes(currentDay) && n.notification_hour === currentTime);
+            if (currentNotification) 
+            {
+                const notificationKey = `${currentDay}-${currentNotification.notification_type}`;
+
+                if (!this.shownNotifications[notificationKey]) 
+                {
+                    const notifications = await NotificationService.getNotifications(user.token || "");
+                    const notification = notifications.data.find((n: any) => n.notification_type === currentNotification.notification_type);
+                    toast(`${notification.notification_title}: ${notification.notification_description}`);
+                    this.shownNotifications[notificationKey] = true;
                 }
                 
-            } else if (currentTime === '00:00') {
-                // Reset shown notifications at midnight
+            } 
+            else if (currentTime === '00:00') 
+            {
                 this.shownNotifications = {};
             }
         }, 10000); // 10 seconds in milliseconds
+        
+    }
+
+    stopCheckingNotifications() {
+        clearInterval(this.notificationsInterval);
     }
 }

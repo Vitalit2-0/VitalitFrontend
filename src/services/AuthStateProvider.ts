@@ -20,8 +20,9 @@ export async function loginUser(user : LoginDto): Promise<ResponseDto>
         
         return { code: "200", string: "", data: response.data.data } as ResponseDto;
     } catch (error : any) {
+        console.log(error.response.data);
         return { 
-            code: error.response.data.code, 
+            code: "409",
             string: error.response.data.string,
             data: null 
         } as ResponseDto;
@@ -62,6 +63,39 @@ export async function activate2fa(username : { username: string }): Promise<Resp
 {
     try {
         const response = await axios.post('https://app-wlimmpn7xa-uc.a.run.app/qr', username);
+        return { code: "200", string: "", data: response.data.data } as ResponseDto;
+    } catch (error : any) {
+        return { 
+            code: error.response.data.code, 
+            string: error.response.data.string,
+            data: null 
+        } as ResponseDto;
+    }
+}
+
+export async function SendRecoverMail(email:string)
+{
+    try {
+        const response = await axios.post('https://app-wlimmpn7xa-uc.a.run.app/password', {login: email});
+        return { code: "200", string: "", data: response.data.data } as ResponseDto;
+    } catch (error : any) {
+        return { 
+            code: error.response.data.code, 
+            string: error.response.data.string,
+            data: null 
+        } as ResponseDto;
+    }
+}
+
+export async function RestorePass(token:string, psw:string)
+{
+    try {
+        const config = {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }
+        const response = await axios.post('https://app-wlimmpn7xa-uc.a.run.app/v1/password', {password: psw}, config);
         return { code: "200", string: "", data: response.data.data } as ResponseDto;
     } catch (error : any) {
         return { 

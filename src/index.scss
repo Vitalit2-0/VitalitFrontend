@@ -20,6 +20,7 @@ $base-yellow: #f6bf41;
 $base-dark-purple: rgb(45, 6, 83);
 $base-gray: #f1f2f6;
 $base-icons: #374151;
+$dark-cyan: #374151;
 
 html{
     scroll-behavior: smooth !important;
@@ -144,6 +145,31 @@ li a{
     font-weight: bold;
 }
 
+.swiper {
+    width: 100%;
+    height: 150px;
+}
+  
+.swiper-slide {
+    text-align: center;
+    font-size: 18px;
+    border-radius: 15px;
+    display: flex;
+    justify-content: center;
+    height: 120px;
+    align-items: center;
+}
+  
+.swiper-slide img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.swiper-pagination{
+}
+
 //-----------------------------------Modificators-----------------------------------//
 
 .color-white {
@@ -164,6 +190,10 @@ li a{
 
 .shadow-light{
     box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}
+
+.color-dark-cyan{
+    color: $dark-cyan;
 }
 
 .base-gray{
@@ -217,7 +247,7 @@ li a{
 
 .bg-image-purple{
     position: relative; // Add position relative to the parent element
-    background-image: url("../assets/images/background.jpg");
+    background-image: url("assets/images/background.jpg");
     background-size: cover;
 }
 
@@ -432,6 +462,780 @@ li a{
 .card-back {
     transform: rotateY(180deg);
 }
+
+//---------------------------------Workout Loader---------------------------------//
+
+*, *:before, *:after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+    
+$bgColor: #32386D;
+
+$numOfColBlocks: 3; // must be higher than 2
+$deg: 360deg / $numOfColBlocks;
+
+$red: #FD3359;
+$yellow: #F4D302;
+$blue: #21BDFF;
+
+$blocksColors: (
+    1: $base-cian,
+    2: $base-pink,
+    3: $base-yellow
+);
+
+
+$size: 140px;
+$sizeBig: 500px;
+$pad: 10px;
+$numSize: 100px;
+$totalAT: 4s;
+$contBr: 20px;
+
+$num1Len: 72.1554946899414;
+$num2Len: 136.02162170410156;
+$num3Len: 144.4256591796875;
+$numJoin1-2: 82.63925170898438;
+$numJoin2-3: 42.81303787231445;
+$numJoin3-0: 40;
+
+$totalLen: $num1Len + $num2Len + $num3Len + $numJoin1-2 + $numJoin2-3 + $numJoin3-0;
+  
+body {
+    background: white;
+    font-family: Helvetica, Arial, sans-serif;
+}
+  
+.demo {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: $sizeBig;
+    height: $size;
+    margin-top: $size / -2;
+    padding: $pad;
+    border-radius: 20px;
+    transform: translateX(-50%);
+  
+    &__colored-blocks {
+        overflow: hidden;
+        position: absolute;
+        left: 50%;
+        top: 0;
+        width: $sizeBig;
+        height: 100%;
+        margin-left: $sizeBig/-2;
+        padding: $pad;
+        border-radius: $contBr;
+        perspective: 1000px;
+        animation: demoAnim $totalAT ease-in-out infinite, contAnim $totalAT infinite;
+  
+    &-rotater {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        border-radius: inherit;
+        animation: rotation 1.3s linear infinite;
+    }
+  
+    &-inner {
+        overflow: hidden;
+        position: relative;
+        height: 100%;
+        background: white;
+        border-radius: inherit;
+    }
+}
+  
+&__colored-block {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 300%;
+    height: 300%;
+    transform-origin: 0 0;
+
+    @for $i from 1 through $numOfColBlocks {
+        &:nth-child(#{$i}) {
+            $rt: $deg * ($i - 1);
+            $skew: 90deg - $deg;
+            transform: rotate($rt) skewX($skew);
+            background-color: map-get($blocksColors, $i);
+        }
+    }
+}
+  
+    &__inner {
+        overflow: hidden;
+        position: relative;
+        width: 100%;
+        height: 100%;
+    }
+  
+    &__numbers {
+        overflow: visible;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: $numSize;
+        height: $numSize;
+        margin-left: $numSize/-2;
+        margin-top: $numSize/-2;
+    
+        &-path {
+                fill: none;
+                stroke-width: 10px;
+                stroke: $base-deep-purple;
+                stroke-linecap: round;
+                stroke-linejoin: round;
+                stroke-dasharray: 0, $totalLen;
+                stroke-dashoffset: 0;
+                animation: numAnim $totalAT ease-in-out infinite;
+                opacity: 0;
+        }
+}
+  
+&__text {
+        position: absolute;
+        left: 50%;
+        top: 0;
+        width: $sizeBig;
+        height: 100%;
+        margin-left: $sizeBig/-2;
+        text-align: center;
+        line-height: $size;
+        font-size: 100px;
+        color: $base-deep-purple;
+        text-transform: uppercase;
+        letter-spacing: 15px;
+        transform: translateX(10px);
+        animation: hideText $totalAT infinite;
+    }
+}
+  
+@keyframes contAnim {
+    15%, 100% {
+        margin-left: $sizeBig/-2;
+        width: $sizeBig;
+    }
+    25%, 90% {
+        margin-left: $size/-2;
+        width: $size;
+    }
+}
+  
+@keyframes numAnim {
+    15% {
+        stroke-dasharray: 0, $totalLen;
+        stroke-dashoffset: 0;
+        opacity: 0;
+    }
+    25%, 41% {
+        opacity: 1;
+        stroke-dasharray: $num3Len, $totalLen;
+        stroke-dashoffset: -$numJoin3-0;
+    }
+    53%, 66% {
+        stroke-dasharray: $num2Len, $totalLen;
+        stroke-dashoffset: -$num3Len - $numJoin2-3 -$numJoin3-0;
+    }
+    76% {
+        stroke-dasharray: $num1Len + $numJoin1-2/2, $totalLen;
+        stroke-dashoffset: -$num3Len - $numJoin2-3 - $num2Len - $numJoin1-2 -$numJoin3-0;
+    }
+    88%, 100% {
+        stroke-dasharray: $num1Len, $totalLen;
+        stroke-dashoffset: -$num3Len - $numJoin2-3 - $num2Len - $numJoin1-2 -$numJoin3-0;
+    }
+    92% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+  
+}
+  
+@keyframes rotation {
+    to {
+        transform: rotate(360deg);
+    }
+}
+  
+@keyframes demoAnim {
+    15% {
+        border-radius: $contBr;
+        transform: rotate(0);
+    }
+    30%, 43% {
+        border-radius: 50%;
+        transform: rotate(360deg);
+    }
+  
+    52%, 65% {
+        border-radius: 0;
+        transform: rotate(720deg);
+    }
+  
+    78%, 90% {
+        border-radius: 50%;
+        transform: rotate(1080deg);
+    }
+    
+    100% {
+        border-radius: $contBr;
+        transform: rotate(1440deg);
+    }
+}
+  
+@keyframes hideText {
+    15%, 100% {
+        opacity: 1;
+    }
+    20%, 96% {
+        opacity: 0;
+    }
+}
+
+.choose-workout-card_info{
+    display: flex;
+}
+
+.choose-workout-card_hover{
+    height: 100%;
+    transition: all 100ms ease-in-out;
+}
+
+.choose-workout-card_info a{
+    width: 0px;
+    visibility: hidden;
+    overflow: hidden;
+    transition: all 100ms ease-in-out;
+}
+
+.choose-workout-card:hover .choose-workout-card_info a{
+    width: 48px;
+    visibility: visible;
+}
+
+.choose-workout-card:hover .choose-workout-card_hover{
+    height: 100%;
+}
+
+.base-linear-white-gradient{
+    background: rgb(255,255,255);
+background: linear-gradient(90deg, rgba(255,255,255,1) 33%, rgba(255,255,255,0.7484243697478992) 66%, rgba(255,255,255,0.6) 100%);
+}
+
+//----------------------------------Loaders----------------------------------//
+
+.loader {
+    width: 50px;
+    aspect-ratio: 1;
+    --_c:no-repeat radial-gradient(farthest-side,#4ECDF2 92%,#0000);
+    background: 
+      var(--_c) top,
+      var(--_c) left,
+      var(--_c) right,
+      var(--_c) bottom;
+    background-size: 12px 12px;
+    animation: l7 1s infinite;
+  }
+  @keyframes l7 {to{transform: rotate(.5turn)}}
+
+//----------------------------------Countdown----------------------------------//
+
+#countdown {
+    position: relative;
+    height: 120px;
+    width: 120px;
+    text-align: center;
+  }
+  
+  #countdown-number {
+    color: $base-deep-purple;
+    display: inline-block;
+    line-height: 120px;
+  }
+  
+  #countdown svg {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 120px !important;
+    height: 120px !important;
+    transform: rotateY(-180deg) rotateZ(-90deg);
+  }
+  
+  #countdown svg circle {
+    stroke-dasharray: 226px;
+    stroke-dashoffset: 0px;
+    stroke-linecap: round;
+    stroke-width: 2px;
+    stroke: $base-black;
+    fill: none;
+    animation: countdown 600s linear infinite forwards;
+  }
+  
+  @keyframes countdown {
+    from {
+      stroke-dashoffset: 0px;
+    }
+    to {
+      stroke-dashoffset: 226px;
+    }
+  }
+
+//------------------------------------Toast ------------------------------------//
+
+
+  .Toastify__toast--default {
+      background: #fff;
+      color: #fff;
+   }
+    .Toastify__toast--info {
+      background: #3498db;
+      color: #fff;
+   }
+    .Toastify__toast--success {
+      background: #07bc0c;
+      color: #fff;
+   }
+    .Toastify__toast--warning {
+      background: #f1c40f;
+      color: #fff;
+   }
+    .Toastify__toast--error {
+      background: #e74c3c;
+      color: #fff;
+   }
+
+//----------------------------------Burguer menu----------------------------------//
+
+#burguer-menu svg {
+    height: 80px;
+    position: absolute;
+    width: 80px;
+    z-index: 100;
+}
+.plates {
+    display: flex;
+    flex-wrap: wrap;
+    max-height: 160px;
+    width: 640px;
+}
+@media (max-width: 640px) {
+    .plates {
+      width: 320px;
+    }
+}
+.plate {
+    height: 80px;
+    width: 80px;
+}
+.burger {
+    filter: url(#gooeyness);
+}
+  .x {
+    transform: scale(0);
+    transition: transform 400ms;
+  }
+  .line {
+    fill: none;
+    stroke: $base-deep-purple;
+    stroke-width: 6px;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transform-origin: 50%;
+    transition: stroke-dasharray 500ms 200ms, stroke-dashoffset 500ms 200ms, transform 500ms 200ms;
+  }
+  .x .line {
+    stroke-width: 5.5px;
+  }
+  /* First plate */
+  .plate1 .line2 {
+    stroke-dasharray: 40 200;
+    stroke-dashoffset: 0px;
+  }
+  .plate1 .line3 {
+    stroke-dasharray: 40 179;
+    stroke-dashoffset: 0px;
+  }
+  .active .line {
+    transition: stroke-dasharray 500ms, stroke-dashoffset 500ms, transform 500ms;
+  }
+  .active.plate1 .line1 {
+    transform: scale(0, 1);
+    transition: transform 500ms 100ms;
+  }
+  .active.plate1 .line2 {
+    stroke-dasharray: 5px 200;
+    stroke-dashoffset: -164px;
+  }
+  .active.plate1 .line3 {
+    stroke-dasharray: 5px 179;
+    stroke-dashoffset: -142px;
+  }
+  .active .x {
+    transform: scale(1);
+    transition: transform 400ms 350ms;
+  }
+  /* El segundo plato */
+  .plate2 .line1 {
+    stroke-dasharray: 21 185.62753295898438;
+    transition-delay: 0;
+  }
+  .plate2 .line2 {
+    stroke-dasharray: 21 178.6514129638672;
+    transition-delay: 30ms;
+  }
+  .plate2 .line3 {
+    stroke-dasharray: 21 197.92425537109375;
+    transition-delay: 60ms;
+  }
+  .plate2 .line4 {
+    stroke-dasharray: 21 190.6597137451172;
+    transition-delay: 90ms;
+  }
+  .plate2 .line5 {
+    stroke-dasharray: 21 208.52874755859375;
+    transition-delay: 120ms;
+  }
+  .plate2 .line6 {
+    stroke-dasharray: 21 186.59703063964844;
+    transition-delay: 150ms;
+  }
+  .active.plate2 .line1 {
+    stroke-dasharray: 5 185.62753295898438;
+    stroke-dashoffset: -141px;
+  }
+  .active.plate2 .line2 {
+    stroke-dasharray: 5 178.6514129638672;
+    stroke-dashoffset: -137px;
+  }
+  .active.plate2 .line3 {
+    stroke-dasharray: 5 197.92425537109375;
+    stroke-dashoffset: -176px;
+  }
+  .active.plate2 .line4 {
+    stroke-dasharray: 5 190.6597137451172;
+    stroke-dashoffset: -159px;
+  }
+  .active.plate2 .line5 {
+    stroke-dasharray: 5 208.52874755859375;
+    stroke-dashoffset: -139px;
+  }
+  .active.plate2 .line6 {
+    stroke-dasharray: 5 186.59703063964844;
+    stroke-dashoffset: -176px;
+  }
+  .active.plate2 .x {
+    transition: transform 400ms 250ms;
+  }
+  
+  /* O terceiro prato */
+  .plate3 .line {
+    transition: stroke-dasharray 300ms 200ms, stroke-dashoffset 300ms 200ms, transform 300ms 200ms;
+  }
+  .plate3 .line1 {
+    stroke-dasharray: 21 109;
+  }
+  .plate3 .line2 {
+    stroke-dasharray: 21 112;
+  }
+  .plate3 .line3 {
+    stroke-dasharray: 21 102;
+  }
+  .plate3 .line4 {
+    stroke-dasharray: 21 103;
+  }
+  .plate3 .line5 {
+    stroke-dasharray: 21 110;
+  }
+  .plate3 .line6 {
+    stroke-dasharray: 21 115;
+  }
+  .plate3 .x {
+    transition: transform 400ms 50ms;
+  }
+  
+  .active.plate3 .line {
+    transition: stroke-dasharray 400ms, stroke-dashoffset 400ms, transform 400ms;
+  }
+  .active.plate3 .line1 {
+    stroke-dasharray: 5 109;
+    stroke-dashoffset: -95px;
+  }
+  .active.plate3 .line2 {
+    stroke-dasharray: 5 112;
+    stroke-dashoffset: -96px;
+  }
+  .active.plate3 .line3 {
+    stroke-dasharray: 5 102;
+    stroke-dashoffset: -79px;
+  }
+  .active.plate3 .line4 {
+    stroke-dasharray: 5 103;
+    stroke-dashoffset: -78px;
+  }
+  .active.plate3 .line5 {
+    stroke-dasharray: 5 110;
+    stroke-dashoffset: -63px;
+  }
+  .active.plate3 .line6 {
+    stroke-dasharray: 5 115;
+    stroke-dashoffset: -64px;
+  }
+  .active.plate3 .x {
+    transition: transform 400ms 100ms;
+  }
+  /* Die vierte teller */
+  .plate4 .x {
+    transition: transform 400ms;
+  }
+  .plate4 .line {
+    transform-origin: 50%;
+    transition: transform 400ms 100ms;
+  }
+  .active.plate4 .line {
+    transition: transform 400ms;
+  }
+  .active.plate4 .line1 {
+    transform: translateX(18px) translateY(-3px) rotate(-45deg) scale(.7);
+  }
+  .active.plate4 .line2 {
+    transform: translateX(-18px) translateY(-3px) rotate(45deg) scale(.7);
+  }
+  .active.plate4 .line3 {
+    transform: translateY(0px) rotate(45deg) scale(.7);
+  }
+  .active.plate4 .line4 {
+    transform: translateY(0px) rotate(-45deg) scale(.7);
+  }
+  .active.plate4 .line5 {
+    transform: translateX(18px) translateY(3px) rotate(45deg) scale(.7);
+  }
+  .active.plate4 .line6 {
+    transform: translateX(-18px) translateY(3px) rotate(-45deg) scale(.7);
+  }
+  .active.plate4 .x {
+    transition: transform 400ms 100ms;
+    transform: scale(1);
+  }
+  /* Den femte rätten */
+  .plate5 .line {
+    transition: stroke-dasharray 400ms 100ms, stroke-dashoffset 400ms 100ms, transform 400ms 100ms;
+  }
+  .plate5 .line1 {
+    stroke-dasharray: 40 40;
+  }
+  .plate5 .line2 {
+    stroke-dasharray: 21 39;
+  }
+  .plate5 .line3 {
+    stroke-dasharray: 21 39;
+  }
+  .plate5 .line4 {
+    stroke-dasharray: 40 40;
+  }
+  .plate5 .x {
+    transition: transform 400ms 50ms;
+  }
+  
+  .active.plate5 .line {
+    transition: stroke-dasharray 400ms, stroke-dashoffset 400ms, transform 400ms;
+  }
+  .active.plate5 .line1 {
+    stroke-dasharray: 1 40;
+    stroke-dashoffset: -33px;
+  }
+  .active.plate5 .line2 {
+    stroke-dasharray: 5 39;
+    stroke-dashoffset: -37px;
+  }
+  .active.plate5 .line3 {
+    stroke-dasharray: 5 39;
+    stroke-dashoffset: -37px;
+  }
+  .active.plate5 .line4 {
+    stroke-dasharray: 1 40;
+    stroke-dashoffset: -33px;
+  }
+  .active.plate5 .x {
+    transition: transform 400ms 50ms;
+  }
+  /* Шестая пластина */
+  .plate6 .line {
+    transition: stroke-dasharray 400ms 100ms, stroke-dashoffset 400ms 100ms, transform 400ms 100ms;
+  }
+  .plate6 .line1 {
+    stroke-dasharray: 21 127;
+  }
+  .plate6 .line2 {
+    stroke-dasharray: 21 106;
+  }
+  .plate6 .line3 {
+    stroke-dasharray: 21 106;
+  }
+  .plate6 .line4 {
+    stroke-dasharray: 21 126;
+  }
+  .plate6 .x {
+    transition: transform 400ms 50ms;
+  }
+  
+  .active.plate6 .line {
+    transition: stroke-dasharray 400ms, stroke-dashoffset 400ms, transform 400ms;
+  }
+  .active.plate6 .line1 {
+    stroke-dasharray: 2 127;
+    stroke-dashoffset: -94px;
+  }
+  .active.plate6 .line2 {
+    stroke-dasharray: 2 106;
+    stroke-dashoffset: -91px;
+  }
+  .active.plate6 .line3 {
+    stroke-dasharray: 2 106;
+    stroke-dashoffset: -91px;
+  }
+  .active.plate6 .line4 {
+    stroke-dasharray: 2 127;
+    stroke-dashoffset: -94px;
+  }
+  .active.plate6 .x {
+    transition: transform 400ms 50ms;
+  }
+  /* 제 7 판 */
+  .plate7 .line {
+    transition: stroke-dasharray 400ms 100ms, stroke-dashoffset 400ms 100ms, transform 400ms 100ms;
+  }
+  .plate7 .line1 {
+    stroke-dasharray: 21 102;
+  }
+  .plate7 .line2 {
+    stroke-dasharray: 21 92;
+  }
+  .plate7 .line3 {
+    stroke-dasharray: 21 97;
+  }
+  .plate7 .line4 {
+    stroke-dasharray: 21 97;
+  }
+  .plate7 .line5 {
+    stroke-dasharray: 21 92;
+  }
+  .plate7 .line6 {
+    stroke-dasharray: 21 102;
+  }
+  .plate7 .x {
+    transition: transform 400ms 50ms;
+  }
+  
+  .active.plate7 .line {
+    transition: stroke-dasharray 400ms, stroke-dashoffset 400ms, transform 400ms;
+  }
+  .active.plate7 .line1 {
+    stroke-dasharray: 2 102;
+    stroke-dashoffset: -102px;
+  }
+  .active.plate7 .line2 {
+    stroke-dasharray: 2 92;
+    stroke-dashoffset: -92px;
+  }
+  .active.plate7 .line3 {
+    stroke-dasharray: 2 97;
+    stroke-dashoffset: -97px;
+    transition-delay: 20ms;
+  }
+  .active.plate7 .line4 {
+    stroke-dasharray: 2 97;
+    stroke-dashoffset: -97px;
+    transition-delay: 20ms;
+  }
+  .active.plate7 .line5 {
+    stroke-dasharray: 2 92;
+    stroke-dashoffset: -90px;
+    transition-delay: 40ms;
+  }
+  .active.plate7 .line6 {
+    stroke-dasharray: 2 102;
+    stroke-dashoffset: -100px;
+    transition-delay: 40ms;
+  }
+  .active.plate7 .x {
+    transition: transform 400ms 50ms;
+  }
+  /* Όγδοο πιάτο */
+  .plate8 .line {
+    transition: stroke-dasharray 400ms 100ms, stroke-dashoffset 400ms 100ms, transform 400ms 100ms;
+  }
+  .plate8 .line1 {
+    stroke-dasharray: 21 201;
+  }
+  .plate8 .line2 {
+    stroke-dasharray: 21 201;
+    transition-delay: 20ms;
+  }
+  .plate8 .line3 {
+    stroke-dasharray: 21 201;
+    transition-delay: 40ms;
+  }
+  .plate8 .line4 {
+    stroke-dasharray: 21 201;
+    transition-delay: 60ms;
+  }
+  .plate8 .line5 {
+    stroke-dasharray: 21 201;
+    transition-delay: 80ms;
+  }
+  .plate8 .line6 {
+    stroke-dasharray: 21 201;
+    transition-delay: 100ms;
+  }
+  .plate8 .x {
+    transition: transform 400ms 50ms;
+  }
+  
+  .active.plate8 .line {
+    transition: stroke-dasharray 400ms, stroke-dashoffset 400ms, transform 400ms;
+  }
+  .active.plate8 .line1 {
+    stroke-dasharray: 5 201;
+    stroke-dashoffset: -158px;
+  }
+  .active.plate8 .line2 {
+    stroke-dasharray: 5 201;
+    stroke-dashoffset: -158px;
+    transition-delay: 20ms;
+  }
+  .active.plate8 .line3 {
+    stroke-dasharray: 5 201;
+    stroke-dashoffset: -158px;
+    transition-delay: 40ms;
+  }
+  .active.plate8 .line4 {
+    stroke-dasharray: 5 201;
+    stroke-dashoffset: -158px;
+    transition-delay: 60ms;
+  }
+  .active.plate8 .line5 {
+    stroke-dasharray: 5 201;
+    stroke-dashoffset: -158px;
+    transition-delay: 80ms;
+  }
+  .active.plate8 .line6 {
+    stroke-dasharray: 5 201;
+    stroke-dashoffset: -158px;
+    transition-delay: 100ms;
+  }
+  .active.plate8 .x {
+    transition: transform 400ms 50ms;
+  }
 
 //----------------------------------Progress bar----------------------------------//
 
