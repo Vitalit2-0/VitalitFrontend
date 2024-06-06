@@ -34,7 +34,7 @@ export class NotificationChecker {
                 {
                     const notifications = await NotificationService.getNotifications(user.token || "");
                     const notification = notifications.data.find((n: any) => n.notification_type === currentNotification.notification_type);
-                    toast(`${notification.notification_title}: ${notification.notification_description}`);
+                    toast.success(`${notification.notification_title}: ${notification.notification_description}`);
                     this.shownNotifications[notificationKey] = true;
                 }
                 

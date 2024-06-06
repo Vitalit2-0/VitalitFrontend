@@ -2,31 +2,18 @@ import { useEffect, useState } from "react";
 import { IoIosColorPalette, IoIosArrowUp } from "react-icons/io";
 import GradientButton from "../../helpers/GradientButton";
 import { RiDeleteBin6Fill } from "react-icons/ri";
+import { UpdateUserNotes } from "../../../services/NotesDataProvider";
+import useAuthStore from "../../../stores/AuthStore";
 
-function Note({index, setOpenNote, openNote, handleDeleteNote, notes}: {index:number, setOpenNote:any, openNote:number, handleDeleteNote:any, notes:any}) {
+function Note({index, setOpenNote, openNote, note, handleDeleteNote}: {index:number, setOpenNote:any, openNote:number, note:Note, handleDeleteNote:any }) {
 
-    const [noteState , setNoteState] = useState({
-        backgroundColor: "#ffffff",
-        openColors: false,
-        title: "",
-        note: ""
-    })
+    const user = useAuthStore((state:any) => state.user);
+    const [noteState , setNoteState] = useState(note as Note)
 
     useEffect(() => {
-        const storedNotes = localStorage.getItem("notes");
-        if (storedNotes) {
-            if(JSON.parse(storedNotes)[index])
-                setNoteState(JSON.parse(storedNotes)[index]);
-            else
-                setNoteState({
-                    backgroundColor: "#ffffff",
-                    openColors: false,
-                    title: "",
-                    note: ""
-                })
-        }
-    }, [notes]);
-    
+        
+    }, []);
+
     useEffect(() => {
         handleSaveNote();
     }, [noteState]);
@@ -34,7 +21,7 @@ function Note({index, setOpenNote, openNote, handleDeleteNote, notes}: {index:nu
     const handleColorChange = (color: string) => {
         setNoteState({
             ...noteState,
-            backgroundColor: color
+            note_background: color
         })
     }
 
@@ -47,71 +34,71 @@ function Note({index, setOpenNote, openNote, handleDeleteNote, notes}: {index:nu
         setOpenNote(-1)
         setNoteState({
             ...noteState,
-            openColors: false
+            open_colors: false
         })
     }
 
     const handleOpenColors = () => {
         setNoteState({
             ...noteState,
-            openColors: !noteState.openColors
+            open_colors: !noteState.open_colors
         })
     }
 
     const handleCloseColors = () => {
         setNoteState({
             ...noteState,
-            openColors: false
+            open_colors: false
         })
     }
 
     const handleNoteTitleChange = (e:any) => {
         setNoteState({
             ...noteState,
-            title: e.target.value
+            note_title: e.target.value
         })
     }
 
     const handleNoteChange = (e:any) => {
         setNoteState({
             ...noteState,
-            note: e.target.value
+            note_text: e.target.value
         })
     }
 
-    const handleSaveNote = () => {
-        let notes = localStorage.getItem("notes");
-        
-        if (!notes) 
-        {
-            notes = JSON.stringify([]);
-            localStorage.setItem("notes", notes);
-        }
+    let saving: boolean = false;
+    const handleSaveNote = async() => {
 
-        const parsedNotes = JSON.parse(notes);
-        parsedNotes[index] = noteState;
-        
-        localStorage.setItem("notes", JSON.stringify(parsedNotes));
+        if(note && !saving) 
+        {
+            saving = true;
+            const response = await UpdateUserNotes(user.token, noteState);
+            
+            if(response.data === 'ok')
+            {
+                saving = false;
+            }
+        }
     }
 
     return (
-        <div className={`border border-solid border-gray-200 rounded-lg relative bg-[${noteState.backgroundColor}] ${openNote === index ? "" : "cursor-pointer"} ${openNote === index ? "h-auto" : "h-16"} transition-all`}>
+        <div className={`border border-solid border-gray-200 rounded-lg relative bg-[${noteState.note_background}] ${openNote === index ? "" : "cursor-pointer"} ${openNote === index ? "h-auto" : "h-16"} transition-all`}>
             <div className='w-full flex justify-between items-center' >
                 <div className="w-full">
                     <input 
-                        className={`text-xl text-black border-none p-4 w-full bg-[${noteState.backgroundColor}] p-0 ${openNote === index ? "" : "cursor-pointer"}`} 
-                        onInput={handleNoteTitleChange}
+                        className={`text-xl text-black border-none p-4 w-full bg-[${noteState.note_background}] p-0 ${openNote === index ? "" : "cursor-pointer"}`} 
+                        onChange={handleNoteTitleChange}
                         placeholder="Título de la Nota" 
-                        value={noteState.title} 
+                        value={noteState.note_title} 
                         onClick={handleOpenNote}
                     />
                 </div>
                 <div>
                     <div className="flex px-4">
                         <IoIosColorPalette className='text-2xl text-black cursor-pointer' onClick={handleOpenColors}/>
-                        <RiDeleteBin6Fill className='text-2xl text-black cursor-pointer' onClick={() => handleDeleteNote(index)}/>
+                        <RiDeleteBin6Fill className='text-2xl text-black cursor-pointer' onClick={() => handleDeleteNote(note.note_id)}/>
                     </div>
-                    <div className={`absolute right-5 p-2 bg-white rounded-md shadow-lg border border-solid ${noteState.openColors ? "inline" : "hidden"}`}>
+                    <div className={`absolute right-5 p-2 bg-white z-10 rounded-md shadow-lg border border-solid ${noteState.open_colors ? "inline" : "hidden"}`}>
                         <div className="grid grid-cols-5 gap-1">
                             <div className="h-5 w-5 bg-[#cca1ee] cursor-pointer" onClick={() => handleColorChange("#cca1ee")}></div>
                             <div className="h-5 w-5 bg-[#a1ccee] cursor-pointer" onClick={() => handleColorChange("#a1ccee")}></div>
@@ -131,10 +118,10 @@ function Note({index, setOpenNote, openNote, handleDeleteNote, notes}: {index:nu
                 </div>
             </div>
             <textarea 
-                onInput={handleNoteChange}
-                value={noteState.note} 
+                onChange={handleNoteChange}
+                value={noteState.note_text} 
                 placeholder="Escribe aquí tus pensamientos e ideas" 
-                className={`${openNote === index ? "min-h-[340px] p-4 " : "min-h-0 h-0"} w-full bg-[${noteState.backgroundColor}] border-none p-0 transition-all overflow-hidden`}
+                className={`${openNote === index ? "min-h-[340px] p-4 " : "min-h-0 h-0"} w-full bg-[${noteState.note_background}] border-none p-0 transition-all overflow-hidden`}
                 onClick={handleCloseColors}
             ></textarea>
             <div className="flex justify-center cursor-pointer hover:bg-gray-200 rounded-lg" onClick={handleCloseNote}>
