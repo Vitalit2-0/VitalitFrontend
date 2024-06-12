@@ -4,6 +4,9 @@ import { createContext, useContext, useState } from 'react';
 import DefaultButton from '../helpers/DefaultButton';
 import { ToastContainer } from 'react-toastify';
 import FullScreenLoader from './FullScreenLoader';
+import { GetUserGoal } from '../../services/GoalsServiceProvider';
+import useAuthStore from '../../stores/AuthStore';
+import PremiumBlock from './PremiumBlock';
 
 const ModalContext = createContext<any>(null)
 
@@ -13,7 +16,9 @@ export function useModal() {
 
 function PopupAlert() {
 
+    const auth = useAuthStore((state: any) => state);
     const [addModal, setAddModal] = useState({ open: false, type: '' });
+    const [goalCount, setGoalCount] = useState(0); 
     const [description, setDescription] = useState('');
     const [modal, setModal] = useState({ open: false, title: '', description: '' });
     const [loadingData, setLoadingData] = useState({ loading: false, message: '' });
@@ -35,7 +40,12 @@ function PopupAlert() {
         setModal({ open: false, title: '', description: '' });
     };
 
-    const openAddModal = (type:any) => {
+    const openAddModal = async(type:any) => {
+
+        const response = await GetUserGoal(auth.user.token, auth.user.id);
+        
+        setGoalCount(response.data.data.length);
+
         setAddModal({ open: true, type });
         return new Promise<{}>((resolve) => {
             setAddResolver(() => resolve);
@@ -73,7 +83,7 @@ function PopupAlert() {
                         <Typography id="modal-modal-title" variant="h6" component="h2">
                             {modal.title}
                         </Typography>
-                        <Typography id="modal-modal-description" className='max-h-[60vh] overflow-scroll' sx={{ mt: 2 }}>
+                        <Typography id="modal-modal-description" className='max-h-[60vh] overflow-scroll container-hide-bar' sx={{ mt: 2 }}>
                             {modal.description}
                         </Typography>
                         <div className='flex gap-2 mt-8'>
@@ -84,12 +94,37 @@ function PopupAlert() {
                 </Modal>
                 <Modal
                     open={addModal.open}
-                    onClose={() => closeModal(false)}
+                    onClose={() => closeAddModal(false)}
                     aria-labelledby="modal-modal-title"
                     aria-describedby="modal-modal-description"
                     className='flex justify-center items-start mt-10'
                 >
                     <Box className="base-white p-5 w-96 rounded-md">
+                    {goalCount >= 5 ? 
+                        <PremiumBlock feature="Crear más de 5 objetivos">
+                            <div>
+                                <Typography id="modal-modal-title" variant="h6" component="h2">
+                                    ¿Cual será tu {addModal.type}?
+                                </Typography>
+                                <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                                    <p className='mb-5'>Escribe una breve descripción y la inteligencia artificial se encargará de todo lo demás.</p>
+                                    <TextField 
+                                        className="w-full"
+                                        type="text" 
+                                        value={description} 
+                                        onInput={handleDescription} 
+                                        label={"Descripción"} 
+                                        variant="outlined" 
+                                    />
+                                </Typography>
+                                <div className='flex gap-2 mt-8'>
+                                    <DefaultButton className='base-purple text-white w-1/2' text='Cancelar' onclick={() => closeAddModal(false)}/>
+                                    <DefaultButton className='base-purple text-white w-1/2' text='Añadir' onclick={() => closeAddModal(true)}/>
+                                </div>
+                            </div>
+                        </PremiumBlock>
+                    :
+                    <div>
                         <Typography id="modal-modal-title" variant="h6" component="h2">
                             ¿Cual será tu {addModal.type}?
                         </Typography>
@@ -102,12 +137,14 @@ function PopupAlert() {
                                 onInput={handleDescription} 
                                 label={"Descripción"} 
                                 variant="outlined" 
-                            />
+                                />
                         </Typography>
                         <div className='flex gap-2 mt-8'>
                             <DefaultButton className='base-purple text-white w-1/2' text='Cancelar' onclick={() => closeAddModal(false)}/>
                             <DefaultButton className='base-purple text-white w-1/2' text='Añadir' onclick={() => closeAddModal(true)}/>
                         </div>
+                    </div>
+                    }
                     </Box>
                 </Modal>
                 <ToastContainer

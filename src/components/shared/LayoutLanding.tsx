@@ -22,6 +22,7 @@ import Settings from '../../pages/Settings';
 import Survey from '../../pages/Survey';
 import Notifications from '../../pages/Notifications';
 import Redirect from '../../pages/Redirect';
+import { RestoreSession } from '../../services/AuthStateProvider';
 
 
 function LayoutLanding() {
@@ -32,9 +33,18 @@ function LayoutLanding() {
     function handleLogin()
     {
         setTransition("animate");
-        setTimeout(() => {
+        console.log(user.user)
+        setTimeout(async() => {
             if(user.user)
             {
+                const response:any = await RestoreSession(user.user.token);
+                console.log(response);
+                if(Number(response.code) === 401)
+                {
+                    NavigationManager.navigateTo("/login", "", { login: true });
+                    return;
+                }
+
                 NavigationManager.navigateTo("/dashboard", "", { login: true });
             }
         }, 1000);

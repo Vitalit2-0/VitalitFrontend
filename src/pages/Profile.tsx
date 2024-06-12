@@ -13,10 +13,13 @@ import { CreateNotification, GetActivityHistory } from "../services/ActivitiesSe
 import { Create } from "../services/OpenAIService";
 import { toast } from "react-toastify";
 import { GetUserGoal, RegisterGoal } from "../services/GoalsServiceProvider";
+import { VerifySession } from "../services/AuthStateProvider";
+import NavigationManager from "../services/NavigationManager";
 
 function Profile() {
     const { openAddModal } = useModal()
     const user = useAuthStore((state:any) => state.user)
+    const auth = useAuthStore((state:any) => state)
     
     const [editProfile, setEditProfile] = useState({disabled: true, text: "Editar perfil"})
     const [userData, setUserData] = useState<User>(user)
@@ -37,6 +40,18 @@ function Profile() {
         getGoals();
     }, [])
 
+    useEffect(() => {
+        VerifyUserSession();
+    }, [])
+
+    async function VerifyUserSession() {
+        const authenticated = await VerifySession(auth.user.token);
+        if(!authenticated)
+        {
+            auth.logout();
+            NavigationManager.navigateTo("/login");
+        }
+    }
     const getProfileData = async() => {
         const response = await getProfile(user.token, user.id);
 
@@ -194,7 +209,7 @@ function Profile() {
             <h1 className="font-bold w-full base-gray color-dark-cyan text-4xl pl-5 sm:pl-10 pb-10 md:pl-28 pt-10 sm:pb-10">Perfil</h1>
             <div className="md:ml-16 flex flex-col md:flex-row sm:px-5 pb-5 lg:px-10 gap-5">
                 <div className="md:w-1/2 xl:w-1/3">
-                    <div className="bg-white h-[660px] w-full rounded-3xl shadow-md sticky top-10">
+                    <div className="bg-white w-full rounded-3xl shadow-md sticky top-10">
                         <div className="w-full p-10 pt-5 flex flex-col items-center sticky">
                             <div className="flex">
                                 <div className="w-1/3">

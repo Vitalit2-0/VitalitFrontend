@@ -11,6 +11,9 @@ import { TextareaAutosize } from "@mui/material";
 import WorkoutShortcut from "../components/pages/workout/WorkoutShortcut";
 import { toast } from "react-toastify";
 import { CreateNotification } from "../services/ActivitiesServiceProvider";
+import PremiumBlock from "../components/shared/PremiumBlock";
+import { VerifySession } from "../services/AuthStateProvider";
+import NavigationManager from "../services/NavigationManager";
 
 function Workout() {
     const [stage, setStage] = useState<number>(stages.choosingFocus);
@@ -21,16 +24,44 @@ function Workout() {
     const [error, setError] = useState<boolean>(false);
     const { openModal, showFullScreenLoader } = useModal();
     const user = useAuthStore((state: any) => state.user)
+    const auth = useAuthStore((state: any) => state)
 
     useEffect(() => {
-        const workoutAlreadyCompleted = localStorage.getItem("workoutComplete");
-
-        if(workoutAlreadyCompleted)
+        if(workoutAlreadyCompleted())
         {
             setStage(stages.workoutFinished);
             return;
         }
     }, [])
+
+    useEffect(() => {
+        VerifyUserSession();
+    }, [])
+
+    async function VerifyUserSession() {
+        const authenticated = await VerifySession(auth.user.token);
+        if(!authenticated)
+        {
+            auth.logout();
+            NavigationManager.navigateTo("/login");
+        }
+    }
+
+    function workoutAlreadyCompleted() {
+        const workoutAlreadyCompleted = localStorage.getItem("workoutComplete");
+        if (workoutAlreadyCompleted) {
+            const today = new Date().toLocaleDateString();
+            const workoutDate = new Date(workoutAlreadyCompleted).toLocaleDateString();
+            
+            if (workoutDate.toString() === today.toString()) {
+                return true;
+            }
+            
+            return false;
+        }
+
+        return false;
+    }
 
     async function startWorkout(start: boolean, restart?: boolean) {
         if(!start) {
@@ -108,8 +139,10 @@ function Workout() {
                                     <p className="color-purple font-bold text-center bg-purple-200 p-3 mb-5 rounded-xl">Recuerda que la constancia es la clave para lograr tus objetivos.</p>
                                     <h1 className="font-bold text-2xl mb-8 text-left color-dark-cyan">Hoy entrenaré:</h1>
                                     <MultipleChoiceButton options={["En casa", "En el gimnasio"]} onChange={handlePlaceChange} />
-                                    <h3 className="mb-8 text-left color-dark-cyan mt-10"><span className="color-purple">¿Alguna recomendación especifica antes de crear tu rutina?</span>Ten en cuenta que tus respuestas a la encuesta serán tenidas en cuenta</h3>
-                                    <TextareaAutosize onChange={handleRecomendations} className="w-full p-3 rounded-xl" placeholder="Escribe aquí tus recomendaciones" />
+                                    <h3 className="mb-8 text-left color-dark-cyan mt-10"><span className="color-purple">¿Alguna recomendación especifica antes de crear tu rutina?</span> Ten en cuenta que tus respuestas a la encuesta serán tenidas en cuenta</h3>
+                                    <PremiumBlock feature="Las recomendaciones para los entrenamientos" >
+                                        <TextareaAutosize onChange={handleRecomendations} className="w-full p-3 rounded-xl" placeholder="Escribe aquí tus recomendaciones" />
+                                    </PremiumBlock>
                                 </div>
                                 <div className="w-full md:w-1/2 lg:w-2/3 p-5 bg-white rounded-3xl shadow-md">
                                     <h1 className="font-bold text-2xl mb-4 text-left color-dark-cyan">¿Que te gustaría entrenar hoy?</h1>

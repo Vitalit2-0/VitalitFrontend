@@ -1,12 +1,29 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Activity from "../components/pages/mentalHealth/Activity"
 import { activities } from "../constants/mentalHealth"
 import UserNotes from "../components/shared/UserNotes";
+import PremiumBlock from "../components/shared/PremiumBlock";
+import { VerifySession } from "../services/AuthStateProvider";
+import useAuthStore from "../stores/AuthStore";
+import NavigationManager from "../services/NavigationManager";
 
 function MentalHealth() {
 
+    const user = useAuthStore((state: any) => state);
     const [sortedActivities, setSortedActivities] = useState({activities: activities, currentActivity: {} as any});
 
+    useEffect(() => {
+        VerifyUserSession();
+    }, [])
+
+    async function VerifyUserSession() {
+        const authenticated = await VerifySession(user.user.token);
+        if(!authenticated)
+        {
+            user.logout();
+            NavigationManager.navigateTo("/login");
+        }
+    }
     const handleActivity = (activity:number) => {
         const updatedItems = activities.map(item => {
             return item.id === activity ? { ...item, active: true } : item
@@ -35,9 +52,16 @@ function MentalHealth() {
                 </div>
                 <h2 className={`${sortedActivities.currentActivity.title ? "h-16 mt-10" : "h-0"} overflow-hidden w-full text-2xl font-bold color-dark-cyan transition-all duration-1000`}>¡Prueba una actividad diferente!</h2>
                 <div className={`flex-col lg:flex-row flex items-start w-full gap-10 relative`}>
-                    <div className={`lg:w-1/2 flex flex-col gap-5 transition-all cursor-pointer`}>
+                    <div className={`w-full lg:w-1/2 flex flex-col gap-5 transition-all cursor-pointer`}>
                         {
                             Array.from(sortedActivities.activities).map((act, index) => {
+                                if(act.id === 2) return(
+                                    <PremiumBlock feature={act.title} >
+                                        <div className={`transition-all overflow-hidden bg-white sm:rounded-3xl shadow-md`}>
+                                            <Activity key={index} activity={act} handleActivity={handleActivity} />
+                                        </div>
+                                    </PremiumBlock>
+                                )
                                 return (!act.active && 
                                     <div className={`transition-all overflow-hidden bg-white sm:rounded-3xl shadow-md`}>
                                         <Activity key={index} activity={act} handleActivity={handleActivity} />

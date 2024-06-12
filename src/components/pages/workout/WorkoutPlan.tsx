@@ -88,7 +88,7 @@ function WorkoutPlan({workoutPlan, stage, setStage, focus}: any) {
             
             if(workoutPlan[currentExercise.index + 1] || currentExercise.completedSeries < (currentExercise.sets - 1)) return;
             
-            localStorage.setItem("workoutComplete", "true");
+            localStorage.setItem("workoutComplete", new Date().toLocaleDateString());
 
             const register: ActivityDto = {
                 activity_type: "sf",

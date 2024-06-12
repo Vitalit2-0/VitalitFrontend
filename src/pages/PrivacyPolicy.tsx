@@ -14,7 +14,7 @@ function PrivacyPolicy() {
                 <li><strong>Información de Registro:</strong> Nombre, correo electrónico y contraseña.</li>
                 <li><strong>Información de Perfil:</strong> Nombre, foto de perfil, información de contacto y preferencias de notificación.</li>
                 <li><strong>Datos de Uso:</strong> Actividades diarias registradas como ejercicio, meditación y nutrición.</li>
-                <li><strong>Datos de Salud:</strong> Información sobre condición física, hábitos alimenticios y estado de salud mental.</li>
+                <li><strong>Datos de Salud:</strong> Información sobre número de rutinas de actividad física y salud mental.</li>
             </ul>
 
             <h2 className="font-bold mt-5">3. Cómo Utilizamos la Información</h2>
@@ -22,7 +22,7 @@ function PrivacyPolicy() {
             <ul>
                 <li>Personalizar y mejorar la experiencia del usuario en la plataforma.</li>
                 <li>Generar planes de bienestar personalizados.</li>
-                <li>Enviar notificaciones personalizadas sobre ejercicios, recordatorios de hidratación y otras actividades importantes para el bienestar del usuario.</li>
+                <li>Enviar notificaciones personalizadas sobre ejercicios, recordatorios y otras actividades importantes para el bienestar del usuario.</li>
                 <li>Monitorear el progreso del usuario y ajustar los planes de bienestar en consecuencia.</li>
                 <li>Realizar análisis de datos para mejorar nuestros servicios.</li>
             </ul>
@@ -39,13 +39,13 @@ function PrivacyPolicy() {
             <p>Implementamos medidas de seguridad adecuadas para proteger la información personal de nuestros usuarios contra el acceso no autorizado, alteración, divulgación o destrucción. Sin embargo, ningún método de transmisión por Internet o método de almacenamiento electrónico es 100% seguro.</p>
 
             <h2 className="font-bold mt-5">6. Derechos de los Usuarios</h2>
-            <p>Los usuarios tienen derecho a acceder, corregir, eliminar y restringir el uso de su información personal. Para ejercer estos derechos, los usuarios pueden contactarnos a través de [Correo de Soporte].</p>
+            <p>Los usuarios tienen derecho a acceder, corregir, eliminar y restringir el uso de su información personal. Para ejercer estos derechos, los usuarios pueden contactarnos a través de <a href="mailto:vvitalit.co@gmail.com" className="color-purple mt-2">vvitalit.co@gmail.com</a>.</p>
 
             <h2 className="font-bold mt-5">7. Cambios en la Política de Privacidad</h2>
             <p>Podemos actualizar esta política de privacidad de vez en cuando. Notificaremos a los usuarios sobre cualquier cambio significativo mediante la publicación de la nueva política de privacidad en nuestra plataforma y, si es necesario, mediante un aviso por correo electrónico.</p>
 
             <h2 className="font-bold mt-5">8. Contacto</h2>
-            <p>Si tienes alguna pregunta sobre esta política de privacidad, por favor contáctanos a través de [Correo de Soporte] o visita nuestra página de <a href="[Enlace a la página de soporte]">Ayuda y Soporte</a>.</p>
+            <p>Si tienes alguna pregunta sobre esta política de privacidad, por favor contáctanos a través de <a href="mailto:vvitalit.co@gmail.com" className="color-purple mt-2">vvitalit.co@gmail.com</a>.</p>
 
             <p>Gracias por confiar en Vitalit.</p>
 

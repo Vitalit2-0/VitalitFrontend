@@ -708,6 +708,15 @@ body {
     stroke-dashoffset: 226px;
   }
 }
+.container-hide-bar {
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+  scrollbar-width: none;
+}
+
+.container-hide-bar::-webkit-scrollbar {
+  display: none; /* Safari and Chrome */
+}
+
 .Toastify__toast--default {
   background: #fff;
   color: #fff;

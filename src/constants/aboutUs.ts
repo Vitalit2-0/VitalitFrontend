@@ -15,16 +15,14 @@ export const termsAndConditions = {
     Vitalit ofrece una plataforma integral que proporciona herramientas para la gestión del bienestar personal, incluyendo:
     
     Planes de entrenamiento personalizados.
-    Seguimiento nutricional.
-    Análisis del estado de ánimo.
+    Planes nutricionales.
+    Planes de Salud Mental
     Recordatorios y notificaciones personalizadas.
-    Comunidad y soporte social.
     5. Registro de Usuario
     Para utilizar ciertos servicios, el usuario debe registrarse en la plataforma proporcionando información precisa y actualizada. El usuario es responsable de mantener la confidencialidad de su cuenta y contraseña.
     
     6. Suscripciones y Pagos
     Suscripciones de Pago: Los usuarios pueden suscribirse a planes premium para acceder a funcionalidades avanzadas. Los pagos son recurrentes mensualmente o anualmente según el plan seleccionado.
-    Periodo de Prueba: Ofrecemos un periodo de prueba gratuito de un mes para nuevos usuarios. Al finalizar este periodo, el usuario puede optar por una suscripción de pago.
     Cancelación: Los usuarios pueden cancelar su suscripción en cualquier momento, pero no se reembolsarán los pagos ya efectuados. La cancelación será efectiva al final del periodo de facturación actual​​.
     7. Políticas de Reembolso
     No se otorgarán reembolsos por suscripciones ya pagadas. Los usuarios podrán seguir disfrutando de los servicios premium hasta el final del periodo de facturación en curso tras la cancelación.
