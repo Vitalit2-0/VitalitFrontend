@@ -15,6 +15,7 @@ import { GetUserGoal, RegisterGoal } from "../services/GoalsServiceProvider";
 import { useSearchParams } from "react-router-dom";
 import MonthGraph from "../components/pages/insights/MonthGraph";
 import { CreateNotification } from "../services/ActivitiesServiceProvider";
+import { VerifySession } from "../services/AuthStateProvider";
 
 function Home() {
 
@@ -39,6 +40,21 @@ function Home() {
         GetUserGoals();
     }, [])
 
+    useEffect(() => {
+        VerifyUserSession();
+    }, [])
+
+    async function VerifyUserSession() {
+        const authenticated = await VerifySession(auth.user.token);
+        
+        if(!authenticated)
+        {
+            console.log("Session expired");
+            auth.logout();
+            NavigationManager.navigateTo("/login");
+        }
+    }
+
     async function SyncUserNotifications() {
         let login = queryParameters.get("login");
         
@@ -53,7 +69,6 @@ function Home() {
         
         if(response.data) 
         {
-            console.log("r:",response.data.data);
             setGoals(response.data.data || []);
         }
     }
@@ -91,10 +106,10 @@ function Home() {
 
     return (
         <div className="pb-10 base-gray">
-            <h1 className="font-bold base-gray color-dark-cyan text-4xl pl-5 sm:pl-10 pb-10 md:pl-28 pt-10 sm:pb-0">Dashboard</h1>
-            <div className="base-gray sm:p-10 md:ps-28 ">
+            <h1 className="font-bold base-gray color-dark-cyan text-4xl pl-5 sm:pl-10 pb-10 md:pl-28 pt-10 sm:pb-10">Dashboard</h1>
+            {auth.user.type === 'premium' && <div className="base-gray sm:p-10 sm:pt-0 pt-0 md:ps-28 ">
                 <MonthGraph dashboard={true} />
-            </div>
+            </div>}
             <div className="flex flex-col lg:flex-row min-h-screen gap-5 justify-center items-start base-gray md:ps-28 sm:px-10">
                 <div className="w-full lg:w-1/2 flex flex-col gap-5">
                     <div className="bg-white rounded-3xl shadow-md p-5 mt-5 md:mt-0">

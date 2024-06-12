@@ -1,16 +1,32 @@
 import { useEffect, useState } from "react"
 import { GetHistory } from "../services/ActivitiesServiceProvider";
 import useAuthStore from "../stores/AuthStore";
+import { VerifySession } from "../services/AuthStateProvider";
+import NavigationManager from "../services/NavigationManager";
 
 
 function Notifications() {
 
     const user = useAuthStore((state: any) => state.user);
+    const auth = useAuthStore((state: any) => state);
     const [notifications, setNotifications] = useState([]);
 
     useEffect(() => {
         GetNotifications();
     }, [])
+
+    useEffect(() => {
+        VerifyUserSession();
+    }, [])
+
+    async function VerifyUserSession() {
+        const authenticated = await VerifySession(auth.user.token);
+        if(!authenticated)
+        {
+            auth.logout();
+            NavigationManager.navigateTo("/login");
+        }
+    }
 
     const GetNotifications = async() => {
         const response = await GetHistory(user.token, 'notification');
@@ -33,7 +49,7 @@ function Notifications() {
     return (
         <div className="base-gray min-h-screen md:ps-28 sm:p-10">
             <h1 className="font-bold w-full base-gray color-dark-cyan text-4xl pt-10 sm:pt-0 pl-5 sm:pl-0 pb-10 sm:pb-10">Notificaciones</h1>
-            <div className="bg-white rounded-3xl shadow-md p-5 flex flex-col items-center justify-center max-h-[80vh] overflow-auto">
+            <div className="bg-white rounded-3xl shadow-md p-5 flex flex-col items-center justify-center overflow-auto">
                 {
                     notifications.length > 0 ?
                     Array.from(notifications).map((notification: any, index: number) => {
