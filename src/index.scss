@@ -754,24 +754,24 @@ background: linear-gradient(90deg, rgba(255,255,255,1) 33%, rgba(255,255,255,0.7
     height: 120px;
     width: 120px;
     text-align: center;
-  }
-  
-  #countdown-number {
+}
+
+#countdown-number {
     color: $base-deep-purple;
     display: inline-block;
     line-height: 120px;
-  }
-  
-  #countdown svg {
+}
+
+#countdown svg {
     position: absolute;
     top: 0;
     right: 0;
     width: 120px !important;
     height: 120px !important;
     transform: rotateY(-180deg) rotateZ(-90deg);
-  }
-  
-  #countdown svg circle {
+}
+
+#countdown svg circle {
     stroke-dasharray: 226px;
     stroke-dashoffset: 0px;
     stroke-linecap: round;
@@ -779,40 +779,49 @@ background: linear-gradient(90deg, rgba(255,255,255,1) 33%, rgba(255,255,255,0.7
     stroke: $base-black;
     fill: none;
     animation: countdown 600s linear infinite forwards;
-  }
+}
   
-  @keyframes countdown {
+@keyframes countdown {
     from {
-      stroke-dashoffset: 0px;
+        stroke-dashoffset: 0px;
     }
     to {
-      stroke-dashoffset: 226px;
+        stroke-dashoffset: 226px;
     }
-  }
+}
+
+.container-hide-bar{
+    -ms-overflow-style: none;  /* Internet Explorer 10+ */
+    scrollbar-width: none; 
+}
+
+.container-hide-bar::-webkit-scrollbar { 
+    display: none;  /* Safari and Chrome */
+}
 
 //------------------------------------Toast ------------------------------------//
 
 
-  .Toastify__toast--default {
-      background: #fff;
-      color: #fff;
-   }
-    .Toastify__toast--info {
-      background: #3498db;
-      color: #fff;
-   }
-    .Toastify__toast--success {
-      background: #07bc0c;
-      color: #fff;
-   }
-    .Toastify__toast--warning {
-      background: #f1c40f;
-      color: #fff;
-   }
-    .Toastify__toast--error {
-      background: #e74c3c;
-      color: #fff;
-   }
+.Toastify__toast--default {
+    background: #fff;
+    color: #fff;
+}
+.Toastify__toast--info {
+    background: #3498db;
+    color: #fff;
+}
+.Toastify__toast--success {
+    background: #07bc0c;
+    color: #fff;
+}
+.Toastify__toast--warning {
+    background: #f1c40f;
+    color: #fff;
+}
+.Toastify__toast--error {
+    background: #e74c3c;
+    color: #fff;
+}
 
 //----------------------------------Burguer menu----------------------------------//
 

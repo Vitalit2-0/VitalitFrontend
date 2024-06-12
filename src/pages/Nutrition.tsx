@@ -1,12 +1,15 @@
 import { TextareaAutosize } from "@mui/material"
 import MultipleChoiceButton from "../components/helpers/MultipleChoiceButton"
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import GradientButton from "../components/helpers/GradientButton";
 import SliderHelper from "../components/shared/SliderHelper";
 import { videos } from "../constants/nutrition";
 import useAuthStore from "../stores/AuthStore";
 import { useModal } from "../components/shared/PopupAlert";
 import { Create } from "../services/OpenAIService";
+import PremiumBlock from "../components/shared/PremiumBlock";
+import { VerifySession } from "../services/AuthStateProvider";
+import NavigationManager from "../services/NavigationManager";
 
 function Nutrition() {
 
@@ -15,7 +18,21 @@ function Nutrition() {
     const [recipe, setRecipe] = useState<any>(null);
 
     const user = useAuthStore((state:any) => state.user);
+    const auth = useAuthStore((state:any) => state);
     const { showFullScreenLoader } = useModal();
+
+    useEffect(() => {
+        VerifyUserSession();
+    }, [])
+
+    async function VerifyUserSession() {
+        const authenticated = await VerifySession(auth.user.token);
+        if(!authenticated)
+        {
+            auth.logout();
+            NavigationManager.navigateTo("/login");
+        }
+    }
 
     const handleFoodChange = (option: string) => {
         console.log(option);
@@ -47,11 +64,15 @@ function Nutrition() {
                 <div className="flex flex-col md:flex-row gap-5 items-start">
                     <div className="w-full md:w-1/2 lg:w-1/3 bg-white rounded-3xl shadow-md md:sticky top-10 p-5">
                         <p className="color-purple font-bold text-center bg-purple-200 p-3 rounded-xl">La nutrición es la base del bienestar. Cada bocado es una oportunidad para nutrir tu cuerpo y fortalecer tu salud.</p>
-                        <h1 className="font-bold text-2xl mb-8 text-left color-dark-cyan mt-10">Voy a preparar:</h1>
-                        <MultipleChoiceButton options={["Desayuno", "Almuerzo", "Cena"]} onChange={handleFoodChange} />
-                        <h3 className="mb-8 text-left color-dark-cyan mt-10"><span className="color-purple">¿Alguna recomendación especifica antes de crear tu receta?</span> Ten en cuenta que tus respuestas a la encuesta serán tenidas en cuenta</h3>
-                        <TextareaAutosize onChange={handleRecomendations} className="w-full p-3 rounded-xl mb-5" placeholder="Escribe aquí tus recomendaciones" />
-                        <GradientButton className="w-full base-gradient" text="Crear Receta" onClick={() => handleCreateRecipe()} />
+                        <PremiumBlock feature="La creación de recetas personalizadas">
+                            <div>
+                                <h1 className="font-bold text-2xl mb-8 text-left color-dark-cyan mt-10">Voy a preparar:</h1>
+                                <MultipleChoiceButton options={["Desayuno", "Almuerzo", "Cena"]} onChange={handleFoodChange} />
+                                <h3 className="mb-8 text-left color-dark-cyan mt-10"><span className="color-purple">¿Alguna recomendación especifica antes de crear tu receta?</span> Ten en cuenta que tus respuestas a la encuesta serán tenidas en cuenta</h3>
+                                <TextareaAutosize onChange={handleRecomendations} className="w-full p-3 rounded-xl mb-5" placeholder="Escribe aquí tus recomendaciones" />
+                                <GradientButton className="w-full base-gradient" text="Crear Receta" onClick={() => handleCreateRecipe()} />
+                            </div>
+                        </PremiumBlock>
                     </div>
                     <div className="w-full md:w-1/2 lg:w-2/3 px-10 bg-white rounded-3xl shadow-md p-5">
                         {recipe &&

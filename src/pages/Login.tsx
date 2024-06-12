@@ -26,7 +26,7 @@ function Login({ transition } : { transition: string }) {
     const [showError, setShowError] = useState("");
     const [showPassword, setShowPassword] = useState(false);
     const [open, setOpen] = useState(false);
-    const [show, setShow] = React.useState(true);
+    const [show] = React.useState(true);
     const [faUsername, setfaUsername] = useState("")
     
     const user: any = useAuthStore(state => state)
@@ -44,8 +44,17 @@ function Login({ transition } : { transition: string }) {
         {
             setShowError(message);
             history("/login");
+            return;
         }
+
     }, []);
+
+    React.useEffect(() => {
+        if(user.user?.token)
+        {
+            NavigationManager.navigateTo("/dashboard");
+        }
+    }, [user.user]);
 
     async function handleLogin(event: React.FormEvent) {
         event.preventDefault();
@@ -69,17 +78,16 @@ function Login({ transition } : { transition: string }) {
         if(!response.data.ft_login)
         {
             response = await validateUser({code: "000000", login: response.data.username});
-
+            console.log(response);
             if(response.code !== "200")
             {
                 setShowError(response.string);
                 showFullScreenLoader(false, "");
                 return;
             }
-
+            console.log(response.data);
             user.login(response.data);
-            setShow(false);
-            NavigationManager.navigateTo("/dashboard", "", { login: true });
+            showFullScreenLoader(false, "");
             return;
         }
 

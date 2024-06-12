@@ -15,4 +15,5 @@ type User = {
     weight: number;
     imc: number;
     age: number;
+    type: string;
 }
