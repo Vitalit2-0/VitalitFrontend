@@ -545,8 +545,7 @@ Error generating stack: `+i.message+`
                 - type (si es 'calentamiento', 'entrenamiento' o 'estiramiento')
                 - rest: int(tiempo en segundos). 
                 Es MUY importante que sigas el formato exacto para que pueda entenderlo.
-                Por último, el enfoque del plan de entrenamiento es ${this.focus}.
-                Por cuestiones de testing, por ahora pon todas las variables rest en cero.`,yoga:`Eres un instructor de yoga que se especializa en la creación de secuencias de yoga. Tu tarea es crear una secuencia de yoga de 5 posturas para mí.
+                Por último, el enfoque del plan de entrenamiento es ${this.focus}.`,yoga:`Eres un instructor de yoga que se especializa en la creación de secuencias de yoga. Tu tarea es crear una secuencia de yoga de 5 posturas para mí.
                 Las siguientes son las posturas de yoga que puedes usar en la secuencia, es muy importante que no agregues posturas que no estén en la lista: 
                 ${JSON.stringify(this.yogaPoses)} 
                 Ten en cuenta que las recomendaciones para la secuencia son: 
