@@ -5,7 +5,7 @@ export class NotificationService {
         const config = {
             headers: { Authorization: `Bearer ${token}` }
         };
-        const response = await axios.get('https://app-wlimmpn7xa-uc.a.run.app/v1/notification', config);
+        const response = await axios.get('https://app-j462ku7pkq-uc.a.run.app/v1/notification', config);
         return response.data;
     }
 
@@ -13,7 +13,7 @@ export class NotificationService {
         const config = {
             headers: { Authorization: `Bearer ${token}` }
         };
-        const response = await axios.get(`https://app-wlimmpn7xa-uc.a.run.app/v1/notification/${id}`, config);
+        const response = await axios.get(`https://app-j462ku7pkq-uc.a.run.app/v1/notification/${id}`, config);
         return response.data;
     }
 
@@ -22,7 +22,7 @@ export class NotificationService {
         const config = {
             headers: { Authorization: `Bearer ${token}` }
         };
-        const response = await axios.post('https://app-wlimmpn7xa-uc.a.run.app/v1/notification', notification, config);
+        const response = await axios.post('https://app-j462ku7pkq-uc.a.run.app/v1/notification', notification, config);
         return response.data;
     }
 }   

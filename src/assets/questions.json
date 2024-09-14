@@ -1,0 +1,361 @@
+[
+    {
+        "id": "1",
+        "question": "¿Cuál es tu principal objetivo al usar Vitalit?",
+        "questionType": "single-choice",
+        "options": [
+            "Mejorar mi condición física",
+            "Adoptar una dieta más saludable",
+            "Mejorar mi salud mental",
+            "Todas las anteriores"
+        ],
+        "visible": true,
+        "selectedOptions": [],
+        "section": "sm"
+    },
+    {
+        "id": "2",
+        "question": "¿Con qué frecuencia realizas actividades físicas cada semana?",
+        "questionType": "single-choice",
+        "options": [
+            "No realizo actividad física",
+            "1-2 días a la semana",
+            "3-4 días a la semana",
+            "5 días o más a la semana"
+        ],
+        "visible": false,
+        "selectedOptions": [],
+        "section": "sf"
+    },
+    {
+        "id": "3",
+        "question": "Selecciona tu(s) preferencia(s) dietética(s):",
+        "questionType": "single-choice",
+        "options": [
+            "Sin restricciones",
+            "Vegetariana",
+            "Vegana",
+            "Keto",
+            "Paleo",
+            "Baja en carbohidratos"
+        ],
+        "visible": false,
+        "selectedOptions": [],
+        "section": "sn"
+    },
+    {
+        "id": "4",
+        "question": "¿Tienes alguna alergia alimentaria?",
+        "questionType": "single-choice",
+        "options": [
+            "No tengo alergias",
+            "Frutos secos",
+            "Gluten",
+            "Lactosa",
+            "Mariscos",
+            "Otras"
+        ],
+        "visible": false,
+        "selectedOptions": [],
+        "section": "sn"
+    },
+    {
+        "id": "5",
+        "question": "¿Cómo calificarías tu estado de ánimo general en la última semana?",
+        "questionType": "single-choice",
+        "options": [
+            "Muy malo",
+            "Malo",
+            "Neutral",
+            "Bueno",
+            "Excelente"
+        ],
+        "visible": false,
+        "selectedOptions": [],
+        "section": "sm"
+    },
+    {
+        "id": "6",
+        "question": "En una escala del 1 al 5, ¿cuánto estrés experimentas en una semana típica?",
+        "questionType": "single-choice",
+        "options": [
+            "1 - Muy poco estrés",
+            "2 - Poco estrés",
+            "3 - Estrés moderado",
+            "4 - Bastante estrés",
+            "5 - Mucho estrés"
+        ],
+        "visible": false,
+        "selectedOptions": [],
+        "section": "sm"
+    },
+    {
+        "id": "7",
+        "question": "¿Cuántas horas de sueño obtienes en promedio por noche?",
+        "questionType": "single-choice",
+        "options": [
+            "Menos de 4 horas",
+            "4-6 horas",
+            "6-8 horas",
+            "Más de 8 horas"
+        ],
+        "visible": false,
+        "selectedOptions": [],
+        "section": "sm"
+    },
+    {
+        "id": "8",
+        "question": "¿Practicas alguna forma de relajación o mindfulness regularmente?",
+        "questionType": "multiple-choice",
+        "options": [
+            "No practico",
+            "Meditación",
+            "Yoga",
+            "Ejercicios de respiración",
+            "Otras formas"
+        ],
+        "visible": false,
+        "selectedOptions": [],
+        "section": "sm"
+    },
+    {
+        "id": "10",
+        "question": "¿Cuál es tu nivel actual de conocimiento sobre temas de nutrición y salud física?",
+        "questionType": "single-choice",
+        "options": [
+            "Ninguno",
+            "Básico",
+            "Intermedio",
+            "Avanzado"
+        ],
+        "visible": false,
+        "selectedOptions": [],
+        "section": "sn"
+    },
+    {
+        "id": "11",
+        "question": "¿Cuál es tu principal motivador para mantener un estilo de vida saludable?",
+        "questionType": "single-choice",
+        "options": [
+            "Salud a largo plazo",
+            "Apariencia física",
+            "Mejorar el rendimiento deportivo",
+            "Aumentar mi energía diaria",
+            "Reducir el estrés"
+        ],
+        "visible": false,
+        "selectedOptions": [],
+        "section": "sf"
+    },
+    {
+        "id": "12",
+        "question": "¿Tienes alguna limitación física o condición médica que debamos tener en cuenta?",
+        "questionType": "single-choice",
+        "options": [
+            "No",
+            "Sí, limitaciones físicas",
+            "Sí, condiciones médicas",
+            "Ambas"
+        ],
+        "visible": false,
+        "selectedOptions": [],
+        "section": "sf"
+    },
+    {
+        "id": "13",
+        "question": "¿Qué tipo de apoyo prefieres recibir en tu viaje de bienestar?",
+        "questionType": "multiple-choice",
+        "options": [
+            "Asesoría de expertos",
+            "Comunidades de apoyo",
+            "Seguimiento automatizado",
+            "Material educativo"
+        ],
+        "visible": false,
+        "selectedOptions": [],
+        "section": "sm"
+    },
+    {
+        "id": "14",
+        "question": "¿Qué tipo de contenido te resulta más motivador?",
+        "questionType": "single-choice",
+        "options": [
+            "Videos",
+            "Artículos escritos",
+            "Infografías",
+            "Desafíos y retos"
+        ],
+        "visible": false,
+        "selectedOptions": [],
+        "section": "sm"
+    },
+    {
+        "id": "15",
+        "question": "¿Con qué frecuencia experimentas sentimientos de ansiedad o preocupación?",
+        "questionType": "single-choice",
+        "options": [
+            "Nunca",
+            "Ocasionalmente",
+            "Frecuentemente",
+            "Diariamente"
+        ],
+        "visible": false,
+        "selectedOptions": [],
+        "section": "sm"
+    },
+    {
+        "id": "16",
+        "question": "¿Te resulta difícil relajarte al final del día?",
+        "questionType": "single-choice",
+        "options": [
+            "Nunca",
+            "Raramente",
+            "A veces",
+            "Frecuentemente",
+            "Siempre"
+        ],
+        "visible": false,
+        "selectedOptions": [],
+        "section": "sm"
+    },
+    {
+        "id": "17",
+        "question": "¿Has experimentado cambios significativos en tus patrones de sueño recientemente?",
+        "questionType": "single-choice",
+        "options": [
+            "No",
+            "Sí, duermo menos",
+            "Sí, duermo más",
+            "Sí, tengo dificultades para conciliar el sueño"
+        ],
+        "visible": false,
+        "selectedOptions": [],
+        "section": "sm"
+    },
+    {
+        "id": "18",
+        "question": "¿Qué tan a menudo te sientes abrumado por tus responsabilidades diarias?",
+        "questionType": "single-choice",
+        "options": [
+            "Nunca",
+            "Raramente",
+            "A veces",
+            "Frecuentemente",
+            "Siempre"
+        ],
+        "visible": false,
+        "selectedOptions": [],
+        "section": "sm"
+    },
+    {
+        "id": "19",
+        "question": "¿Te sientes satisfecho con tu equilibrio entre trabajo y vida personal?",
+        "questionType": "single-choice",
+        "options": [
+            "Muy insatisfecho",
+            "Insatisfecho",
+            "Neutral",
+            "Satisfecho",
+            "Muy satisfecho"
+        ],
+        "visible": false,
+        "selectedOptions": [],
+        "section": "sm"
+    },
+    {
+        "id": "20",
+        "question": "¿Con qué frecuencia participas en actividades que disfrutas o te relajan?",
+        "questionType": "single-choice",
+        "options": [
+            "Nunca",
+            "Raramente",
+            "A veces",
+            "Frecuentemente",
+            "Diariamente"
+        ],
+        "visible": false,
+        "selectedOptions": [],
+        "section": "sm"
+    },
+    {
+        "id": "21",
+        "question": "¿Has notado cambios en tu apetito o hábitos alimenticios debido al estrés?",
+        "questionType": "single-choice",
+        "options": [
+            "No",
+            "Sí, como menos",
+            "Sí, como más",
+            "Sí, como de manera poco saludable"
+        ],
+        "visible": false,
+        "selectedOptions": [],
+        "section": "sn"
+    },
+    {
+        "id": "22",
+        "question": "¿Te resulta difícil concentrarte o mantenerte enfocado?",
+        "questionType": "single-choice",
+        "options": [
+            "Nunca",
+            "Raramente",
+            "A veces",
+            "Frecuentemente",
+            "Siempre"
+        ],
+        "visible": false,
+        "selectedOptions": [],
+        "section": "sm"
+    },
+    {
+        "id": "23",
+        "question": "¿Sientes que tienes un buen sistema de apoyo emocional (amigos, familia, etc.)?",
+        "questionType": "single-choice",
+        "options": [
+            "No, me siento solo/a",
+            "Tengo algo de apoyo",
+            "Tengo un buen sistema de apoyo",
+            "Tengo un excelente sistema de apoyo"
+        ],
+        "visible": false,
+        "selectedOptions": [],
+        "section": "sm"
+    },
+    {
+        "id": "24",
+        "question": "¿Cuán satisfecho estás con tu nivel actual de autoconfianza?",
+        "questionType": "single-choice",
+        "options": [
+            "Muy insatisfecho",
+            "Insatisfecho",
+            "Neutral",
+            "Satisfecho",
+            "Muy satisfecho"
+        ],
+        "visible": false,
+        "selectedOptions": [],
+        "section": "sm"
+    },
+    {
+        "id": "25",
+        "question": "En general, ¿cómo describirías tu bienestar emocional en los últimos 30 días?",
+        "questionType": "single-choice",
+        "options": [
+            "Muy malo",
+            "Malo",
+            "Neutral",
+            "Bueno",
+            "Excelente"
+        ],
+        "visible": false,
+        "selectedOptions": [],
+        "section": "sm"
+    },
+    {
+        "id": "26",
+        "question": "Por último, algunos datos personales que nos serán de utilidad para tu plan",
+        "questionType": "weight-height",
+        "visible": true,
+        "selectedOptions": [],
+        "section": "sf"
+    }
+]

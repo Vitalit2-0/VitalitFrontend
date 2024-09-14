@@ -23,6 +23,7 @@ function Register() {
     const [showPassword, setShowPassword] = useState(false);
     const [showError, setShowError] = useState("");
     const [openModal, setOpenModal] = useState(false);
+    const [acceptTerms, setAcceptTerms] = useState(false);
 
     const emailRef = useRef<HTMLInputElement | null>(null);
     const usernameRef = useRef<HTMLInputElement | null>(null);
@@ -30,6 +31,7 @@ function Register() {
     const lastNameRef = useRef<HTMLInputElement | null>(null);
     const passwordRef = useRef<HTMLInputElement | null>(null);
     const confirmPasswordRef = useRef<HTMLInputElement | null>(null);
+    const termsRef = useRef<HTMLInputElement | null>(null);
 
     async function handleRegister(event: React.FormEvent) {
         event.preventDefault();
@@ -74,11 +76,18 @@ function Register() {
             { ref: nameRef, errorMessage: "El nombre debe tener más de 3 caracteres" },
             { ref: lastNameRef, errorMessage: "El apellido debe tener más de 3 caracteres"},
             { ref: passwordRef, errorMessage: "La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula, un número y un caracter especial" },
+            { ref: termsRef, errorMessage: "Por favor lee y acepta los términos y condiciones" },
         ];
 
         for (const field of fields) 
         {
             let ref = field.ref.current;
+            
+            if(ref?.name === "terms")
+            {
+                ref.value = ref?.checked ? "on" : "";
+            }
+            
             const isValid = FieldsValidator.validateField(ref?.name || "", ref?.value || "");
 
             if (!isValid) {
@@ -91,6 +100,11 @@ function Register() {
         }
 
         return { message: "", valid: true };
+    }
+
+    const handleAcceptTerms = () => {
+        setAcceptTerms(true);
+        handleToggleModal();
     }
 
     const handleToggleModal = () => {
@@ -175,7 +189,7 @@ function Register() {
                         </p>
                         </Typography>
                         <div className='flex justify-end gap-2 mt-8'>
-                            <DefaultButton className='base-purple text-white w-1/2' text='Aceptar' onclick={() => handleToggleModal()}/>
+                            <DefaultButton className='base-purple text-white w-1/2' text='Aceptar' onclick={() => handleAcceptTerms()}/>
                         </div>
                     </Box>
                 </Modal>
@@ -280,6 +294,21 @@ function Register() {
                                         />
                                     </InputGroup>
                                 </FormControl>
+                                <FormControl>
+                                    <InputGroup borderRadius={10}>
+                                        <input
+                                            type="checkbox"
+                                            ref={termsRef}
+                                            name="terms"
+                                            className='bg-transparent mr-3'
+                                            checked={acceptTerms}
+                                            onChange={() => setAcceptTerms(!acceptTerms)}
+                                        />
+                                        <label className="text-white">Acepto los 
+                                            <a className="color-white text-center cursor-pointer underline" onClick={() => handleToggleModal()}> terminos y condiciones </a> 
+                                        de Vitalit</label>
+                                    </InputGroup>
+                                </FormControl>
                                 {showError && <p className="text-white">{showError}</p>}
                                 <Button
                                     borderRadius={10}
@@ -297,10 +326,6 @@ function Register() {
                     <p className='text-white mt-5'>
                         ¿Ya tienes una cuenta?{" "}
                         <a className='color-white text-center' onClick={() => NavigationManager.navigateTo("/login")}>Iniciar sesión</a>
-                    </p>
-                    <p className="text-white text-center mt-3">
-                        Recopilaremos algunos datos para una excelente experiencia.{" "}
-                        <a className="color-white text-center cursor-pointer" onClick={() => handleToggleModal()}>Saber más.</a>
                     </p>
                 </Stack>
             </Flex>

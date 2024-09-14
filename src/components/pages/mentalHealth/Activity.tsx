@@ -72,6 +72,7 @@ function Activity({ activity, handleActivity, active=false } : { activity:any, h
     }
 
     const handleStartActivity = async(id: number) => {
+
         showFullScreenLoader(true, "Regálanos un momento. ¡Estamos creando una actividad genial!");
 
         let activities: any = null;
@@ -100,6 +101,7 @@ function Activity({ activity, handleActivity, active=false } : { activity:any, h
         setStage(stages.activityStarted)
         setCurrentActivity({...activity, ...activities.data});
         showFullScreenLoader(false, "");
+        openModal("¡Advertencia!", "Recuerda que las herramientas de salud mental (yoga, meditación e imágenes guiadas) son complementarias y no sustituyen el apoyo profesional. En caso de necesitar ayuda, no dudes en contactar a un especialista.");
         
         setTimeout(() => {
             window.scrollTo(0, 10);

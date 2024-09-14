@@ -26,7 +26,7 @@ function Login({ transition } : { transition: string }) {
     const [showError, setShowError] = useState("");
     const [showPassword, setShowPassword] = useState(false);
     const [open, setOpen] = useState(false);
-    const [show] = React.useState(true);
+    const [show, setShow] = React.useState(true);
     const [faUsername, setfaUsername] = useState("")
     
     const user: any = useAuthStore(state => state)
@@ -52,7 +52,20 @@ function Login({ transition } : { transition: string }) {
     React.useEffect(() => {
         if(user.user?.token)
         {
-            NavigationManager.navigateTo("/dashboard");
+            let returnUrl = queryParameters.get("returnUrl");
+            console.log(window.location.href);
+            console.log(`${window.location.protocol}//${window.location.host}/VitalitForntend/`);
+            setShow(!user.user?.token);
+            
+            if(returnUrl)
+            {
+                NavigationManager.navigateTo("/blog");
+                setShow(false);
+                return;
+            }
+            
+            if(!window.location.href.includes("blog") && window.location.href !== `${window.location.protocol}//${window.location.host}/VitalitFrontend/`)
+                NavigationManager.navigateTo("/dashboard");
         }
     }, [user.user]);
 
@@ -69,7 +82,6 @@ function Login({ transition } : { transition: string }) {
     
         if(!response.data)
         {
-            console.log(response);
             toast.error(response.string);
             showFullScreenLoader(false, "");
             return;
@@ -78,15 +90,16 @@ function Login({ transition } : { transition: string }) {
         if(!response.data.ft_login)
         {
             response = await validateUser({code: "000000", login: response.data.username});
-            console.log(response);
+            
             if(response.code !== "200")
             {
                 setShowError(response.string);
                 showFullScreenLoader(false, "");
                 return;
             }
-            console.log(response.data);
+            
             user.login(response.data);
+
             showFullScreenLoader(false, "");
             return;
         }
@@ -172,7 +185,7 @@ function Login({ transition } : { transition: string }) {
                         </Box>
                     </Stack>
                     <p className='text-white mt-5'>
-                        No tienes cuenta?{" "}
+                        ¿No tienes cuenta?{" "}
                         <a className='color-white text-center' onClick={() => NavigationManager.navigateTo("/register")} >
                             Regístrate
                         </a>

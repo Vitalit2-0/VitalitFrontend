@@ -9,12 +9,9 @@ import Activity from "../components/pages/mentalHealth/Activity";
 import { activities } from "../constants/mentalHealth";
 import GradientButton from "../components/helpers/GradientButton";
 import { useModal } from "../components/shared/PopupAlert";
-import { Create } from "../services/OpenAIService";
-import { toast } from "react-toastify";
-import { GetUserGoal, RegisterGoal } from "../services/GoalsServiceProvider";
+import { GetUserGoal } from "../services/GoalsServiceProvider";
 import { useSearchParams } from "react-router-dom";
 import MonthGraph from "../components/pages/insights/MonthGraph";
-import { CreateNotification } from "../services/ActivitiesServiceProvider";
 import { VerifySession } from "../services/AuthStateProvider";
 
 function Home() {
@@ -66,42 +63,46 @@ function Home() {
 
     async function GetUserGoals() {
         const response = await GetUserGoal(auth.user.token, auth.user.id);
-        
+
         if(response.data) 
         {
+            const goals = response.data.data;
+
+            Array.from(goals).map((goal: any) => {
+                console.log(ResetGoal(goal));
+                if(ResetGoal(goal)){
+                    goal.goal_achieved = 0;
+                }
+                return goal;
+            })
+            console.log(goals);
             setGoals(response.data.data || []);
         }
     }
 
+    function ResetGoal(goal:any) {
+        const today = new Date();
+        const goalLastModified = parseDate(goal.goal_last_modified);
+        const goalRepeat = goal.goal_repeat;
+
+        if (goalRepeat === "diariamente") return today.getDate() !== goalLastModified.getDate();
+        if (goalRepeat === "semanalmente") return today.getDay() !== goalLastModified.getDay();
+        if (goalRepeat === "mensualmente") return today.getMonth() !== goalLastModified.getMonth();
+
+        return false;
+    }
+
+    function parseDate(input:string) {
+        const parts = input.split('-');
+        const day = parseInt(parts[0], 10);
+        const month = parseInt(parts[1], 10) - 1; // Month is 0-based in JS
+        const year = parseInt(parts[2], 10);
+    
+        return new Date(year, month, day);
+    }
+
     async function handleCreateGoal() {
-        const response = await openAddModal("goal");
-        
-        if(response.confirm) {
-            const createGoal = {
-                type: "goal",
-                description: response.description
-            }
-            
-            console.log(createGoal);
-            const goal = await Create(createGoal, auth.user);
-
-            if(goal.data)
-            {
-                const response = await RegisterGoal(auth.user.token, goal.data);
-
-                if(response.code === "200")
-                {
-                    toast.success("Objetivo añadido correctamente");
-                    CreateNotification(auth.user.token, "Objetivo añadido correctamente");
-                    window.location.reload();
-                    return;
-                }
-
-                toast.error("Ocurrió un error, por favor intenta de nuevo");
-                CreateNotification(auth.user.token, "Ocurrió un error, por favor intenta de nuevo");
-            }
-
-        }
+        openAddModal("goal");
     }
 
     return (

@@ -12,17 +12,14 @@ import NotificationCenter from "./NotificationCenter";
 import { CiMenuFries } from "react-icons/ci";
 import { useState } from "react";
 import { useModal } from "./PopupAlert";
-import { Create } from "../../services/OpenAIService";
-import { toast } from "react-toastify";
-import { RegisterGoal } from "../../services/GoalsServiceProvider";
 import { IoIosClose } from "react-icons/io";
-import { CreateNotification } from "../../services/ActivitiesServiceProvider";
 import { NotificationChecker } from "../../services/NotificationChecker";
 
 function Sidebar() {
 
     const [open, setOpen] = useState(false);
     const { openAddModal } = useModal();
+    
     const auth = useAuthStore((state: any) => state);
 
     function handleLogout() {
@@ -34,37 +31,6 @@ function Sidebar() {
 
     function handleOpenMenu() {
         setOpen(!open);
-    }
-
-    async function handleCreateGoal() {
-        const response = await openAddModal("goal");
-        
-        if(response.confirm) {
-            const createGoal = {
-                type: "goal",
-                description: response.description
-            }
-            
-            console.log(createGoal);
-            const goal = await Create(createGoal, auth.user);
-
-            if(goal.data)
-            {
-                const response = await RegisterGoal(auth.user.token, goal.data);
-                
-                if(response.code === "200")
-                {
-                    toast.success("Objetivo añadido correctamente");
-                    CreateNotification(auth.user.token, "Objetivo añadido correctamente");
-                    window.location.reload();
-                    return;
-                }
-
-                toast.error("Error al añadir el objetivo");
-                CreateNotification(auth.user.token, "Error al añadir el objetivo");
-            }
-
-        }
     }
 
     return (
@@ -85,21 +51,36 @@ function Sidebar() {
                     </div>
                     <div>
                         <Link to="/dashboard" onClick={handleOpenMenu} className="flex flex-col w-full justify-center items-center h-12 cursor-pointer mt-2 mb-1 rounded-md hover:bg-gray-300">
-                            <HiOutlineHome className='text-3xl base-icons'/>
+                            <a data-tooltip-id="dashboard-tooltip" data-tooltip-variant="light" data-tooltip-content={"Dashboard"}>
+                                <HiOutlineHome className='text-3xl base-icons'/>
+                            </a>
+                            {/* <Tooltip id="dashboard-tooltip" place={"right"}  /> */}
                         </Link>
                         <Link to="/insights" onClick={handleOpenMenu} className="flex w-full justify-center items-center h-12 cursor-pointer mt-2 mb-1 rounded-md hover:bg-gray-300">
-                            <MdOutlineInsertChartOutlined className='text-3xl base-icons'/>
+                            <a data-tooltip-id="insight-tooltip" data-tooltip-variant="light" data-tooltip-content={"Informes"}>
+                                <MdOutlineInsertChartOutlined className='text-3xl base-icons'/>
+                            </a>
+                            {/* <Tooltip id="insight-tooltip" place={"right"}  /> */}
                         </Link>
                         <Link to="/workout" onClick={handleOpenMenu} className="flex w-full justify-center items-center h-12 cursor-pointer mt-2 mb-1 rounded-md hover:bg-gray-300">
-                            <BiRun className='text-3xl base-icons'/>
+                            <a data-tooltip-id="workout-tooltip" data-tooltip-variant="light" data-tooltip-content={"Salud física"}>
+                                <BiRun className='text-3xl base-icons'/>
+                            </a>
+                            {/* <Tooltip id="workout-tooltip" place={"right"}  /> */}
                         </Link>
                         <Link to="/mental-health" onClick={handleOpenMenu} className="flex w-full justify-center items-center h-12 cursor-pointer mt-2 mb-1 rounded-md hover:bg-gray-300">
-                            <MdOutlineWbSunny className='text-3xl base-icons'/>
+                            <a data-tooltip-id="mental-tooltip" data-tooltip-variant="light" data-tooltip-content={"Salud mental"}>
+                                <MdOutlineWbSunny className='text-3xl base-icons'/>
+                            </a>
+                            {/* <Tooltip id="mental-tooltip" place={"right"}  /> */}
                         </Link>
                         <Link to="/nutrition" onClick={handleOpenMenu} className="flex w-full justify-center items-center h-12 cursor-pointer mt-2 mb-1 rounded-md hover:bg-gray-300">
-                            <PiBowlFood className='text-3xl base-icons'/>
+                            <a data-tooltip-id="nutrition-tooltip" data-tooltip-variant="light" data-tooltip-content={"Nutrición"}>
+                                <PiBowlFood className='text-3xl base-icons'/>
+                            </a>
+                            {/* <Tooltip id="nutrition-tooltip" place={"right"}  /> */}
                         </Link>
-                        <div className="w-full flex items-center justify-center h-12 base-gradient text-white rounded-lg font-bold text-2xl cursor-pointer relative" onClick={handleCreateGoal}>
+                        <div className="w-full flex items-center justify-center h-12 base-gradient text-white rounded-lg font-bold text-2xl cursor-pointer relative" onClick={() => openAddModal("goal")}>
                             +
                         </div>
                     </div>
@@ -110,10 +91,16 @@ function Sidebar() {
                     </div>
                     <NotificationCenter/>
                     <Link to="/profile" onClick={handleOpenMenu} className="flex w-full justify-center items-center h-12 cursor-pointer mt-2 mb-1 rounded-md hover:bg-gray-300">
-                        <FaRegUser className='text-3xl base-icons'/>        
+                        <a data-tooltip-id="profile-tooltip" data-tooltip-variant="light" data-tooltip-content={"Perfil"}>
+                            <FaRegUser className='text-3xl base-icons'/>        
+                        </a>
+                        {/* <Tooltip id="profile-tooltip" place={"right"}  /> */}
                     </Link>
                     <Link to="/settings" onClick={handleOpenMenu} className="flex w-full justify-center items-center h-12 cursor-pointer mt-2 mb-1 rounded-md hover:bg-gray-300">
-                        <VscSettings className='text-3xl base-icons'/>        
+                        <a data-tooltip-id="settings-tooltip" data-tooltip-variant="light" data-tooltip-content={"Ajustes"}>
+                            <VscSettings className='text-3xl base-icons'/>        
+                        </a>
+                        {/* <Tooltip id="settings-tooltip" place={"right"}  /> */}
                     </Link>
                     <div onClick={handleLogout} className="flex w-full justify-center items-center h-12 cursor-pointer mt-2 mb-1 rounded-md hover:bg-gray-300">
                         <TbLogout2 className='text-3xl base-icons'/>

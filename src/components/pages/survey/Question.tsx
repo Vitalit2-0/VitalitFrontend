@@ -45,7 +45,7 @@ function Question({ flag, setPercentage }: any) {
     async function getQuestions()
     {
         let response = await getSurveyQuestions(auth.user.token);
-        
+        console.log("response", response);
         if(response.code !== "200") return;
 
         let questions = response.data;
@@ -194,7 +194,7 @@ function Question({ flag, setPercentage }: any) {
     return (
         <div className="h-full">
             {questionsData.question &&
-            <div className="flex flex-col gap-4 h-full">
+            <div className="relative flex flex-col gap-4 h-full">
                 <p>{questionsData.question.question_text}</p>
                 <div className="flex flex-col">
                 {questionsData.question?.question_type !== "weight-height" &&
@@ -234,7 +234,17 @@ function Question({ flag, setPercentage }: any) {
                     </div>
                 }
                 </div>
-                <div className="flex justify-end items-center absolute bottom-5 right-10 mt-10"> 
+                <div className={`flex w-full ${(questionsData.question && questionsData.index > 0) ? "justify-between" : "justify-end"}  items-center absolute bottom-10`}> 
+                    {questionsData.question && questionsData.index > 0 &&
+                     <span 
+                        className="underline cursor-pointer"
+                        onClick={() => {
+                            setQuestionsData({...questionsData, question: questionsData.questions[questionsData.index - 1], index: questionsData.index - 1, answer: [], error: false});
+                            setPercentage((questionsData.index - 1)/questionsData.questions.length*100.0); 
+                        }}
+                    >
+                        Anterior
+                    </span>}
                     <NextButtonHelper text="Siguiente" onclick={handleNextQuestion}/>
                 </div>
                 {/* <div onClick={handleSkipSurvey} className="absolute bottom-10 left-10 underline text-gray-400 hover:cursor-pointer">Saltar encuesta</div> */}

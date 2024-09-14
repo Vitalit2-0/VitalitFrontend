@@ -10,6 +10,7 @@ import { Create } from "../services/OpenAIService";
 import PremiumBlock from "../components/shared/PremiumBlock";
 import { VerifySession } from "../services/AuthStateProvider";
 import NavigationManager from "../services/NavigationManager";
+import AIAssistant from "../components/shared/AIAssistant";
 
 function Nutrition() {
 
@@ -59,6 +60,7 @@ function Nutrition() {
 
     return (
         <div className="flex flex-col gap-2 justify-center items-center base-gray md:px-10 md:pl-28">
+            <AIAssistant section="nutrition" />
             <h1 className="font-bold w-full base-gray color-dark-cyan text-4xl pl-5 sm:pl-5 md:pl-0 pb-10 pt-10 sm:pb-10">Nutrición</h1>
             <div className={`w-full`}>
                 <div className="flex flex-col md:flex-row gap-5 items-start">
@@ -74,10 +76,20 @@ function Nutrition() {
                             </div>
                         </PremiumBlock>
                     </div>
-                    <div className="w-full md:w-1/2 lg:w-2/3 px-10 bg-white rounded-3xl shadow-md p-5">
+                    <div className="w-full mb-10 md:w-1/2 lg:w-2/3 px-10 bg-white rounded-3xl shadow-md p-5">
                         {recipe &&
                             <div>
-                                <h1 className="font-bold text-2xl mb-10 text-left color-dark-cyan">Aquí tienes tu receta</h1>
+                                <h1 className="font-bold text-2xl mb-5 text-left color-dark-cyan">Aquí tienes tu receta</h1>
+                                <div className="w-full p-5 bg-yellow-200 mb-2 border border-yellow-500 text-yellow-500 rounded-xl">
+                                    <p className="text-center font-bold">
+                                        ¡Atención! Esta receta fue creada por nuestro asistente de inteligencia artificial y está pendiente de aprobación por un profesional. 
+                                    </p>
+                                </div>
+                                <div className="w-full p-5 bg-green-200 mb-10 border border-green-500 text-green-500 rounded-xl">
+                                    <p className="text-center font-bold">
+                                        <strong>Observaciones de nuestro asistente IA: </strong>{recipe.observation}
+                                    </p>
+                                </div>
                                 <div className="w-full">
                                     <div className="flex flex-col lg:flex-row items-start gap-10">
                                         <div className="lg:w-1/2">

@@ -18,6 +18,8 @@ export class FieldsValidator
                 return FieldsValidator.validateWeight(value);
             case 'bornDate':
                 return FieldsValidator.validateBornDate(value);
+            case 'terms':
+                return value === 'on';
             case 'age':
                 return true;
             case 'imc':
@@ -34,7 +36,7 @@ export class FieldsValidator
 
     public static validatePassword(password: string): boolean
     {
-        const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
+        const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&_])[A-Za-z\d@$!%*#?&_]{8,}$/;
         return passwordRegex.test(password);
     }
 

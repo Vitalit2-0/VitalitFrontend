@@ -3,7 +3,7 @@ import axios from "axios";
 export async function registerUser(user : RegisterDto): Promise<ResponseDto> 
 {  
     try {
-        const response = await axios.post('https://app-wlimmpn7xa-uc.a.run.app/register', user);
+        const response = await axios.post('https://app-j462ku7pkq-uc.a.run.app/register', user);
         return { code: "200", string: "", data: response.data } as ResponseDto;
     } catch (error : any) {
         return { 
@@ -16,7 +16,7 @@ export async function registerUser(user : RegisterDto): Promise<ResponseDto>
 export async function loginUser(user : LoginDto): Promise<ResponseDto> 
 {  
     try {
-        const response = await axios.post('https://app-wlimmpn7xa-uc.a.run.app/login', user);
+        const response = await axios.post('https://app-j462ku7pkq-uc.a.run.app/login', user);
         
         return { code: "200", string: "", data: response.data.data } as ResponseDto;
     } catch (error : any) {
@@ -33,7 +33,7 @@ export async function validateUser(code : ValidateDto): Promise<ResponseDto>
 {
     try {
         console.log(code);
-        const response = await axios.post('https://app-wlimmpn7xa-uc.a.run.app/validate', code );
+        const response = await axios.post('https://app-j462ku7pkq-uc.a.run.app/validate', code );
         return { code: "200", string: "", data: response.data.data } as ResponseDto;
     } catch (error : any) {
         return { 
@@ -48,7 +48,7 @@ export async function validateUser(code : ValidateDto): Promise<ResponseDto>
 export async function notify2fa(username : string): Promise<ResponseDto>
 {
     try {
-        const response = await axios.post('https://app-wlimmpn7xa-uc.a.run.app/notify/' + username);
+        const response = await axios.post('https://app-j462ku7pkq-uc.a.run.app/notify/' + username);
         return { code: "200", string: "", data: response.data.data } as ResponseDto;
     } catch (error : any) {
         return { 
@@ -62,7 +62,7 @@ export async function notify2fa(username : string): Promise<ResponseDto>
 export async function activate2fa(username : { username: string }): Promise<ResponseDto>
 {
     try {
-        const response = await axios.post('https://app-wlimmpn7xa-uc.a.run.app/qr', username);
+        const response = await axios.post('https://app-j462ku7pkq-uc.a.run.app/qr', username);
         return { code: "200", string: "", data: response.data.data } as ResponseDto;
     } catch (error : any) {
         return { 
@@ -76,7 +76,7 @@ export async function activate2fa(username : { username: string }): Promise<Resp
 export async function SendRecoverMail(email:string)
 {
     try {
-        const response = await axios.post('https://app-wlimmpn7xa-uc.a.run.app/password', {login: email});
+        const response = await axios.post('https://app-j462ku7pkq-uc.a.run.app/password', {login: email});
         return { code: "200", string: "", data: response.data.data } as ResponseDto;
     } catch (error : any) {
         return { 
@@ -95,7 +95,7 @@ export async function RestorePass(token:string, psw:string)
                 Authorization: `Bearer ${token}`
             }
         }
-        const response = await axios.post('https://app-wlimmpn7xa-uc.a.run.app/v1/password', {password: psw}, config);
+        const response = await axios.post('https://app-j462ku7pkq-uc.a.run.app/v1/password', {password: psw}, config);
         return { code: "200", string: "", data: response.data.data } as ResponseDto;
     } catch (error : any) {
         return { 
@@ -114,7 +114,7 @@ export async function RestoreSession(token:string)
                 Authorization: `Bearer ${token}`
             }
         }
-        const response = await axios.get('https://app-wlimmpn7xa-uc.a.run.app/v1/ping', config);
+        const response = await axios.get('https://app-j462ku7pkq-uc.a.run.app/v1/ping', config);
         console.log(response);
         return { code: "200", string: "", data: response.data.data } as ResponseDto;
     } catch (error : any) {
@@ -128,7 +128,7 @@ export async function RestoreSession(token:string)
     }
 }
 
-export async function UpgradeUserPlan(user:User)
+export async function UpgradeUserPlan(user:User, referal:string, duration:number): Promise<ResponseDto>
 {
     try {
         const config = {
@@ -136,9 +136,15 @@ export async function UpgradeUserPlan(user:User)
                 Authorization: `Bearer ${user.token}`
             }
         }
-        console.log(user.token);
-        const response = await axios.post(`https://app-wlimmpn7xa-uc.a.run.app/v1/premium/${user.id}`, null, config);
-        console.log(response);
+        
+        const response = await axios.post(`https://app-j462ku7pkq-uc.a.run.app/v1/premium/${user.id}`, 
+            {
+                referral_code: referal,
+                duration: duration
+            }, 
+            config
+        );
+        
         return { code: "200", string: "", data: response.data.data } as ResponseDto;
     } catch (error : any) {
 
@@ -152,16 +158,14 @@ export async function UpgradeUserPlan(user:User)
 }
 
 export async function VerifySession(token: string): Promise<boolean> {
-    console.log(token);
     try {
         const config = {
             headers: {
                 Authorization: `Bearer ${token}`
             }
         }
-        console.log(config);
 
-        await axios.get('https://app-wlimmpn7xa-uc.a.run.app/v1/ping', config);
+        await axios.get('https://app-j462ku7pkq-uc.a.run.app/v1/ping', config);
         return true;
     } catch (error: any) {
         console.log(error.response);

@@ -7,7 +7,7 @@ export async function getSurveyQuestions(token: string): Promise<ResponseDto>
         const config = {
             headers: { Authorization: `Bearer ${token}` }
         };
-        const response = await axios.get('https://app-wlimmpn7xa-uc.a.run.app/v1/survey', config);
+        const response = await axios.get('https://app-j462ku7pkq-uc.a.run.app/v1/survey', config);
         return { code: "200", string: "", data: response.data.data.survey_questions } as ResponseDto;
     } catch (error : any) {
         return { 
@@ -25,7 +25,7 @@ export async function sendSurveyAnswers(answers: SurveyDto, token: string): Prom
         const config = {
             headers: { Authorization: `Bearer ${token}` }
         };
-        const response = await axios.post('https://app-wlimmpn7xa-uc.a.run.app/v1/survey', answers, config);
+        const response = await axios.post('https://app-j462ku7pkq-uc.a.run.app/v1/survey', answers, config);
         return { code: "200", string: "", data: response.data } as ResponseDto;
     } catch (error : any) {
         return { 
@@ -43,7 +43,7 @@ export async function getSurveyResults(user: User)
         const config = {
             headers: { Authorization: `Bearer ${user.token}` }
         };
-        const response = await axios.get(`https://app-wlimmpn7xa-uc.a.run.app/v1/survey/${user.id}`, config);
+        const response = await axios.get(`https://app-j462ku7pkq-uc.a.run.app/v1/survey/${user.id}`, config);
         return response.data;
     } catch (error : any) {
         return { 

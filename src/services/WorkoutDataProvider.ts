@@ -7,7 +7,7 @@ export async function GetExercises(token: string)
         const config = {
             headers: { Authorization: `Bearer ${token}` }
         };
-        const response = await axios.get(`https://app-wlimmpn7xa-uc.a.run.app/v1/exercises`, config);
+        const response = await axios.get(`https://app-j462ku7pkq-uc.a.run.app/v1/exercises`, config);
         
         let exercises = response.data.data.map((e: any) => {
             return {

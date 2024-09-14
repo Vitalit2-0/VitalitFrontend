@@ -1,6 +1,7 @@
 import React from 'react'
 import Dot from '../stylers/Dot'
 import useAuthStore from '../../stores/AuthStore'
+import NavigationManager from '../../services/NavigationManager'
 
 function PremiumBlock({ feature, children }: { feature: string, children?: React.ReactNode }) {
     
@@ -16,7 +17,7 @@ function PremiumBlock({ feature, children }: { feature: string, children?: React
             <div className='z-20 px-[10%] text-center'>
                 <img src="assets/images/premium.png" className='w-36 mx-auto' alt="" />
                 <h2 className='text-black font-bold'>
-                    {feature} es una funcionalidad premium. ¡Mejora tu plan en los ajustes y accede a esta y otras funcionalidades exclusivas!
+                    {feature} es una funcionalidad premium. <a className='font-bold underline' onClick={() => NavigationManager.navigateTo("/settings")}>¡Mejora tu plan en los ajustes</a> y accede a esta y otras funcionalidades exclusivas!
                 </h2>
             </div>
         </div> : children

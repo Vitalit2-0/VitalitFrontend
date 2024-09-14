@@ -23,6 +23,11 @@ import Survey from '../../pages/Survey';
 import Notifications from '../../pages/Notifications';
 import Redirect from '../../pages/Redirect';
 import { RestoreSession } from '../../services/AuthStateProvider';
+import WhoWeAre from '../../pages/WhoWeAre';
+import Contact from '../../pages/Contact';
+import Blog from '../../pages/Blog';
+import BlogPost from '../../pages/BlogPost';
+import UserManual from '../../pages/UserManual';
 
 
 function LayoutLanding() {
@@ -33,7 +38,7 @@ function LayoutLanding() {
     function handleLogin()
     {
         setTransition("animate");
-        console.log(user.user)
+        
         setTimeout(async() => {
             if(user.user)
             {
@@ -44,7 +49,7 @@ function LayoutLanding() {
                     NavigationManager.navigateTo("/login", "", { login: true });
                     return;
                 }
-
+                
                 NavigationManager.navigateTo("/dashboard", "", { login: true });
             }
         }, 1000);
@@ -78,6 +83,51 @@ function LayoutLanding() {
                                     <Header setTransition={handleLogin}>
                                         <Login transition={transition} />
                                         <PrivacyPolicy />
+                                    </Header>
+                                    <Footer setTransition={handleLogin} />
+                                </>
+                            } />
+                            <Route path="/who-we-are" element={
+                                <>
+                                    <Header setTransition={handleLogin}>
+                                        <Login transition={transition} />
+                                        <WhoWeAre />
+                                    </Header>
+                                    <Footer setTransition={handleLogin} />
+                                </>
+                            } />
+                            <Route path="/contact" element={
+                                <>
+                                    <Header setTransition={handleLogin}>
+                                        <Login transition={transition} />
+                                        <Contact />
+                                    </Header>
+                                    <Footer setTransition={handleLogin} />
+                                </>
+                            } />
+                            <Route path="/user-manual" element={
+                                <>
+                                    <Header setTransition={handleLogin}>
+                                        <Login transition={transition} />
+                                        <UserManual />
+                                    </Header>
+                                    <Footer setTransition={handleLogin} />
+                                </>
+                            } />
+                            <Route path="/blog" element={
+                                <>
+                                    <Header setTransition={handleLogin}>
+                                        <Login transition={transition} />
+                                        <Blog setTransition={setTransition} />
+                                    </Header>
+                                    <Footer setTransition={handleLogin} />
+                                </>
+                            } />
+                            <Route path="/blog/post/:id" element={
+                                <>
+                                    <Header setTransition={handleLogin}>
+                                        <Login transition={transition} />
+                                        <BlogPost />
                                     </Header>
                                     <Footer setTransition={handleLogin} />
                                 </>

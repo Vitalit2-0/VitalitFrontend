@@ -17,7 +17,7 @@ export async function RegisterActivity(token: string, activity: ActivityDto): Pr
         const config = {
             headers: { Authorization: `Bearer ${token}` }
         };
-        const response = await axios.post('https://app-wlimmpn7xa-uc.a.run.app/v1/activity', activity, config);
+        const response = await axios.post('https://app-j462ku7pkq-uc.a.run.app/v1/activity', activity, config);
         return { code: "200", string: "", data: response.data } as ResponseDto;
     } catch (error : any) {
         return { 
@@ -57,7 +57,7 @@ export async function GetHistory(token: string, type: string): Promise<ResponseD
         const config = {
             headers: { Authorization: `Bearer ${token}` }
         };
-        const response = await axios.get(`https://app-wlimmpn7xa-uc.a.run.app/v1/activity/${type}`, config);
+        const response = await axios.get(`https://app-j462ku7pkq-uc.a.run.app/v1/activity/${type}`, config);
         return { code: "200", string: "", data: response.data } as ResponseDto;
     } catch (error : any) {
         return { 

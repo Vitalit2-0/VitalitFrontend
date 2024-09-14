@@ -14,6 +14,7 @@ import { CreateNotification } from "../services/ActivitiesServiceProvider";
 import PremiumBlock from "../components/shared/PremiumBlock";
 import { VerifySession } from "../services/AuthStateProvider";
 import NavigationManager from "../services/NavigationManager";
+import AIAssistant from "../components/shared/AIAssistant";
 
 function Workout() {
     const [stage, setStage] = useState<number>(stages.choosingFocus);
@@ -53,11 +54,7 @@ function Workout() {
             const today = new Date().toLocaleDateString();
             const workoutDate = new Date(workoutAlreadyCompleted).toLocaleDateString();
             
-            if (workoutDate.toString() === today.toString()) {
-                return true;
-            }
-            
-            return false;
+            return (workoutDate.toString() === today.toString()); 
         }
 
         return false;
@@ -126,6 +123,7 @@ function Workout() {
 
     return (
         <div className="base-gray min-h-screen">
+            <AIAssistant section="workout" />
             <h1 className="font-bold w-full base-gray color-dark-cyan text-4xl pl-5 sm:pl-10 pb-10 md:pl-28 pt-10 sm:pb-0">Salud Física</h1>
             <div className="w-full md:p-10 md:ps-28">
                 <div className="flex flex-col lg:flex-row items-start gap-5 relative">

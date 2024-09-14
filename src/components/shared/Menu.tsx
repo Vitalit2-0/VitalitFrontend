@@ -1,9 +1,12 @@
 import GradientButton from '../helpers/GradientButton'
 import NavigationManager from '../../services/NavigationManager'
-import { Link } from 'react-router-dom';
+import DropDownMenu from './DropDownMenu';
+import useAuthStore from '../../stores/AuthStore';
 
-function Menu({setTransition, color, responsive, open} : {setTransition: any, open?:boolean, color?: string, responsive?: boolean}) {
+function Menu({setTransition, color, responsive, open, setOpen} : {setTransition: any, open?:boolean, color?: string, responsive?: boolean, setOpen?: any}) {
     
+    const user = useAuthStore((state: any) => state.user);
+
     function handleScroll(e: any, section: string) {
         e.preventDefault();
         NavigationManager.scrollTo(section);
@@ -28,11 +31,14 @@ function Menu({setTransition, color, responsive, open} : {setTransition: any, op
                     <li className='flex flex-wrap content-center'>
                         <a onClick={(e) => {handleScroll(e, "unete")}} className={color}>Únete</a>
                     </li>
-                    <Link to={"/privacy-policy"} className='flex flex-wrap content-center cursor-pointer'>
+                    <li className='flex flex-wrap content-center'>
+                        <DropDownMenu className={color} setOpen={setOpen} />
+                    </li>
+                    {/* <Link to={"/privacy-policy"} className='flex flex-wrap content-center cursor-pointer'>
                         <a className={color}>Política de privacidad</a>
-                    </Link>
+                    </Link> */}
                     {!responsive && <li className=''>
-                        <GradientButton text="Iniciar Sesión" onClick={setTransition} className='base-gradient'/>
+                        <GradientButton text={user ? `Vitalit ${user.name}` : "Iniciar Sesión"} onClick={setTransition} className='base-gradient'/>
                     </li>}
                 </ul>
             </nav>

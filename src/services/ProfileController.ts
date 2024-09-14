@@ -7,7 +7,7 @@ export async function updateProfile(user: User, token: string): Promise<Response
             headers: { Authorization: `Bearer ${token}` }
         };
 
-        const response = await axios.put('https://app-wlimmpn7xa-uc.a.run.app/v1/profile', user, config);
+        const response = await axios.put('https://app-j462ku7pkq-uc.a.run.app/v1/profile', user, config);
         return { code: "200", string: "", data: response.data } as ResponseDto;
     } catch (error : any) {
         return { 
@@ -25,7 +25,7 @@ export async function getProfile(token: string, userId: string): Promise<Respons
             headers: { Authorization: `Bearer ${token}` }
         };
 
-        const response = await axios.get(`https://app-wlimmpn7xa-uc.a.run.app/v1/user/${userId}`, config);
+        const response = await axios.get(`https://app-j462ku7pkq-uc.a.run.app/v1/user/${userId}`, config);
         return { code: "200", string: "", data: response.data.data } as ResponseDto;
     } catch (error : any) {
         return { 

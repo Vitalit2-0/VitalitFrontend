@@ -8,7 +8,7 @@ export async function createPreference(token:string, product: {title: string, un
             }
         }
         
-        const response = await axios.post('https://app-wlimmpn7xa-uc.a.run.app/v1/payment', product, config);
+        const response = await axios.post('https://app-j462ku7pkq-uc.a.run.app/v1/payment', product, config);
 ;
         const id = response.data.data;
         return id;

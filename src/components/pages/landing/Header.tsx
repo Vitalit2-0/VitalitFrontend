@@ -31,7 +31,7 @@ function Header({ setTransition, children } : { setTransition: any, children: an
                 </div>
                 <Menu setTransition={setTransition}/>
                 <HamburguerMenu onClick={handleOpenMobileMenu} open={open}/>
-                <Menu setTransition={setTransition} responsive={true} open={open}/>
+                <Menu setTransition={setTransition} responsive={true} open={open} setOpen={setOpen}/>
             </div>
             {children}
         </div>

@@ -6,6 +6,7 @@ import FeatureCard from "../components/shared/FeatureCard";
 import FadeRightComponent from "../components/animators/FadeRightComponent";
 import FadeLeftComponent from "../components/animators/FadeLeftComponent";
 import NavigationManager from "../services/NavigationManager";
+import { FaArrowUp } from "react-icons/fa";
 
 function Landing({ setTransition } : { setTransition: any }) {
     return (
@@ -52,26 +53,32 @@ function Landing({ setTransition } : { setTransition: any }) {
                 </div>
             </section>
             <section id="mission-vision" className="min-h-screen relative w-full bg-white">
-                <div className="md:p-20 h-full max-w-[1920px] mx-auto">
-                    <div className="bg-image-purple overflow-hidden w-full h-full flex flex-col md:flex-row gap-10 px-10 md:px-20 xl:px-48 py-20 rounded-xl lg:rounded-tl-[200px] lg:rounded-br-[200px]">
-                        <FadeLeftComponent className="md:w-1/2">
-                            <div className="base-white p-10 rounded-3xl shadow-card text-center">
-                                <img className="w-1/4 m-auto" src="assets/images/vision.png" alt="" />
-                                <h3 className="text-2xl color-purple font-bold mt-5 mb-5">Visión</h3>
-                                <p className="leading-8">Para el año 2027, <span className="font-bold">Vitalit</span> busca ser el referente por excelencia en Colombia en el cuidado físico y mental para aquellas personas que deseen tener una experiencia enriquecedora en su desarrollo personal y su bienestar.</p>
-                            </div>
-                        </FadeLeftComponent>
-                        <FadeRightComponent className="md:w-1/2">
-                            <div className="base-white p-10 rounded-3xl shadow-card text-center">
-                                <img className="w-1/4 m-auto" src="assets/images/mision.png" alt="" />
-                                <h3 className="text-2xl color-purple font-bold mt-5 mb-5">Misión</h3>
-                                <p className="leading-8">Brindar apoyo para la mejora de la salud mental y física de nuestros usuarios, a través de una plataforma integral que ofrece rutinas, ejercicios de respiración, yoga y meditación. Fomentando así, una gestión del bienestar personal sencilla y accesible.</p>
-                            </div>
-                        </FadeRightComponent>
+                <div className="md:px-20 py-8 h-full max-w-[1920px] mx-auto">
+                    <div className="relative overflow-hidden w-full h-full px-10 md:px-20 xl:px-48 py-10 rounded-xl xl:rounded-tl-[200px] xl:rounded-br-[200px]">
+                        <img src="assets/images/background.jpg" className="absolute top-0 left-0 w-full h-full" alt="" />
+                        <div className="flex flex-col md:flex-row gap-10">
+                            <FadeLeftComponent className="md:w-1/2 h-full">
+                                <div className="base-white p-10 rounded-3xl shadow-card text-center">
+                                    <img className="w-1/4 m-auto" src="assets/images/vision.png" alt="" />
+                                    <h3 className="text-2xl color-purple font-bold mt-5 mb-5">Visión</h3>
+                                    <p className="leading-8">Para 2027, nos convertiremos en el referente por excelencia en la promoción del cuidado personal, siendo reconocidos por ofrecer una plataforma integral que combine salud mental, física y nutricional a través de una experiencia única de personalización basada en inteligencia artificial que combina rutinas, recetas, prácticas de yoga y meditación junto con la supervisión de profesionales de la salud. </p>
+                                </div>
+                            </FadeLeftComponent>
+                            <FadeRightComponent className="md:w-1/2 h-full">
+                                <div className="base-white p-10 rounded-3xl shadow-card text-center">
+                                    <img className="w-1/4 m-auto" src="assets/images/mision.png" alt="" />
+                                    <h3 className="text-2xl color-purple font-bold mt-5 mb-5">Misión</h3>
+                                    <p className="leading-8">Brindamos apoyo en la gestión del bienestar personal, ofreciendo a nuestros usuarios rutinas personalizadas de yoga, meditación, ejercicios de respiración, recetas e informes de progreso, todo en una plataforma integral y accesible. Permitiendo que cualquier persona, con solo un dispositivo y acceso a internet, pueda comenzar a mejorar su bienestar de manera sencilla y efectiva.</p>
+                                </div>
+                            </FadeRightComponent>
+                        </div>
+                        <div className="text-white relative flex justify-end mt-5">
+                            <p onClick={() => NavigationManager.scrollTo("unete")} className='underline cursor-pointer'>Únete a Vitalit</p>
+                        </div>
                     </div>
                 </div>
             </section>
-            <section id="unete" className="overflow-hidden min-h-screen max-w-[1920px] mx-auto bg-white ">
+            <section id="unete" className="relative overflow-hidden min-h-screen max-w-[1920px] mx-auto bg-white ">
                 <div className="relative">
                     <Ring width="320px" color="rgba(53, 197, 250, 0.5)" bottom="-15%" right="-8%" strokewidth="10"/>
                     <Dot width="72px" color="rgba(253, 120, 159, 0.8)" top="7%" left="3%"/>
@@ -83,13 +90,16 @@ function Landing({ setTransition } : { setTransition: any }) {
                             </div>
                             <div className="md:w-2/3 p-10 md:p-20 flex flex-col justify-center">
                                 <h3 className="text-6xl font-bold color-purple">Únete a Vitalit</h3>
-                                <p className="mt-5 mb-5 text-2xl xl:text-4xl">Transforma tu bienestar con cada paso hacia un futuro más saludable y feliz.</p>
+                                <p className="mt-5 mb-5 text-xl">Transforma tu bienestar con cada paso hacia un futuro más saludable y feliz.</p>
                                 <div className="flex flex-col lg:flex-row gap-5">
                                     <GradientButton text="Empieza ahora!" onClick={() => setTransition("animate")} className='base-gradient w-full lg:w-1/2'/>
                                 </div>
                             </div>
                         </div>
                     </div>
+                </div>
+                <div onClick={() => NavigationManager.scrollTo("inicio")} className="cursor-pointer rounded-full flex justify-center items-center w-16 h-16 absolute bottom-10 right-10 md:bottom-28 md:right-20 base-gradient">
+                    <FaArrowUp className="text-white text-2xl" />
                 </div>
             </section>
         </div> 

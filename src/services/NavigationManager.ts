@@ -6,7 +6,12 @@ class NavigationManager {
 
     public static scrollTo(section: string) {
         let element = document.getElementById(section);
-        console.log(element);
+
+        if(!element)
+        {
+            window.location.href = '/VitalitFrontend/';
+        }
+
         element && element.scrollIntoView();
     }
 }

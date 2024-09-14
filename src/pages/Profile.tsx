@@ -10,11 +10,13 @@ import { getProfile, updateProfile } from "../services/ProfileController";
 import { FaUser } from "react-icons/fa";
 import { IoIosFemale, IoIosMale } from "react-icons/io";
 import { CreateNotification, GetActivityHistory } from "../services/ActivitiesServiceProvider";
-import { Create } from "../services/OpenAIService";
 import { toast } from "react-toastify";
-import { GetUserGoal, RegisterGoal } from "../services/GoalsServiceProvider";
+import { GetUserGoal } from "../services/GoalsServiceProvider";
 import { VerifySession } from "../services/AuthStateProvider";
 import NavigationManager from "../services/NavigationManager";
+import { FaGift } from "react-icons/fa6";
+import { FaCircleInfo } from "react-icons/fa6";
+import { Tooltip } from "react-tooltip";
 
 function Profile() {
     const { openAddModal } = useModal()
@@ -172,36 +174,20 @@ function Profile() {
     }
 
     const handleAdd = async(type: string) => {
-        const response = await openAddModal(type);
-        
-        if(response.confirm) {
-            const createGoal = {
-                type: "goal",
-                description: response.description
-            }
-            
-            console.log(createGoal);
-            const goal = await Create(createGoal, user);
+        openAddModal(type);
+    }
 
-            if(goal.data)
-            {
-                const response = await RegisterGoal(user.token, goal.data);
-                
-                if(response.code === "200")
-                {
-                    toast.success("Objetivo añadido correctamente");
-                    CreateNotification(user.token, "Objetivo añadido correctamente");
-                    window.location.reload();
-                    return;
-                }
-
-                toast.error("Error al añadir el objetivo");
-                CreateNotification(user.token, "Error al añadir el objetivo");
-            }
-
-            toast.success("Objetivo añadido correctamente");
-            CreateNotification(user.token, "Objetivo añadido correctamente");
+    const encriptUsername = () => {
+        if (userData.username) {
+            return btoa(userData.username);
         }
+        return "";
+    }
+
+    const copyValue = (e: any) => {
+        e.target.select();
+        console.log(e.target.value);
+        toast.success("Código de referido copiado");
     }
 
     return (
@@ -315,12 +301,31 @@ function Profile() {
                                 <p className="mt-2">Actividades completadas</p>
                             </div>
                         </div>
-                        {/* <div className="lg:w-1/3">
-                            <div className="bg-white shadow-md rounded-3xl p-5">
-                                <p className="color-purple text-6xl">5</p>
-                                <p className="mt-2">Objetivos establecidos</p>
+                    </div>
+                    <div className="bg-white shadow-md rounded-3xl p-5 mt-5">
+                        <div className="flex flex-col gap-5 lg:flex-row w-full justify-between">
+                            <div className="flex items-center gap-5">
+                                <div className="flex items-center gap-5">
+                                    <span>
+                                        <FaGift size={30} className="color-purple" />
+                                    </span>
+                                    <h2 className="text-xl color-purple">Tu código de referido</h2>
+                                </div>
+                                <span>
+                                    <a className="w-12" data-tooltip-id="start-tooltip" data-tooltip-variant="success" data-tooltip-content={"Un mes de vitalit premium si usan tu código"}>
+                                        <FaCircleInfo size={20} className="color-purple cursor-pointer" />
+                                    </a>
+                                    <Tooltip id="start-tooltip" place={"right"} className="w-16" />
+                                </span>
                             </div>
-                        </div> */}
+                            <input 
+                                value={encriptUsername()} 
+                                type="text" 
+                                className="bg-white" 
+                                onClick={(e) => copyValue(e)}
+                                
+                            />
+                        </div>
                     </div>
                     <div className="bg-white shadow-md rounded-3xl p-5 mt-5 h-full overflow-y-auto">
                         <h2 className="text-xl color-purple">Historial de actividad</h2>

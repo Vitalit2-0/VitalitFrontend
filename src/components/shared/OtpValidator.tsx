@@ -5,9 +5,11 @@ import useAuthStore from '../../stores/AuthStore';
 import { toast } from 'react-toastify';
 import { CreateNotification } from '../../services/ActivitiesServiceProvider';
 import { useModal } from './PopupAlert';
+import { useSearchParams } from 'react-router-dom';
 
 function OtpValidator({ numberOfDigits, username, setOpen, isRegister, setValue2fa } : { numberOfDigits: number, username: string, setOpen: any, isRegister: boolean, setValue2fa?: any }) {
     
+    const [queryParameters] = useSearchParams()
     const {showFullScreenLoader} = useModal();
     const user: any = useAuthStore(state => state)
     const [otp, setOtp] = useState(new Array(numberOfDigits).fill(""));
@@ -18,8 +20,9 @@ function OtpValidator({ numberOfDigits, username, setOpen, isRegister, setValue2
         newArr[index] = value;
         setOtp(newArr);
 
-        if(value && index < numberOfDigits-1){
-        otpBoxReference.current[index + 1].focus()
+        if(value && index < numberOfDigits-1)
+        {
+            otpBoxReference.current[index + 1].focus()
         }
     }
 
@@ -73,12 +76,24 @@ function OtpValidator({ numberOfDigits, username, setOpen, isRegister, setValue2
         
         if(!isRegister)
         {
-            console.log(response);
             user.login({...response.data, ft_login: true})
+            await checkReturnUrl();
             NavigationManager.navigateTo("/dashboard", "", { login: true });
         }
 
         if(isRegister) setValue2fa(true);
+    }
+
+    async function checkReturnUrl()
+    {
+        let returnUrl = queryParameters.get("returnUrl");
+        
+        if(returnUrl)
+        {
+            console.log(returnUrl);
+            window.location.href = `VitalitFrontend${returnUrl}`;
+            return;
+        }
     }
 
     return (

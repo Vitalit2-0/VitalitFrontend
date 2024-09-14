@@ -21,6 +21,7 @@ function Settings() {
     const user = useAuthStore((state:any) => state.user);
     const auth = useAuthStore((state:any) => state);
 
+    const [referalCode, setReferalCode] = React.useState("");
     const [qr, setQr] = React.useState("");
     const [value2fa, setValue2fa] = React.useState(false);
     const [product, setProduct] = React.useState({} as {title: string, price: number, quantity: number});
@@ -28,6 +29,7 @@ function Settings() {
     const [notificationsConfig, setNotificationsConfig] = React.useState([] as any);
     const [openUpgradeModal, setOpenUpgradeModal] = React.useState(false);
     const [userPlan, setUserPlan] = React.useState(user.type);
+    const referalRef = React.useRef<HTMLInputElement>(null);
 
     const [isChecked, setIsChecked] = React.useState(false);
 
@@ -178,6 +180,16 @@ function Settings() {
                             </div>
                         </div>
                     </Typography>
+                    <div className="mt-5">
+                        <label className="mt-5 text-purple-500"><strong className="font-bold">Código de referido</strong> (obten un mes gratis)</label>
+                        <input 
+                            type="text" 
+                            className="w-full bg-white p-2 rounded-lg border border-solid border-purple-300"
+                            value={referalCode}
+                            onInput={(e:any) => setReferalCode(e.target.value)}
+                            ref={referalRef}
+                        />
+                    </div>
                     <div className='w-full flex gap-2 mt-8 justify-center'>
                         {product.title && <PayPalButtons 
                             createOrder={(_, actions) => {
@@ -200,11 +212,12 @@ function Settings() {
                                 if(order?.status === "COMPLETED") {
                                     toast.success('Pago exitoso, gracias por mejorar tu plan Vitalit!');
                                     CreateNotification(user.token, 'Pago exitoso, gracias por mejorar tu plan Vitalit!');
-
-                                    const response = await UpgradeUserPlan(user);
+                                    console.log(referalRef.current?.value);
+                                    const response = await UpgradeUserPlan(user, (referalRef.current?.value && product.price > 0.25) ? atob(referalRef.current?.value) : "null", product.price === 5000 ? 1 : (product.price === 45000 ? 12 : 0));
 
                                     console.log(response);
-                                    if(Number(response.code) === 200) auth.upgrade(user, "premium");
+                                    if(Number(response?.code) === 200) auth.upgrade(user, "premium");
+                                    setReferalCode("");
                                     setOpenUpgradeModal(false);
                                 }
                             }}

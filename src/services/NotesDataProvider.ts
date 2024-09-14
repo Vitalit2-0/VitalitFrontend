@@ -8,7 +8,7 @@ export async function GetUserNotes(token:string, id:string)
         {
             headers: { Authorization: `Bearer ${token}` }
         };
-        const response = await axios.get(`https://app-wlimmpn7xa-uc.a.run.app/v1/notes/${id}`, config);
+        const response = await axios.get(`https://app-j462ku7pkq-uc.a.run.app/v1/notes/${id}`, config);
         return response.data;
     }
     catch(err){
@@ -24,7 +24,7 @@ export async function SetUserNotes(token:string, note: Note)
         {
             headers: { Authorization: `Bearer ${token}` }
         };
-        const response = await axios.post(`https://app-wlimmpn7xa-uc.a.run.app/v1/notes/`, note, config);
+        const response = await axios.post(`https://app-j462ku7pkq-uc.a.run.app/v1/notes`, note, config);
 
         return response.data;
     }
@@ -41,7 +41,7 @@ export async function UpdateUserNotes(token:string, note: Note)
         {
             headers: { Authorization: `Bearer ${token}` }
         };
-        const response = await axios.put(`https://app-wlimmpn7xa-uc.a.run.app/v1/notes/${note.note_id}`, note, config);
+        const response = await axios.put(`https://app-j462ku7pkq-uc.a.run.app/v1/notes/${note.note_id}`, note, config);
 
         return response.data;
     }
@@ -58,7 +58,7 @@ export async function DeleteUserNotes(token:string, note_id: string)
         {
             headers: { Authorization: `Bearer ${token}` }
         };
-        const response = await axios.delete(`https://app-wlimmpn7xa-uc.a.run.app/v1/notes/${note_id}`, config);
+        const response = await axios.delete(`https://app-j462ku7pkq-uc.a.run.app/v1/notes/${note_id}`, config);
 
         return response.data;
     }

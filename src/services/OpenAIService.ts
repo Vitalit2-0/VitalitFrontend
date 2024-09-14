@@ -3,10 +3,8 @@ import { AiRequests } from "./AIRequests";
 import CryptoJS from 'crypto-js';
 
 const decryptText = (encryptedText: string): string => {
-    console.log("decrypting text");
 
     const bytes = CryptoJS.AES.decrypt(encryptedText, "nvouiwe8n3909mnlsmef893m-390234-dsa");
-    console.log("d:",bytes.toString(CryptoJS.enc.Utf8));
     return bytes.toString(CryptoJS.enc.Utf8);
 };
 
@@ -32,7 +30,7 @@ export async function Create(params: any, user: User)
         const img = await RequestImageToAI(data.image_description);
         data.image = img;
     }
-    console.log(data);
+    
     return { code: "200", string: "", data: data } as ResponseDto;
 }
 
@@ -44,7 +42,6 @@ async function RequestToAI(params: any, user: User)
     
     const ek = "U2FsdGVkX19hkx9apKmbXkv7kfWvLfiYRCI5V1JDIcVHwu0q9nW+JB3G/UQIGglQR+p7lIQ6EuLgxE4OpNkf+yJBNyQLQzpKv+8VC7cWZw4="
     const dk = decryptText(ek);
-    console.log(dk);
 
     try{
         const apiRequestBody = {
@@ -131,7 +128,7 @@ export async function getExercisesForAI(token: string): Promise<ResponseDto>
         const config = {
             headers: { Authorization: `Bearer ${token}` }
         };
-        const response = await axios.get(`https://app-wlimmpn7xa-uc.a.run.app/v1/exercises`, config);
+        const response = await axios.get(`https://app-j462ku7pkq-uc.a.run.app/v1/exercises`, config);
         
         let exercises = response.data.data.map((e: any) => {
             return {
@@ -157,7 +154,7 @@ export async function getExercises(token: string): Promise<ResponseDto>
         const config = {
             headers: { Authorization: `Bearer ${token}` }
         };
-        const response = await axios.get(`https://app-wlimmpn7xa-uc.a.run.app/v1/exercises`, config);
+        const response = await axios.get(`https://app-j462ku7pkq-uc.a.run.app/v1/exercises`, config);
         console.log(response.data.data);
         return response.data.data;
     } catch (error : any) {

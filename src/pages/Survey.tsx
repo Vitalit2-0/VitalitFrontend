@@ -17,7 +17,7 @@ function Survey() {
         <div className="base-gradient w-screen h-screen flex flex-wrap items-center justify-center">
             <div className={`relative container-card max-w-[540px] ${(flip) ? "container-flipped" : ""}`}>
                 <div className="card-inner h-full shadow-card">
-                    <div className="card-front h-full inline-flex">
+                    <div className={`card-front h-full inline-flex transition-all ${flip ? "opacity-0" : "opacity-100"}`}>
                         <picture className="absolute top-8 right-5 w-48 z-0">
                             <img src="assets/images/trainer-half.png" alt="entrenador"/>
                         </picture>

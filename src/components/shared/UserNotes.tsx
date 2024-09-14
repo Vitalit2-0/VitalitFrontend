@@ -43,7 +43,7 @@ function UserNotes() {
             note_title: "Mi Nota",
             note_text: ""
         }
-
+        
         const response = await SetUserNotes(user.token, newNote);
 
         if(response.data)

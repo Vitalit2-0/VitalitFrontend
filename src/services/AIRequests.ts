@@ -12,6 +12,7 @@ export class AiRequests {
     place: string = "";
     focus: string = "";
     food: string = "";
+    section: string = "";
     
     async CreatePrompt(params: any, user: User)
     {
@@ -40,6 +41,14 @@ export class AiRequests {
             case "goal":
                 this.description = params.description;
                 return this.GetPrompts().goal;
+            case "question":
+                this.description = params.description;
+                this.recomendations = params.recomendations;
+                this.section = params.section;
+                return this.GetPrompts().question;
+            case "recomendation":
+                this.description = params.description;
+                return this.GetPrompts().recomendation;
         }
     }
 
@@ -64,12 +73,13 @@ export class AiRequests {
                 `Eres un chef que se especializa en crear recetas deliciosas y saludables. Tu tarea es crear una receta para mí usando la siguiente información de una encuesta que respomdí para tener en cuenta al momento de crear el plato:
                 ${JSON.stringify(this.surveyAnswers)}
                 Lo que quiero cocinar es: ${this.food}.
-                Ten en cuenta que la receta debe ser saludable. Además las intrucciones deben ser muy detalladas y fáciles de seguir.
+                Ten en cuenta que la receta debe ser saludable. Además las intrucciones deben ser muy detalladas y fáciles de seguir. Si te pido algún alimento que no me ayude a alcanzar mis objetivos de bienestar, por favor, sugiere una alternativa más saludable.
                 Tambien ten en cuenta las siguientes recomendaciones:
                 ${this.recomendations}
                 Crea la receta en español y en el siguiente formato json. Por favor envíame solo el objeto json, no envíes ninguna otra información. Es MUY importante que me envíes exactamente ese formato para entenderte:
                 {
                     "title": "Recipe Name",
+                    "observation": "Describe si tuviste que eliminar algún ingrediente o no tener en cuenta alguna recomendación debido a que iba en contra de los objetivos de bienestar del usuario. Describelo como si estuvieras hablando con el usuario y describe la relación con sus objetivos.",
                     "description": "Brief description of the recipe.",
                     "prep_time": "20 minutes",
                     "cook_time": "30 minutes",
@@ -126,8 +136,7 @@ export class AiRequests {
                 - type (si es 'calentamiento', 'entrenamiento' o 'estiramiento')
                 - rest: int(tiempo en segundos). 
                 Es MUY importante que sigas el formato exacto para que pueda entenderlo.
-                Por último, el enfoque del plan de entrenamiento es ${this.focus}.
-                Por cuestiones de testing, por ahora pon todas las variables rest en cero.`,
+                Por último, el enfoque del plan de entrenamiento es ${this.focus}.`,
 
             yoga:
                 `Eres un instructor de yoga que se especializa en la creación de secuencias de yoga. Tu tarea es crear una secuencia de yoga de 5 posturas para mí.
@@ -150,19 +159,49 @@ export class AiRequests {
                 Es MUY importante que sigas el formato exacto para que pueda entenderlo.`,
 
             goal:
-                `Crea un objetivo de bienestar para mí de acuerdo a la siguiente descripción:
+                `Crea una lista de objetivos de bienestar para mí de acuerdo a la siguiente descripción:
                 ${JSON.stringify(this.description)} 
-                Debes crear un objetivo que sea específico, medible y alcanzable. 
-                Por favor, envíame el objetivo en el siguiente formato JSON, no envíes ninguna otra información: 
-                {
-                    "goal_name": string (En español, el título que consideres adecuado para el objetivo),
+                Para crear la lista debes dividir objetivo en pequeños subobjetivos que sean específicos, medibles y alcanzables. Siempre crea varios objetivos a menos que el objetivo sea muy simple. En ese caso, crea un solo objetivo.
+                Ten en cuenta que hay objetivos que requieren de un plan, por ejemplo bajar de peso, o comer más saludable. Para objetivos como este, transforma el objetivo en una lista de objetivos en forma de reto.
+                No crees objetivos que usen las siguientes medidas: calorías, gramos, segundos, minutos, horas.
+                
+                Por favor, envíame la lista de objetivos en el siguiente formato JSON, no envíes ninguna otra información: 
+                [{
+                    "goal_name": string (En español, el título del objetivo, este debe ser especifico y debe incluir una descripcion que especifique el objetivo, la fecha y la medida en la unidad de medida correspondiente),
                     "goal_achieved": int (Número que representa el progreso actual del objetivo),
                     "goal_target": int (Número que representa el objetivo final),
                     "goal_unit": string (Unidad de medida del objetivo. Puede ser 'minutos', 'veces', 'días', 'kilogramos', 'porcentaje', etc.),
                     "goal_deadline": string (Fecha límite para alcanzar el objetivo si la hay, en formato 'dd/mm/aaaa'),
                     "goal_repeat": string (Frecuencia con la que se debe realizar la acción para alcanzar el objetivo. Puede ser 'diariamente', 'semanalmente', 'mensualmente', etc.)
+                }, ...]
+                En caso de que la descripción no sea suficiente para crear un objetivo, puedes preguntar al usuario por más detalles. en el siguiente formato:
+                {
+                    "question": Pregunta(s) que quieras hacer al usuario para obtener más información,
                 }
-                Es MUY importante que sigas el formato exacto para que pueda entenderlo.`
+                Es MUY importante que sigas el formato exacto para que pueda entenderlo.`,
+            question:
+                `Responde la siguiente pregunta hecha por el usuario. Ten en cuenta que esta pregunta debe estar relacionada bien sea a ejercicio fisico, bienestar mental o nutrición. Si no es así, por favor, responde: "Lo siento, no puedo responder preguntas que no estén relacionadas con Vitalit":
+                ${this.description} 
+                El usuario está en la sección: ${this.section}.
+                Recomendaciones: ${this.recomendations} 
+                Envíame la pregunta en el siguiente formato JSON, no envíes ninguna otra información: 
+                {
+                    "question": ${this.description} ,
+                    "answer": string (tu respuesta)
+                }
+                Es MUY importante que sigas el formato exacto para que pueda entenderlo.`,
+            recomendation:
+                `Recomienda una de las siguientes actividades de Salud mental al usuario de acuerdo a su estado de ánimo actual:
+                Actividades: Meditación, Ímagenes guíadas, Yoga.
+                Otras secciones: Notas.
+                El estado de animo actual del usuario es: ${this.description}.
+                Envíame la recomendación en el siguiente formato JSON, no envíes ninguna otra información:	
+                {
+                    "activity": string (actividad recomendada),
+                    "observation": string (observaciones adicionales, como por que escogiste esta actividad y como puede ayudar al usuario)
+                }
+                Si lo crees necesario, aclara el hecho de que sentir tristeza, ansiedad o estrés es normal y que no está mal sentir estas emociones.`
+                
         })
     }
 
